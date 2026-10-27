@@ -46,6 +46,8 @@ Combat miroir Saint Louis contre Saint Louis, à deux joueurs sur un clavier, da
   - KO au tick 1136 et fin de manche au tick 1286.
 - **Export** : 56 poses découpées, 1 page d'atlas. L'export a été relu sur ses aperçus (fond clair et sombre, superpositions) ; les sources sont intactes.
 
+- **Boucle temps réel, en mode Play normal sans pilotage** : 252 ticks simulés en environ 4,2 secondes, soit environ 60 par seconde ; l'horloge à pas fixe et la boucle `Update` fonctionnent.
+
 **Pas vérifié par moi** : une vraie partie au clavier, à deux humains, avec la sensation de jeu. C'est le prochain essai à faire. Il n'y a pas non plus eu d'export WebGL ni d'export autonome.
 
 ## Hypothèses à régler en jouant

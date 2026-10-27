@@ -35,6 +35,9 @@ public static class VerifyMatch
         return Describe(game);
     }
 
+    /// <summary>État courant, sans rien piloter (boucle temps réel normale).</summary>
+    public static object Status() => Describe(Game());
+
     /// <summary>Avance jusqu'au tick absolu <paramref name="untilTick"/> et décrit l'état.</summary>
     public static object Step(int untilTick)
     {

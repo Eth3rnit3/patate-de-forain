@@ -1,0 +1,518 @@
+{
+  "formatVersion": 1,
+  "generator": "tools/export-character (tools/export-character/configs/saint-louis.json)",
+  "pages": [
+    {
+      "file": "atlas-0.png",
+      "width": 4048,
+      "height": 2680,
+      "sha256": "5a5afca7f8702ddca2f8e2a4edfa886cbd0c26718ff4a1e8d2a4be49528c1e4a"
+    }
+  ],
+  "sprites": {
+    "block_high_01": {
+      "page": 0,
+      "x": 1117,
+      "y": 4,
+      "w": 313,
+      "h": 505,
+      "pivotX": 144,
+      "pivotY": 504
+    },
+    "block_high_02": {
+      "page": 0,
+      "x": 1060,
+      "y": 2033,
+      "w": 301,
+      "h": 474,
+      "pivotX": 145,
+      "pivotY": 473
+    },
+    "block_high_03": {
+      "page": 0,
+      "x": 850,
+      "y": 520,
+      "w": 289,
+      "h": 501,
+      "pivotX": 144,
+      "pivotY": 500
+    },
+    "hit_high_01": {
+      "page": 0,
+      "x": 4,
+      "y": 4,
+      "w": 314,
+      "h": 508,
+      "pivotX": 149,
+      "pivotY": 507
+    },
+    "hit_high_02": {
+      "page": 0,
+      "x": 1438,
+      "y": 4,
+      "w": 336,
+      "h": 505,
+      "pivotX": 182,
+      "pivotY": 504
+    },
+    "hit_high_03": {
+      "page": 0,
+      "x": 1147,
+      "y": 520,
+      "w": 301,
+      "h": 501,
+      "pivotX": 150,
+      "pivotY": 500
+    },
+    "idle_01": {
+      "page": 0,
+      "x": 2649,
+      "y": 4,
+      "w": 387,
+      "h": 502,
+      "pivotX": 194,
+      "pivotY": 501
+    },
+    "idle_02": {
+      "page": 0,
+      "x": 3044,
+      "y": 4,
+      "w": 391,
+      "h": 502,
+      "pivotX": 193,
+      "pivotY": 501
+    },
+    "idle_03": {
+      "page": 0,
+      "x": 326,
+      "y": 4,
+      "w": 387,
+      "h": 507,
+      "pivotX": 194,
+      "pivotY": 506
+    },
+    "idle_04": {
+      "page": 0,
+      "x": 1456,
+      "y": 520,
+      "w": 387,
+      "h": 501,
+      "pivotX": 194,
+      "pivotY": 500
+    },
+    "idle_05": {
+      "page": 0,
+      "x": 3129,
+      "y": 520,
+      "w": 394,
+      "h": 497,
+      "pivotX": 194,
+      "pivotY": 496
+    },
+    "idle_06": {
+      "page": 0,
+      "x": 2253,
+      "y": 4,
+      "w": 388,
+      "h": 503,
+      "pivotX": 194,
+      "pivotY": 502
+    },
+    "royal_lily_impact_01": {
+      "page": 0,
+      "x": 3358,
+      "y": 2033,
+      "w": 161,
+      "h": 164,
+      "pivotX": 82,
+      "pivotY": 82
+    },
+    "royal_lily_impact_02": {
+      "page": 0,
+      "x": 2611,
+      "y": 2033,
+      "w": 248,
+      "h": 253,
+      "pivotX": 124,
+      "pivotY": 130
+    },
+    "royal_lily_impact_03": {
+      "page": 0,
+      "x": 2867,
+      "y": 2033,
+      "w": 244,
+      "h": 225,
+      "pivotX": 121,
+      "pivotY": 115
+    },
+    "royal_lily_impact_04": {
+      "page": 0,
+      "x": 3119,
+      "y": 2033,
+      "w": 231,
+      "h": 205,
+      "pivotX": 116,
+      "pivotY": 102
+    },
+    "royal_lily_projectile_01": {
+      "page": 0,
+      "x": 3527,
+      "y": 2033,
+      "w": 234,
+      "h": 153,
+      "pivotX": 168,
+      "pivotY": 78
+    },
+    "royal_lily_projectile_02": {
+      "page": 0,
+      "x": 3769,
+      "y": 2033,
+      "w": 231,
+      "h": 152,
+      "pivotX": 167,
+      "pivotY": 76
+    },
+    "royal_lily_projectile_03": {
+      "page": 0,
+      "x": 4,
+      "y": 2523,
+      "w": 234,
+      "h": 152,
+      "pivotX": 171,
+      "pivotY": 77
+    },
+    "royal_lily_projectile_04": {
+      "page": 0,
+      "x": 246,
+      "y": 2523,
+      "w": 217,
+      "h": 152,
+      "pivotX": 155,
+      "pivotY": 77
+    },
+    "special_royal_lily_cast_01": {
+      "page": 0,
+      "x": 3443,
+      "y": 4,
+      "w": 409,
+      "h": 502,
+      "pivotX": 204,
+      "pivotY": 501
+    },
+    "special_royal_lily_cast_02": {
+      "page": 0,
+      "x": 2178,
+      "y": 2033,
+      "w": 425,
+      "h": 464,
+      "pivotX": 205,
+      "pivotY": 463
+    },
+    "special_royal_lily_cast_03": {
+      "page": 0,
+      "x": 3516,
+      "y": 1534,
+      "w": 451,
+      "h": 485,
+      "pivotX": 205,
+      "pivotY": 484
+    },
+    "special_royal_lily_cast_04": {
+      "page": 0,
+      "x": 2536,
+      "y": 1030,
+      "w": 445,
+      "h": 492,
+      "pivotX": 205,
+      "pivotY": 491
+    },
+    "special_royal_lily_cast_05": {
+      "page": 0,
+      "x": 1717,
+      "y": 1534,
+      "w": 538,
+      "h": 487,
+      "pivotX": 205,
+      "pivotY": 486
+    },
+    "special_royal_lily_cast_06": {
+      "page": 0,
+      "x": 2263,
+      "y": 1534,
+      "w": 530,
+      "h": 487,
+      "pivotX": 204,
+      "pivotY": 486
+    },
+    "special_royal_lily_cast_07": {
+      "page": 0,
+      "x": 307,
+      "y": 1534,
+      "w": 450,
+      "h": 489,
+      "pivotX": 204,
+      "pivotY": 488
+    },
+    "special_royal_lily_cast_08": {
+      "page": 0,
+      "x": 4,
+      "y": 520,
+      "w": 411,
+      "h": 502,
+      "pivotX": 205,
+      "pivotY": 500
+    },
+    "stand_kick_heavy_01": {
+      "page": 0,
+      "x": 1851,
+      "y": 520,
+      "w": 336,
+      "h": 500,
+      "pivotX": 168,
+      "pivotY": 500
+    },
+    "stand_kick_heavy_02": {
+      "page": 0,
+      "x": 2195,
+      "y": 520,
+      "w": 351,
+      "h": 499,
+      "pivotX": 168,
+      "pivotY": 498
+    },
+    "stand_kick_heavy_03": {
+      "page": 0,
+      "x": 2554,
+      "y": 520,
+      "w": 274,
+      "h": 499,
+      "pivotX": 204,
+      "pivotY": 499
+    },
+    "stand_kick_heavy_04": {
+      "page": 0,
+      "x": 844,
+      "y": 1030,
+      "w": 476,
+      "h": 495,
+      "pivotX": 247,
+      "pivotY": 495
+    },
+    "stand_kick_heavy_05": {
+      "page": 0,
+      "x": 1626,
+      "y": 2033,
+      "w": 544,
+      "h": 472,
+      "pivotX": 226,
+      "pivotY": 471
+    },
+    "stand_kick_heavy_06": {
+      "page": 0,
+      "x": 1369,
+      "y": 2033,
+      "w": 249,
+      "h": 473,
+      "pivotX": 188,
+      "pivotY": 472
+    },
+    "stand_kick_heavy_07": {
+      "page": 0,
+      "x": 652,
+      "y": 2033,
+      "w": 400,
+      "h": 475,
+      "pivotX": 172,
+      "pivotY": 474
+    },
+    "stand_kick_heavy_08": {
+      "page": 0,
+      "x": 4,
+      "y": 2033,
+      "w": 324,
+      "h": 482,
+      "pivotX": 168,
+      "pivotY": 481
+    },
+    "stand_kick_light_01": {
+      "page": 0,
+      "x": 1749,
+      "y": 1030,
+      "w": 373,
+      "h": 494,
+      "pivotX": 186,
+      "pivotY": 493
+    },
+    "stand_kick_light_02": {
+      "page": 0,
+      "x": 2836,
+      "y": 520,
+      "w": 285,
+      "h": 498,
+      "pivotX": 212,
+      "pivotY": 495
+    },
+    "stand_kick_light_03": {
+      "page": 0,
+      "x": 1328,
+      "y": 1030,
+      "w": 413,
+      "h": 495,
+      "pivotX": 205,
+      "pivotY": 493
+    },
+    "stand_kick_light_04": {
+      "page": 0,
+      "x": 2989,
+      "y": 1030,
+      "w": 478,
+      "h": 492,
+      "pivotX": 226,
+      "pivotY": 491
+    },
+    "stand_kick_light_05": {
+      "page": 0,
+      "x": 3475,
+      "y": 1030,
+      "w": 252,
+      "h": 492,
+      "pivotX": 199,
+      "pivotY": 491
+    },
+    "stand_kick_light_06": {
+      "page": 0,
+      "x": 765,
+      "y": 1534,
+      "w": 350,
+      "h": 489,
+      "pivotX": 187,
+      "pivotY": 488
+    },
+    "stand_punch_light_01": {
+      "page": 0,
+      "x": 721,
+      "y": 4,
+      "w": 388,
+      "h": 506,
+      "pivotX": 193,
+      "pivotY": 506
+    },
+    "stand_punch_light_02": {
+      "page": 0,
+      "x": 423,
+      "y": 520,
+      "w": 419,
+      "h": 502,
+      "pivotX": 194,
+      "pivotY": 502
+    },
+    "stand_punch_light_03": {
+      "page": 0,
+      "x": 1782,
+      "y": 4,
+      "w": 463,
+      "h": 504,
+      "pivotX": 195,
+      "pivotY": 504
+    },
+    "stand_punch_light_04": {
+      "page": 0,
+      "x": 3531,
+      "y": 520,
+      "w": 505,
+      "h": 496,
+      "pivotX": 194,
+      "pivotY": 495
+    },
+    "stand_punch_light_05": {
+      "page": 0,
+      "x": 4,
+      "y": 1030,
+      "w": 429,
+      "h": 496,
+      "pivotX": 194,
+      "pivotY": 495
+    },
+    "stand_punch_light_06": {
+      "page": 0,
+      "x": 441,
+      "y": 1030,
+      "w": 395,
+      "h": 496,
+      "pivotX": 193,
+      "pivotY": 495
+    },
+    "walk_forward_01": {
+      "page": 0,
+      "x": 2130,
+      "y": 1030,
+      "w": 398,
+      "h": 493,
+      "pivotX": 200,
+      "pivotY": 491
+    },
+    "walk_forward_02": {
+      "page": 0,
+      "x": 3735,
+      "y": 1030,
+      "w": 307,
+      "h": 492,
+      "pivotX": 163,
+      "pivotY": 491
+    },
+    "walk_forward_03": {
+      "page": 0,
+      "x": 4,
+      "y": 1534,
+      "w": 295,
+      "h": 491,
+      "pivotX": 169,
+      "pivotY": 489
+    },
+    "walk_forward_04": {
+      "page": 0,
+      "x": 1123,
+      "y": 1534,
+      "w": 295,
+      "h": 489,
+      "pivotX": 176,
+      "pivotY": 487
+    },
+    "walk_forward_05": {
+      "page": 0,
+      "x": 2801,
+      "y": 1534,
+      "w": 395,
+      "h": 486,
+      "pivotX": 189,
+      "pivotY": 485
+    },
+    "walk_forward_06": {
+      "page": 0,
+      "x": 336,
+      "y": 2033,
+      "w": 308,
+      "h": 480,
+      "pivotX": 167,
+      "pivotY": 479
+    },
+    "walk_forward_07": {
+      "page": 0,
+      "x": 1426,
+      "y": 1534,
+      "w": 283,
+      "h": 488,
+      "pivotX": 158,
+      "pivotY": 487
+    },
+    "walk_forward_08": {
+      "page": 0,
+      "x": 3204,
+      "y": 1534,
+      "w": 304,
+      "h": 486,
+      "pivotX": 174,
+      "pivotY": 485
+    }
+  }
+}

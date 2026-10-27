@@ -1,0 +1,14 @@
+{
+    "name": "Patate.Tests.EditMode",
+    "rootNamespace": "Patate.Tests",
+    "references": ["Patate.Combat", "Patate.Content", "Patate.Application", "Patate.Unity", "UnityEngine.TestRunner", "UnityEditor.TestRunner"],
+    "includePlatforms": ["Editor"],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": ["nunit.framework.dll", "Newtonsoft.Json.dll"],
+    "autoReferenced": false,
+    "defineConstraints": ["UNITY_INCLUDE_TESTS"],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,23 @@
+# Outillage Node (export des sprites)
+node_modules/
+.DS_Store
+*.log
+
+# Projet Unity (game/) — comme Action Legends
+game/[Ll]ibrary/
+game/[Tt]emp/
+game/[Oo]bj/
+game/[Bb]uild/
+game/[Bb]uilds/
+game/[Ll]ogs/
+game/UserSettings/
+game/.vs/
+game/*.csproj
+game/*.sln
+game/*.slnx
+game/*.user
+game/WebBuild/
+game/WebBuild-*/
+*.ulf
+.env
+.env.*

@@ -1,0 +1,14 @@
+{
+    "name": "Patate.Content",
+    "rootNamespace": "Patate.Content",
+    "references": ["Patate.Combat"],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": ["Newtonsoft.Json.dll"],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": true
+}

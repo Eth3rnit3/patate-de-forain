@@ -1,0 +1,17 @@
+{
+  "name": "patate-de-forain",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Patate de Forain — outillage hors moteur (export des planches de sprites vers le jeu Unity)",
+  "scripts": {
+    "assets:export": "tsx tools/export-character/cli.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "sharp": "0.35.5",
+    "tsx": "4.23.15",
+    "typescript": "5.9.3"
+  }
+}

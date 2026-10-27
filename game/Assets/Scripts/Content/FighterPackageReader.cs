@@ -334,7 +334,12 @@ namespace Patate.Content
         static string ReadFile(JsonNode node, string key, string extension)
         {
             var path = node.String(key, FilePattern, "chemin relatif dans le paquet, sans « .. »");
-            if (path != null && !path.EndsWith(extension)) node.Fail(key, $"fichier {extension} attendu");
+            if (path == null || !FilePattern.IsMatch(path)) return null; // jamais lu s'il est refusé
+            if (!path.EndsWith(extension))
+            {
+                node.Fail(key, $"fichier {extension} attendu");
+                return null;
+            }
             return path;
         }
 

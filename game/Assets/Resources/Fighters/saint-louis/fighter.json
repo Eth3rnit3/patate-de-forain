@@ -1,0 +1,9 @@
+{
+  "format": "patate-fighter",
+  "formatVersion": 1,
+  "id": "saint-louis",
+  "name": "Saint Louis",
+  "version": "0.1.0",
+  "description": "Louis IX réinterprété en combattant arcade : à mains nues, épée au fourreau. Pack HD de validation v0.1.",
+  "credits": ["Direction artistique et illustrations : équipe Patate de Forain"]
+}

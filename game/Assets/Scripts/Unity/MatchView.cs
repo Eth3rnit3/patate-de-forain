@@ -18,6 +18,8 @@ namespace Patate.UnityAdapters
         const float VisibleHeight = 1080f;
         /// <summary>Distance entre le sol et le bas de l'écran.</summary>
         const float GroundMargin = 130f;
+        /// <summary>La caméra peut dépasser l'arène : un combattant coincé contre le bord reste entier à l'écran.</summary>
+        const float CameraOverscan = 240f;
 
         readonly Transform root;
         readonly Camera camera;
@@ -141,8 +143,8 @@ namespace Patate.UnityAdapters
         {
             float halfWidth = camera.orthographicSize * camera.aspect / Scale;
             float middle = (state.Fighters[0].X + state.Fighters[1].X) / 2f;
-            float min = rules.ArenaLeft + halfWidth;
-            float max = rules.ArenaRight - halfWidth;
+            float min = rules.ArenaLeft - CameraOverscan + halfWidth;
+            float max = rules.ArenaRight + CameraOverscan - halfWidth;
             float x = min > max ? (rules.ArenaLeft + rules.ArenaRight) / 2f : Mathf.Clamp(middle, min, max);
             float y = VisibleHeight / 2f - GroundMargin;
             var offset = shakeTicks > 0 ? Random.insideUnitCircle * shake : Vector2.zero; // aléa visuel uniquement

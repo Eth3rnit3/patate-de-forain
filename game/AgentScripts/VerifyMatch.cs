@@ -17,8 +17,8 @@ public static class VerifyMatch
         if (t >= 90 && t < 130) return Buttons.Right;   // s'approche
         if (t == 130) return Buttons.HeavyKick;          // pied puissant
         if (t == 200) return Buttons.Special;            // fleur de lys
-        if (t >= 300 && t < 330) return Buttons.Right;
-        if (t >= 330) return (t % 36) switch { 0 => Buttons.LightPunch, 12 => Buttons.LightKick, 24 => Buttons.HeavyKick, _ => Buttons.None };
+        // Ensuite : avance puis enchaîne poing, pied rapide, pied puissant, en boucle.
+        if (t >= 300) return ((t - 300) % 64) switch { < 24 => Buttons.Right, 24 => Buttons.LightPunch, 40 => Buttons.LightKick, 52 => Buttons.HeavyKick, _ => Buttons.None };
         return Buttons.None;
     }
 
@@ -60,6 +60,9 @@ public static class VerifyMatch
 
     static string Describe(GameBootstrap game)
     {
+        // La vue Game n'est redessinée que si l'éditeur avance : on la force pour que la capture soit à jour.
+        UnityEditor.EditorApplication.QueuePlayerLoopUpdate();
+        UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
         var s = game.Session.State;
         string F(FighterState f) => $"J{f.Slot + 1} x={f.X} PV={f.Health} {f.Action.Kind} {f.Action.MoveId} t{f.Action.Tick} gel={f.Hitstop}";
         return $"tick {s.Tick} manche {s.Round.Phase} | {F(s.Fighters[0])} | {F(s.Fighters[1])} | projectiles {s.Projectiles.Count} | #{StateCodec.Checksum(s)}";

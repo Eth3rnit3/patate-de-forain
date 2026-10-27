@@ -48,7 +48,7 @@ namespace Patate.UnityAdapters
 
         void DrawHealth(int slot, FighterState fighter, FighterVisuals visuals, float width)
         {
-            const float barWidth = 700, barHeight = 36, top = 40, portrait = 110;
+            const float barWidth = 620, barHeight = 36, top = 40, portrait = 110;
             float max = Mathf.Max(1, visuals.Package.Gameplay.Stats.Health);
             float ratio = Mathf.Clamp01(fighter.Health / max);
             float x = slot == 0 ? 40 + portrait + 10 : width - 40 - portrait - 10 - barWidth;
@@ -110,12 +110,13 @@ namespace Patate.UnityAdapters
                 var definition = context.Of(fighter);
                 Outline(Hitboxes.Pushbox(fighter, definition), view, new Color(1f, 0.9f, 0.2f), 1);
                 foreach (var box in Hitboxes.Hurtboxes(fighter, definition)) Outline(box, view, new Color(0.3f, 0.7f, 1f), 2);
-                foreach (var box in Hitboxes.Active(fighter, definition)) Outline(box, view, new Color(1f, 0.15f, 0.2f), 3);
+                var active = Hitboxes.Active(fighter, definition);
+                foreach (var box in active) Outline(box, view, new Color(1f, 0.15f, 0.2f), 3);
+                // Coup qui a déjà touché : la hitbox existe encore mais ne peut plus toucher.
+                if (active.Count == 0) foreach (var box in Hitboxes.Declared(fighter, definition)) Outline(box, view, new Color(0.6f, 0.35f, 0.4f), 1);
                 var pivot = view.ToGui(fighter.X, fighter.Y);
                 Fill(new Rect(pivot.x - 10, pivot.y - 1, 20, 3), Color.white);
                 Fill(new Rect(pivot.x - 1, pivot.y - 10, 3, 20), Color.white);
-                var head = view.ToGui(fighter.X, fighter.Y + 560);
-                GUI.Label(new Rect(head.x - 160, head.y - 60, 320, 60), Describe(fighter, definition), new GUIStyle(mono) { alignment = TextAnchor.LowerCenter });
             }
             foreach (var projectile in state.Projectiles)
                 if (Hitboxes.Projectile(projectile, context.Fighters[projectile.Owner], out var box)) Outline(box, view, new Color(1f, 0.55f, 0.1f), 3);
@@ -124,13 +125,17 @@ namespace Patate.UnityAdapters
             {
                 $"tick {state.Tick}   manche {state.Round.Phase} ({state.Round.PhaseTick})   état #{checksum}",
                 $"J1 {context.Fighters[0].Ref}   J2 {context.Fighters[1].Ref}   règles {context.Rules.Id} v{context.Rules.Version}",
+                $"J1 {Describe(state.Fighters[0], context.Fighters[0])}",
+                $"J2 {Describe(state.Fighters[1], context.Fighters[1])}",
                 $"projectiles : {state.Projectiles.Count}   FPS affichage : {1f / Mathf.Max(0.0001f, Time.smoothDeltaTime):0}",
-                "<color=#ffe633>pushbox</color>  <color=#4db3ff>hurtbox</color>  <color=#ff2633>hitbox</color>  <color=#ff8c1a>projectile</color>",
+                "<color=#ffe633>pushbox</color>  <color=#4db3ff>hurtbox</color>  <color=#ff2633>hitbox</color>  <color=#996070>hitbox consommée</color>  <color=#ff8c1a>projectile</color>",
             };
             var missing = missingSounds.ToList();
             if (missing.Count > 0) lines.Add($"sons non livrés : {string.Join(", ", missing.OrderBy(s => s).Take(8))}{(missing.Count > 8 ? "…" : "")}");
-            Fill(new Rect(10, Screen.height - 30 - 22 * lines.Count, 1100, 22 * lines.Count + 20), new Color(0, 0, 0, 0.65f));
-            GUI.Label(new Rect(20, Screen.height - 20 - 22 * lines.Count, 1100, 22 * lines.Count), string.Join("\n", lines), new GUIStyle(mono) { richText = true });
+            // En haut, sous les barres de vie : le sol et les pieds restent visibles.
+            float top = Screen.height * 0.16f;
+            Fill(new Rect(10, top, 760, 18 * lines.Count + 12), new Color(0, 0, 0, 0.6f));
+            GUI.Label(new Rect(18, top + 6, 760, 18 * lines.Count), string.Join("\n", lines), new GUIStyle(mono) { fontSize = 14, richText = true });
         }
 
         static string Describe(FighterState fighter, CompiledFighter definition)
@@ -143,7 +148,7 @@ namespace Patate.UnityAdapters
                 ActionKind.Walk => a.Forward ? "Walk avant" : "Walk arrière",
                 _ => a.Kind.ToString(),
             };
-            return $"{detail}{(fighter.Hitstop > 0 ? $"  gel {fighter.Hitstop}" : "")}\nPV {fighter.Health}  x {fighter.X}  entrées {(int)fighter.CurrentInput:X3}";
+            return $"{detail}{(fighter.Hitstop > 0 ? $"  gel {fighter.Hitstop}" : "")}   PV {fighter.Health}   x {fighter.X}   entrées {(int)fighter.CurrentInput:X3}";
         }
 
         static void Outline(WorldBox box, MatchView view, Color color, float thickness)

@@ -53,6 +53,16 @@ namespace Patate.Combat
             return result;
         }
 
+        /// <summary>Hitboxes du segment actif, même déjà consommées (affichage de débogage).</summary>
+        public static List<WorldBox> Declared(FighterState fighter, CompiledFighter definition)
+        {
+            var result = new List<WorldBox>();
+            var segment = CurrentSegment(fighter, definition);
+            if (segment == null || segment.Definition.Phase != Phase.Active) return result;
+            foreach (var box in segment.Definition.Hitboxes) result.Add(Geometry.ToWorld(box, fighter.X, fighter.Y, fighter.Facing));
+            return result;
+        }
+
         public static bool Projectile(ProjectileState projectile, CompiledFighter owner, out WorldBox box)
         {
             var definition = owner.Projectile(projectile.ProjectileId);

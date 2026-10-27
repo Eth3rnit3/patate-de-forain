@@ -1,7 +1,7 @@
 {
     "name": "Patate.Tests.EditMode",
     "rootNamespace": "Patate.Tests",
-    "references": ["Patate.Combat", "Patate.Content", "Patate.Application", "Patate.Unity", "UnityEngine.TestRunner", "UnityEditor.TestRunner"],
+    "references": ["Patate.Combat", "Patate.Content", "Patate.Application", "Patate.Unity", "Unity.InputSystem", "UnityEngine.TestRunner", "UnityEditor.TestRunner"],
     "includePlatforms": ["Editor"],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

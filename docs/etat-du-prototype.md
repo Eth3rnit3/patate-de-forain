@@ -1,0 +1,105 @@
+# État du prototype — 28 octobre 2026
+
+## Ce qui fonctionne en jeu
+
+Combat miroir Saint Louis contre Saint Louis, à deux joueurs sur un clavier, dans Unity 6000.4.7f1 (scène `Assets/Scenes/Combat.unity`).
+
+- **Déplacements** : marche avant et arrière, orientation automatique vers l'adversaire, collision corporelle (pousser l'adversaire en avançant), limites de l'arène, écart maximal entre combattants.
+- **Coups** :
+  - poing ;
+  - pied rapide ;
+  - pied puissant ;
+  - Poing de Saint Louis : touche dédiée ou quart de cercle avant + poing. Il projette une fleur de lys émise au poing à l'entrée de la 5ᵉ pose, à raison d'un seul projectile à la fois, qui produit un impact doré au contact.
+- **Réactions** :
+  - dégâts, étourdissement, gel d'impact, recul (reporté sur l'attaquant si la cible est coincée), puis retour en garde ;
+  - garde en tenant arrière, avec garde sur place face à une attaque ou un projectile proche ;
+  - deux projectiles adverses s'annulent ; deux coups simultanés s'échangent.
+- **Manche** : introduction, chronomètre de 99 secondes, KO ou temps écoulé, annonce du vainqueur, nouvelle manche avec **F5** ou **Entrée**.
+- **Interface** : barres de vie, portraits, chronomètre, messages, aide des commandes (**F2**), changement de combattant (**F3**/**F4**), pause (**Échap**).
+- **Débogage (F1)** :
+  - boîtes de la simulation : pushbox, hurtboxes, hitboxes actives et consommées, projectiles ;
+  - pivot, état, tick et gel de chaque combattant ;
+  - entrées, empreinte de l'état, références exactes des définitions ;
+  - signaux sonores non livrés.
+
+## Ce qui a été vérifié, et comment
+
+- **69 tests EditMode, tous verts** : 69/69 au dernier lancement dans l'éditeur ouvert, via la CLI `unity`. Ils couvrent :
+  - **chronologie** : les phases tombent aux ticks exacts, l'appui sur un bouton déclenche le coup mais pas son maintien, quart de cercle selon l'orientation ;
+  - **dégâts** : un seul impact par coup, étourdissement plus gel, recul exact, échange de coups simultanés ;
+  - **garde** : tenir arrière, garde de proximité, pas de garde en pleine attaque, attaque non blocable ;
+  - **collisions** : jamais de chevauchement, poussée, limites, coin ;
+  - **projectiles** : émission unique (y compris avec un gel forcé au tick d'émission), une instance par lanceur, comptée par lanceur en miroir, contact, garde, annulation, expiration ;
+  - **déterminisme** : mêmes entrées, même empreinte ; sauvegarde, restauration puis reprise identiques à l'octet près ; l'état d'entrée n'est jamais modifié ;
+  - **indépendance des deux combattants** ;
+  - **manche** : KO, temps écoulé, entrées ignorées pendant l'introduction et après le KO ;
+  - **validation des paquets** : le vrai paquet de Saint Louis est accepté ; 15 paquets volontairement cassés sont refusés, chacun avec un message localisé ;
+  - **présentation** : la pose de frappe est affichée pendant les ticks actifs, le projectile apparaît à la 5ᵉ pose, les réactions sont étirées sur leur durée ;
+  - **politiques de statistiques** : modes libre et équilibré ;
+  - **session** : combat miroir réel joué jusqu'au KO sans rendu, replay par le journal d'entrées, nouvelle manche, horloge à pas fixe à 144 Hz ;
+  - **clavier** : correspondances des deux joueurs, vérifiées sur un clavier virtuel.
+- **Les tests détectent bien les régressions** : en cassant volontairement « un seul impact par coup » et la garde, 12 tests échouent.
+- **Le domaine ne dépend pas d'Unity** : `noEngineReferences` sur Combat, Content et Application.
+- **En jeu, mode Play** : un scénario scripté (`AgentScripts/VerifyMatch.cs`) a été joué jusqu'au bout, avec des captures d'écran contrôlées à chaque étape :
+  - pied puissant qui touche au tick 146 (110 dégâts, gel de 12 ticks) ;
+  - fleur de lys émise puis bloquée au tick 225 (0 dégât, impact affiché) ;
+  - KO au tick 1136 et fin de manche au tick 1286.
+- **Export** : 56 poses découpées, 1 page d'atlas. L'export a été relu sur ses aperçus (fond clair et sombre, superpositions) ; les sources sont intactes.
+
+**Pas vérifié par moi** : une vraie partie au clavier, à deux humains, avec la sensation de jeu. C'est le prochain essai à faire. Il n'y a pas non plus eu d'export WebGL ni d'export autonome.
+
+## Hypothèses à régler en jouant
+
+- **Timings** :
+  - pied rapide, pied puissant et spécial : ceux de `moveset-prototype-v01.md` ;
+  - poing : aucune donnée documentée, j'ai pris 2-3-2-3-4-6 ticks, actif sur les poses 3 et 4.
+- **Valeurs provisoires** : dégâts, étourdissement, gel, recul, vitesses de marche (8 et 6), vitesse du projectile (12 par tick), boîtes de collision. Les boîtes sont mesurées sur les poses exportées, mais restent grossières (trois hurtboxes par pose).
+- **Taille à l'écran** : garde à 500 unités, écran visible de 1080 unités de haut (le standard évoquait environ 600 px, à confirmer).
+
+## Limites actuelles
+
+- **Une seule manche** : pas de match en deux manches gagnantes ni de sélection des combattants par écran (**F3**/**F4** font défiler le catalogue).
+- **Pas d'animation dédiée** :
+  - recul : marche avant lue à l'envers ;
+  - KO : 2ᵉ pose de réaction tenue ;
+  - garde de proximité : 1ʳᵉ pose de blocage tenue.
+- **Absents** : saut, accroupissement, garde basse, coups bas, chopes, annulations, étourdissement cumulé (dizzy), compteur de combo.
+- **Un seul recul** : pas de recul « K.O. » ni de chute.
+- **Alignement de l'export** : il cale le pied arrière (ou le buste pour la marche) mais ne conserve pas les déplacements dessinés dans les planches. Les échelles par planche gardent quelques pour cent d'écart.
+- **Animations de garde et de marche jouées telles quelles** : six poses de garde quasi identiques, cycle de marche non retravaillé (voir les contrôles de l'équipe artistique).
+- **Aucun son** : les signaux sont branchés, mais sans fichier.
+- **Clavier** : un seul échantillon par image d'affichage, donc un appui plus court qu'une image peut être manqué. Certains claviers ne détectent pas toutes les combinaisons de touches simultanées (ghosting). Pas de manette.
+- **Pause** : le jeu se met en pause quand la fenêtre perd le focus.
+- **Pas encore faits** : jeu en ligne, rollback, import de paquets et signature (voir l'[architecture](architecture.md)).
+
+## Besoins artistiques à nous transmettre
+
+Classés par effet sur le jeu.
+
+1. **Saint Louis** :
+   - KO (chute au sol, 4 à 6 poses) ;
+   - pose de victoire ;
+   - marche arrière (8 poses) ;
+   - impact de blocage ;
+   - étincelle d'impact pour les coups au corps (aujourd'hui seul le projectile a un effet).
+2. **Stabilisation** de la boucle de garde et du cycle de marche : appuis fixes, détails constants (fleurs de lys, couronne, épée).
+3. **Décor**. Le moteur affiche déjà des calques avec parallaxe (`Resources/Stages/<id>/`). Repères :
+   - 1 unité = 1 px ;
+   - zone visible de 1920 × 1080 ;
+   - sol à 130 px du bas ;
+   - arène de 2400 px plus 240 px de débord de chaque côté, soit un plan du sol d'**au moins 2880 px de large**, plus pour les plans éloignés ;
+   - PNG, plusieurs calques si possible : fond, plan moyen, sol.
+4. **Sons**. Signaux attendus :
+   - début de manche ;
+   - lancement de coup ;
+   - impact léger et lourd ;
+   - blocage ;
+   - émission et impact du projectile ;
+   - KO ;
+   - temps écoulé ;
+   - musique du décor.
+
+   OGG ou WAV. Un son propre à un coup se déclare par exemple sous `moveStart:stand_kick_heavy`.
+5. **Interface** : police, cadres des barres de vie, chronomètre, écran de sélection.
+6. **Pour aller vers six boutons** : poing moyen et fort, pied moyen, puis les coups accroupis et sautés si on les ajoute.
+7. **Deuxième combattant** : suivre [Ajouter un combattant](ajouter-un-combattant.md). Les règles de découpage de l'outil (section 1) évitent les retouches manuelles.

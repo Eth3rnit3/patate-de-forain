@@ -1,0 +1,14 @@
+{
+  "//": "Signaux sonores communs du moteur → fichier (sans extension) sous Resources/Audio. null = son pas encore livré. Un combattant peut surcharger un signal dans presentation.json › sounds (ex. \"moveStart:stand_kick_heavy\").",
+  "cues": {
+    "roundStart": null,
+    "moveStart": null,
+    "hit": null,
+    "hitHeavy": null,
+    "block": null,
+    "projectileSpawn": null,
+    "projectileImpact": null,
+    "ko": null,
+    "timeOver": null
+  }
+}

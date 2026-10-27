@@ -15,6 +15,19 @@ namespace Patate.Application
         Buttons InputFor(int tick);
     }
 
+    /// <summary>Entrées calculées par tick : replays, démonstrations, scripts de vérification.</summary>
+    public sealed class ScriptedInput : IInputProvider
+    {
+        readonly Func<int, Buttons> script;
+
+        public ScriptedInput(Func<int, Buttons> script)
+        {
+            this.script = script;
+        }
+
+        public Buttons InputFor(int tick) => script(tick);
+    }
+
     /// <summary>
     /// Cas d'usage d'un combat : lancer avec deux combattants choisis, avancer
     /// la simulation d'un tick, recommencer. Conserve le journal des entrées,

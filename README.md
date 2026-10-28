@@ -54,6 +54,25 @@ Les touches sont des **positions physiques** (Input System). Les noms ci-dessous
 | **F5**, ou **Entrée** en fin de manche | Nouvelle manche |
 | **Échap** | Pause |
 
+### Manette
+
+Manettes Xbox, PlayStation ou toute manette reconnue comme manette standard, y compris dans le navigateur. **En WebGL, appuyer d'abord sur un bouton de la manette** : le navigateur ne la signale au jeu qu'à ce moment. Disposition arcade, rangée du haut pour le poing et le spécial, rangée du bas pour les pieds :
+
+| Action | Bouton (Xbox / PlayStation) |
+|---|---|
+| Déplacements, bas | stick gauche ou croix |
+| Garder | tenir la direction opposée à l'adversaire |
+| Poing | **X** / **Carré** |
+| Pied rapide | **A** / **Croix** |
+| Pied puissant | **B** / **Rond** |
+| Spécial | **Y** / **Triangle**, ou bas, bas-avant, avant + poing |
+
+Les touches de service (F1 à F5, Échap, Entrée) restent au clavier. Une manette débranchée en plein combat ne commande plus rien ; rebranchée, elle reprend.
+
+### Contre l'ordinateur
+
+En mode solo, l'adversaire est joué par l'ordinateur, en trois niveaux (facile, normal, difficile) qui changent son temps de réaction, sa garde et son agressivité. Le choix se fera dans l'écran de sélection (en cours) ; d'ici là, voir `MatchSetup.Players` (`PlayerSource.Cpu(0 | 1 | 2)`).
+
 À deux sur un même clavier, certaines combinaisons de nombreuses touches simultanées peuvent ne pas être détectées (limite matérielle du clavier). Le pavé numérique du joueur 2 aide à l'éviter quand il existe.
 
 ## Vérifier

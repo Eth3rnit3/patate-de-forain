@@ -11,6 +11,27 @@ Jeu de combat 2D aux sensations arcade, avec nos propres personnages et notre di
 2. Ouvrir la scène `Assets/Scenes/Combat.unity`.
 3. **Play**. La fenêtre Game doit avoir le focus clavier ; le jeu se met en pause quand elle le perd.
 
+## Version navigateur (WebGL)
+
+Le module *WebGL Build Support* de Unity 6000.4.7f1 doit être installé (Unity Hub › Installs › Add modules).
+
+- **Dans l'éditeur** : *File › Build Profiles* › **Web** › *Switch Platform*, puis menu *Patate de Forain › Construire la version navigateur*.
+- **En ligne de commande**, sans ouvrir l'éditeur sur ce projet (Unity lancé en mode batch), depuis `game/` :
+
+```bash
+unity build --target WebGL --execute-method Patate.EditorTools.WebBuilder.Build .
+```
+
+La version est écrite dans `game/WebBuild/` (ignoré par git ; la variable `PATATE_WEB_DIR` change ce dossier). Fichiers compressés en Gzip avec décompression de repli et sans threads : n'importe quel hébergeur statique convient, GitHub Pages compris (`.nojekyll` et `build-info.json` sont ajoutés). Pour l'essayer en local, depuis la racine du dépôt :
+
+```bash
+python3 -m http.server 8765 --directory game/WebBuild
+```
+
+puis ouvrir <http://localhost:8765> et **cliquer dans le jeu** pour lui donner le clavier. Ouvrir `index.html` directement depuis le disque ne fonctionne pas.
+
+Poids téléchargé : environ **13 Mo** (code 7,6 Mo, données 5 Mo, dont l'atlas de Saint Louis : 4048 × 2680 en BC7, 10,3 Mo avant Gzip).
+
 ## Commandes
 
 Les touches sont des **positions physiques** (Input System). Les noms ci-dessous sont ceux d'un clavier **AZERTY** ; l'aide en jeu (**F2**) affiche les noms de votre disposition réelle.

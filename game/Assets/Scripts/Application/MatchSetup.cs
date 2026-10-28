@@ -41,7 +41,7 @@ namespace Patate.Application
     {
         public MatchMode Mode = MatchMode.Versus;
         public string[] Fighters = { "saint-louis", "saint-louis" };
-        public string Stage = "training";
+        public string Stage = "fete-foraine";
         public PlayerSource[] Players = { PlayerSource.Keyboard(0), PlayerSource.Keyboard(1) };
 
         /// <summary>Combat miroir à deux sur un clavier : le prototype d'origine.</summary>

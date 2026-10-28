@@ -58,7 +58,7 @@ namespace Patate.UnityAdapters
             session = MatchSession.Start(flow.Catalog, setup.Fighters[0], setup.Fighters[1], MatchRules.Default(), StatPolicy.Free());
             view = new MatchView(flow.Camera, session.Context.Rules, Visuals(0), Visuals(1), stageView);
             audioCues = new AudioCues(flow.Host, Visuals(0), Visuals(1), stageView.Music);
-            hud = new Hud();
+            hud = new Hud(setup.Players);
             clock = new FixedStepClock(session.Context.Rules.TicksPerSecond);
             showDebug = PlayerPrefs.GetInt(DebugPreference, 0) == 1;
             Debug.Log($"Combat : {session.Context.Fighters[0].Ref} contre {session.Context.Fighters[1].Ref}");
@@ -127,7 +127,7 @@ namespace Patate.UnityAdapters
             if (keyboard.f4Key.wasPressedThisFrame) ChangeFighter(1);
             if (keyboard.f5Key.wasPressedThisFrame) Restart();
             bool over = session.State.Round.Phase == RoundPhase.Over;
-            if (over && automated == null && (keyboard.enterKey.wasPressedThisFrame || keyboard.numpadEnterKey.wasPressedThisFrame))
+            if (over && automated == null && (keyboard.enterKey.wasPressedThisFrame || keyboard.numpadEnterKey.wasPressedThisFrame || Gamepad.all.Any(pad => pad.startButton.wasPressedThisFrame)))
             {
                 flow.Go(flow.Result(session.State));
                 return true;

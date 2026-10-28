@@ -62,7 +62,7 @@ Les effets visuels (impacts, tremblement de caméra) et les sons réagissent aux
 | Sons | `Resources/Audio/sound-bank.json` (signaux communs) ou `presentation.json › sounds` (signaux propres à un combattant, ex. `moveStart:stand_kick_heavy`) |
 | Décors | `Resources/Stages/<id>/stage.json` : couleurs, calques d'image avec parallaxe, musique |
 | Autre source d'entrées (manette, IA, réseau) | Implémenter `IInputProvider` (`ILocalInput` si elle est lue sur cette machine) et la créer dans `InputSources` à partir d'un `PlayerSource` |
-| Nouvel écran ou mode (menu, salon en ligne…) | Implémenter `IGameScreen` et ajouter sa fabrique à `GameFlow`. Les menus remplissent `GameFlow.Setup` (`MatchSetup` : mode, combattants, décor, source des commandes de chaque joueur), que `FightScreen` consomme |
+| Nouvel écran ou mode (menu, salon en ligne…) | Implémenter `IGameScreen` et ajouter sa fabrique à `GameFlow`. Les menus remplissent `GameFlow.Setup` (`MatchSetup` : mode, combattants, décor, source des commandes de chaque joueur), que `FightScreen` consomme. Pour rester dans le style : `Ui` (repère de 1080 de haut, fond, logo, enseignes, textes détourés, mots peints) et `MenuInput` (commandes des menus au clavier et à la manette) |
 | Mode de jeu à statistiques encadrées | `StatPolicy` (voir plus bas) |
 
 Le code ne contient aucune condition sur l'identité d'un personnage. Un test de validation s'assure que les règles fonctionnent avec un combattant fictif (`SyntheticFighter`) qui n'a rien de Saint Louis.

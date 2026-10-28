@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Patate de Forain : un jeu de combat 2D arcade à la fête foraine, à deux sur un clavier ou à la manette, jouable directement dans le navigateur.">
+  <title>{{{ PRODUCT_NAME }}}</title>
+  <link rel="icon" href="logo.png">
+  <style>
+    :root{color-scheme:dark;--cream:#fbf0d6;--muted:#b7bfd9;--yellow:#ffd82b;--orange:#ff8a1c;--red:#e82a1e;--navy:#0b163a}
+    *{box-sizing:border-box}[hidden]{display:none!important}
+    html,body{height:100%}
+    body{margin:0;background:linear-gradient(#070b1fcc,#070b1ff2),url(background.jpg) center/cover no-repeat,#070b1f;color:var(--cream);font:15px/1.5 system-ui,sans-serif;overflow:hidden}
+    /* La page tient en un écran : une barre fine, puis le jeu en 16:9 ajusté à la place qui reste. */
+    main{height:100vh;height:100dvh;display:flex;flex-direction:column}
+    header{flex:none;display:flex;align-items:center;gap:18px;padding:6px 16px;background:#0b163acc;border-bottom:3px solid var(--red);box-shadow:0 3px 0 var(--yellow)}
+    header img{height:38px;width:auto}
+    .commands{flex:1;min-width:0;color:var(--muted);font-size:12px;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .commands strong{color:var(--yellow)}
+    #stage{flex:1;min-height:0;display:flex;align-items:center;justify-content:center;container-type:size;padding:10px}
+    #screen{position:relative;aspect-ratio:16/9;width:min(100cqw,100cqh*16/9);overflow:hidden;background:#070b1f;border:3px solid var(--navy);box-shadow:0 0 0 3px var(--yellow),0 12px 40px #000a}
+    canvas{width:100%;height:100%;display:block;outline:none}
+    #cover{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:3%;background:linear-gradient(#070b1f55,#070b1fcc),url(background.jpg) center/cover no-repeat;text-align:center;padding:24px}
+    #cover img{width:min(760px,70%);max-height:52%;object-fit:contain;filter:drop-shadow(0 8px 18px #000c);animation:bob 2.4s ease-in-out infinite}
+    @keyframes bob{50%{transform:translateY(-8px) rotate(-1deg)}}
+    #loading{width:min(520px,70%);height:22px;padding:4px;background:var(--navy);border:3px solid var(--yellow);border-radius:14px;box-shadow:0 4px 0 #0008}
+    #fill{height:100%;width:0;border-radius:8px;background:linear-gradient(var(--yellow),var(--orange));transition:width .15s linear}
+    #status{margin:0;font-weight:800;letter-spacing:.06em;color:var(--cream);text-shadow:2px 2px 0 var(--navy),-2px -2px 0 var(--navy),2px -2px 0 var(--navy),-2px 2px 0 var(--navy)}
+    #status[role=alert]{color:#ffb39e;white-space:pre-wrap;font-weight:600}
+    button{flex:none;background:var(--red);color:var(--cream);border:0;border-radius:6px;padding:7px 14px;font:800 12px system-ui;letter-spacing:.05em;cursor:pointer;box-shadow:0 3px 0 #7a140e}
+    button:hover{background:#ff4a2e}button:focus-visible{outline:3px solid var(--yellow);outline-offset:3px}
+    @media(max-width:900px){.commands{display:none}header{justify-content:space-between}}
+    @media(max-height:520px){header img{height:26px}#stage{padding:4px}}
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <img src="logo.png" alt="Patate de Forain">
+    <div class="commands"><strong>Menus</strong> flèches ou ZQSD, Entrée ou Espace valider, Échap retour &nbsp;·&nbsp; <strong>J1</strong> Q D S bouger, F G H coups, R spécial &nbsp;·&nbsp; <strong>J2</strong> ← → ↓ bouger, K L M coups, O spécial &nbsp;·&nbsp; <strong>F2</strong> aide &nbsp;·&nbsp; <strong>Échap</strong> pause &nbsp;·&nbsp; Manette : <strong>A</strong> pour rejoindre</div>
+    <button id="fullscreen" type="button">PLEIN ÉCRAN</button>
+  </header>
+  <div id="stage">
+    <div id="screen">
+      <canvas id="unity-canvas" width="1280" height="720" tabindex="0" aria-label="Patate de Forain, zone de jeu"></canvas>
+      <div id="cover">
+        <img src="logo.png" alt="Patate de Forain">
+        <div id="loading"><div id="fill"></div></div>
+        <p id="status" aria-live="polite">Montage du chapiteau…</p>
+      </div>
+    </div>
+  </div>
+</main>
+<script>
+'use strict';
+const $=id=>document.getElementById(id);
+const canvas=$('unity-canvas'),cover=$('cover'),status=$('status');let instance=null;
+const relative=path=>new URL(path,document.baseURI).href;
+function failure(message){status.setAttribute('role','alert');status.textContent=String(message)+'\nRechargez la page pour réessayer.';$('loading').hidden=true;}
+function start(){
+  if(!window.WebAssembly){failure('Ce navigateur ne prend pas en charge WebAssembly.');return;}
+  const script=document.createElement('script');
+  script.src=relative('Build/{{{ LOADER_FILENAME }}}');
+  script.onerror=()=>failure('Impossible de charger le jeu. Vérifiez votre connexion.');
+  script.onload=()=>createUnityInstance(canvas,{
+    dataUrl:relative('Build/{{{ DATA_FILENAME }}}'),frameworkUrl:relative('Build/{{{ FRAMEWORK_FILENAME }}}'),
+#if USE_WASM
+    codeUrl:relative('Build/{{{ CODE_FILENAME }}}'),
+#endif
+    streamingAssetsUrl:relative('StreamingAssets'),companyName:{{{ JSON.stringify(COMPANY_NAME) }}},productName:{{{ JSON.stringify(PRODUCT_NAME) }}},productVersion:{{{ JSON.stringify(PRODUCT_VERSION) }}},
+    devicePixelRatio:Math.min(window.devicePixelRatio||1,2),
+    showBanner:(message,type)=>{if(type==='error')failure(message);}
+  },progress=>{const percent=Math.round(progress*100);$('fill').style.width=percent+'%';status.textContent=percent<100?'Chargement : '+percent+' %':'Ouverture de la fête…';})
+    .then(value=>{instance=value;cover.hidden=true;canvas.focus();}).catch(failure);
+  document.body.appendChild(script);
+}
+start();
+$('fullscreen').addEventListener('click',()=>{if(instance)instance.SetFullscreen(1);else $('screen').requestFullscreen?.().catch(()=>{});});
+canvas.addEventListener('pointerdown',()=>canvas.focus());
+// Le jeu garde ses touches : pas de défilement de la page, ni d'aide, de recherche ou de rechargement du navigateur (F1 à F5).
+window.addEventListener('keydown',event=>{if(document.activeElement===canvas&&['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight','F1','F2','F3','F4','F5','Backspace'].includes(event.code))event.preventDefault();});
+</script>
+</body>
+</html>

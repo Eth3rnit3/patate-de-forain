@@ -26,7 +26,8 @@ namespace Patate.EditorTools
             PlayerSettings.companyName = "Patate de Forain";
             PlayerSettings.defaultWebScreenWidth = 1280;
             PlayerSettings.defaultWebScreenHeight = 720;
-            PlayerSettings.WebGL.template = "APPLICATION:Default";
+            PlayerSettings.WebGL.template = "PROJECT:PatateDeForain";
+            PlayerSettings.SplashScreen.show = false; // le gabarit montre déjà le logo du jeu pendant le chargement
             PlayerSettings.WebGL.compressionFormat = WebGLCompressionFormat.Gzip;
             PlayerSettings.WebGL.decompressionFallback = true;
             PlayerSettings.WebGL.threadsSupport = false;

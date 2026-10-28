@@ -12,9 +12,9 @@ namespace Patate.UnityAdapters
     /// Key.A est la touche marquée « Q ». L'aide affichée en jeu utilise le nom
     /// réel de la touche selon la disposition de l'utilisateur.
     /// </summary>
-    public sealed class KeyboardInput : IInputProvider
+    public sealed class KeyboardInput : ILocalInput
     {
-        public readonly string Label;
+        public string Label { get; }
         readonly (Buttons button, Key[] keys)[] bindings;
         Buttons sampled;
 

@@ -61,7 +61,8 @@ Les effets visuels (impacts, tremblement de caméra) et les sons réagissent aux
 | Mécanique vraiment nouvelle (téléportation, prise…) | Une classe `SegmentAction`, son traitement dans `SegmentActions` (domaine), sa lecture dans `FighterPackageReader`. Disponible ensuite pour tous les combattants |
 | Sons | `Resources/Audio/sound-bank.json` (signaux communs) ou `presentation.json › sounds` (signaux propres à un combattant, ex. `moveStart:stand_kick_heavy`) |
 | Décors | `Resources/Stages/<id>/stage.json` : couleurs, calques d'image avec parallaxe, musique |
-| Autre source d'entrées (manette, IA, réseau) | Implémenter `IInputProvider` |
+| Autre source d'entrées (manette, IA, réseau) | Implémenter `IInputProvider` (`ILocalInput` si elle est lue sur cette machine) et la créer dans `InputSources` à partir d'un `PlayerSource` |
+| Nouvel écran ou mode (menu, salon en ligne…) | Implémenter `IGameScreen` et ajouter sa fabrique à `GameFlow`. Les menus remplissent `GameFlow.Setup` (`MatchSetup` : mode, combattants, décor, source des commandes de chaque joueur), que `FightScreen` consomme |
 | Mode de jeu à statistiques encadrées | `StatPolicy` (voir plus bas) |
 
 Le code ne contient aucune condition sur l'identité d'un personnage. Un test de validation s'assure que les règles fonctionnent avec un combattant fictif (`SyntheticFighter`) qui n'a rien de Saint Louis.

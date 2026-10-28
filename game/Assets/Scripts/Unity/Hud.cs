@@ -24,7 +24,7 @@ namespace Patate.UnityAdapters
             mono = new GUIStyle(small) { fontSize = 18, font = Font.CreateDynamicFontFromOSFont(new[] { "Menlo", "Consolas", "Courier New" }, 18) };
         }
 
-        public void Draw(MatchState state, FighterVisuals[] fighters, KeyboardInput[] inputs, bool showHelp, bool paused)
+        public void Draw(MatchState state, FighterVisuals[] fighters, ILocalInput[] inputs, bool showHelp, bool paused)
         {
             var previous = GUI.matrix;
             float scale = Screen.height / ReferenceHeight;
@@ -84,7 +84,7 @@ namespace Patate.UnityAdapters
             }
         }
 
-        void DrawHelp(KeyboardInput[] inputs, float width)
+        void DrawHelp(ILocalInput[] inputs, float width)
         {
             var panel = new Rect(width / 2 - 620, 200, 1240, 520);
             Fill(panel, new Color(0, 0, 0, 0.8f));

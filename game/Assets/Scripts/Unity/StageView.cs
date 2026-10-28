@@ -16,6 +16,7 @@ namespace Patate.UnityAdapters
         public readonly AudioClip Music;
         readonly Camera camera;
         readonly List<(Transform transform, StageLayer layer)> layers = new List<(Transform, StageLayer)>();
+        readonly Transform root;
         const float Scale = 1f / FighterVisuals.WorldUnitsPerUnityUnit;
 
         public StageView(string id, Camera camera)
@@ -30,7 +31,7 @@ namespace Patate.UnityAdapters
             ColorUtility.TryParseHtmlString(Definition.GroundColor, out var ground);
             if (Definition.Music != null) Music = Resources.Load<AudioClip>($"Stages/{id}/{Strip(Definition.Music)}");
 
-            var root = new GameObject($"Décor : {Definition.Name}").transform;
+            root = new GameObject($"Décor : {Definition.Name}").transform;
             CreateGround(root, ground);
             foreach (var layer in Definition.Layers)
             {
@@ -57,6 +58,9 @@ namespace Patate.UnityAdapters
             foreach (var (transform, layer) in layers)
                 transform.position = new Vector3(cameraX * (1f - layer.ParallaxPercent / 100f), layer.Y * Scale, 0);
         }
+
+        /// <summary>Retire le décor de la scène (fin du combat).</summary>
+        public void Dispose() => Object.Destroy(root.gameObject);
 
         static void CreateGround(Transform root, Color color)
         {

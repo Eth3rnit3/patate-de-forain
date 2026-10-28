@@ -15,6 +15,7 @@ namespace Patate.UnityAdapters
     public sealed class AudioCues
     {
         readonly AudioSource source;
+        AudioSource musicSource;
         readonly Dictionary<string, AudioClip> common = new Dictionary<string, AudioClip>();
         readonly FighterVisuals[] fighters;
         readonly Dictionary<string, AudioClip> fighterClips = new Dictionary<string, AudioClip>();
@@ -35,11 +36,18 @@ namespace Patate.UnityAdapters
             }
             if (music != null)
             {
-                var musicSource = host.AddComponent<AudioSource>();
+                musicSource = host.AddComponent<AudioSource>();
                 musicSource.clip = music;
                 musicSource.loop = true;
                 musicSource.Play();
             }
+        }
+
+        /// <summary>Retire les sources audio de l'hôte (fin du combat).</summary>
+        public void Dispose()
+        {
+            Object.Destroy(source);
+            if (musicSource != null) Object.Destroy(musicSource);
         }
 
         public void SetFighters(FighterVisuals first, FighterVisuals second)

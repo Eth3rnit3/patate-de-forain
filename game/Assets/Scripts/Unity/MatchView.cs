@@ -157,6 +157,9 @@ namespace Patate.UnityAdapters
             shakeTicks = Mathf.Max(shakeTicks, ticks);
         }
 
+        /// <summary>Retire les combattants et effets de la scène (fin du combat).</summary>
+        public void Dispose() => Object.Destroy(root.gameObject);
+
         public void Clear()
         {
             foreach (var renderer in projectiles.Values) Return(renderer);

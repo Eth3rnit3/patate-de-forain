@@ -95,7 +95,7 @@ Dessinée en IMGUI, comme le reste de l'affichage et comme Action Legends : rien
 
 - **Solo** : le joueur choisit son combattant puis celui de l'ordinateur ; niveaux facile, normal, difficile (`PlayerSource.Cpu(0)` à `Cpu(2)`). Tant que l'adversaire ordinateur n'est pas branché dans `InputSources`, le mode est affiché « Bientôt » et ne se valide pas.
 - **Manettes** : elles pilotent déjà tous les menus. Pour rejoindre un combat, il faut que `InputSources` sache les créer ; d'ici là, l'écran de sélection l'indique quand une manette essaie de rejoindre.
-- **En ligne** ouvre le salon (`GameFlow.Lobby()`), en cours de réalisation.
+- **En ligne** ouvre le salon : choisir son combattant, créer un salon ou taper le code d'un salon existant, puis se déclarer prêt. Clavier, manette ou souris.
 - **HUD** : portraits, jauges de vie avec traînée des dégâts récents (clignotantes sous 25 %), médaillon du chronomètre (rouge sous 10 secondes), noms et appareil de chaque joueur, annonces « Manche 1 », « Prêts ? », « Combat ! », « K.O. ! », « Temps écoulé ! », « Victoire ! », « Égalité », pause et aide (**F2**).
 
 | Mode | Sélection | Combat | Résultat |
@@ -118,7 +118,7 @@ Code : `Ui.cs` (palette et éléments graphiques), `MenuInput.cs` (commandes des
 
 ## Jouer en ligne
 
-Deux joueurs, chacun sur sa machine (navigateur ou PC), dans un salon désigné par un code. Il faut un relais : en local, `cd server/relay && npm install && npm start`. L'un crée le salon, l'autre entre son code. Un lien `?salon=CODE` (ou `-salon CODE` sur PC) mène directement au salon : c'est le seul accès tant que le menu n'a pas d'entrée « En ligne ». Lancement, paramètres, essais et déploiement sur Cloudflare : [server/relay/README.md](server/relay/README.md).
+Deux joueurs, chacun sur sa machine (navigateur ou PC), dans un salon désigné par un code. Il faut un relais : en local, `cd server/relay && npm install && npm start`. L'un crée le salon, l'autre entre son code. On y accède par le menu (**En ligne**), ou directement par un lien `?salon=CODE` (`-salon CODE` sur PC). Lancement, paramètres, essais et déploiement sur Cloudflare : [server/relay/README.md](server/relay/README.md).
 
 ## Intégrer des visuels
 

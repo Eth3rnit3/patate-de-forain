@@ -17,7 +17,6 @@ namespace Patate.UnityAdapters
     /// </summary>
     public sealed class OnlineFightScreen : IGameScreen
     {
-        const float ReferenceHeight = 1080f;
         const string DebugPreference = "patate.debug-overlay";
 
         readonly GameFlow flow;
@@ -68,7 +67,15 @@ namespace Patate.UnityAdapters
             Begin();
             view = new MatchView(flow.Camera, session.Context.Rules, Visuals(0), Visuals(1), stageView);
             audioCues = new AudioCues(flow.Host, Visuals(0), Visuals(1), stageView.Music);
-            hud = new Hud();
+            var players = new PlayerSource[2];
+            players[LocalSlot] = setup.Players[LocalSlot];
+            players[1 - LocalSlot] = PlayerSource.Remote();
+            // L'invite de fin de manche et l'aide sont celles du mode en ligne (DrawOnline).
+            hud = new Hud(players)
+            {
+                EndPrompt = null,
+                HelpLine = "F1 : débogage   F2 : commandes   Entrée en fin de manche : revanche   Échap : quitter le salon",
+            };
             clock = new FixedStepClock(session.Context.Rules.TicksPerSecond);
             showDebug = PlayerPrefs.GetInt(DebugPreference, 0) == 1;
             Debug.Log($"En ligne, salon {link.Code}, place {LocalSlot} : {session.Context.Fighters[0].Ref} contre {session.Context.Fighters[1].Ref}");
@@ -214,42 +221,33 @@ namespace Patate.UnityAdapters
             DrawOnline();
         }
 
-        /// <summary>Par-dessus le HUD : salon, latence, attente, revanche, et l'aide du mode en ligne.</summary>
+        /// <summary>Par-dessus le HUD : salon, latence, attente et revanche.</summary>
         void DrawOnline()
         {
-            var previous = GUI.matrix;
-            float scale = Screen.height / ReferenceHeight;
-            GUI.matrix = Matrix4x4.Scale(new Vector3(scale, scale, 1));
-            float width = Screen.width / scale;
-            var small = new GUIStyle { fontSize = 22, alignment = TextAnchor.MiddleCenter, richText = true, normal = { textColor = new Color(0.92f, 0.92f, 0.95f) } };
-            var big = new GUIStyle(small) { fontSize = 40, fontStyle = FontStyle.Bold };
-
-            GUI.Label(new Rect(0, 112, width, 30), $"En ligne · salon {link.Code} · vous êtes J{LocalSlot + 1}{(ping >= 0 ? $" · {ping} ms" : "")}", small);
-
-            // Remplace la ligne d'aide du HUD, dont les touches F3 à F5 et Échap ne valent pas en ligne.
-            Fill(new Rect(0, ReferenceHeight - 46, width, 46), new Color(0.05f, 0.05f, 0.08f, 1f));
-            GUI.Label(new Rect(0, ReferenceHeight - 44, width, 40), "F1 : débogage   F2 : commandes   Entrée en fin de manche : revanche   Échap : quitter le salon", small);
+            var previous = Ui.Begin();
+            float width = Ui.Width;
+            Ui.Text(new Rect(0, 112, width, 30), $"En ligne · salon {link.Code} · vous êtes J{LocalSlot + 1}{(ping >= 0 ? $" · {ping} ms" : "")}",
+                Ui.Style(22, fontStyle: FontStyle.Normal), Ui.Cream, 2);
 
             string message = null;
-            if (link.State == RelaySocketState.Closed) message = $"<color=#ff7359>Connexion au relais perdue : {link.CloseReason}</color>\nÉchap : revenir au salon";
-            else if (peerGone) message = "<color=#ff7359>L'adversaire a quitté le salon.</color>\nÉchap : revenir au salon";
-            else if (match.DesyncTick.HasValue) message = $"<color=#ff7359>Désynchronisation au tick {match.DesyncTick} : les deux jeux ne voient plus le même combat.</color>\nÉchap : quitter";
-            else if (match.IsOver) message = localRematch ? "Revanche demandée, en attente de l'adversaire…" : remoteRematch ? "L'adversaire veut sa revanche : Entrée pour l'accepter" : "Entrée : revanche   Échap : quitter le salon";
-            else if (waiting > 0.3f) message = "Attente de l'adversaire…";
+            bool problem = true;
+            if (link.State == RelaySocketState.Closed) message = $"Connexion au relais perdue : {link.CloseReason}\nÉchap : revenir au salon";
+            else if (peerGone) message = "L'adversaire a quitté le salon.\nÉchap : revenir au salon";
+            else if (match.DesyncTick.HasValue) message = $"Désynchronisation au tick {match.DesyncTick} : les deux jeux ne voient plus le même combat.\nÉchap : quitter";
+            else
+            {
+                problem = false;
+                if (match.IsOver) message = localRematch ? "Revanche demandée, en attente de l'adversaire…" : remoteRematch ? "L'adversaire veut sa revanche : Entrée pour l'accepter" : "Entrée : revanche      Échap : quitter le salon";
+                else if (waiting > 0.3f) message = "Attente de l'adversaire…";
+            }
             if (message != null)
             {
-                Fill(new Rect(width / 2 - 620, 620, 1240, 120), new Color(0, 0, 0, 0.75f));
-                GUI.Label(new Rect(width / 2 - 600, 625, 1200, 110), message, big);
+                // Sous l'annonce de victoire du HUD, à la place de son invite de fin de manche.
+                var panel = new Rect(width / 2 - 620, 680, 1240, 120);
+                Ui.Marquee(panel, problem ? Ui.Red : new Color32(0x6b, 0x1c, 0x1a, 0xff), false, Time.unscaledTime);
+                Ui.Text(panel, message, Ui.Style(34, wrap: true), problem ? new Color(1f, 0.55f, 0.45f) : Ui.Cream, 3);
             }
             GUI.matrix = previous;
-        }
-
-        static void Fill(Rect rect, Color color)
-        {
-            var previous = GUI.color;
-            GUI.color = color;
-            GUI.DrawTexture(rect, Texture2D.whiteTexture);
-            GUI.color = previous;
         }
 
         /// <summary>Place de l'adversaire pour le HUD : ses commandes arrivent par le réseau.</summary>

@@ -23,6 +23,13 @@ namespace Patate.UnityAdapters
         readonly GUIStyle mono;
         readonly float[] trail = { 1, 1 }, shown = { 1, 1 }, trailWait = { 0, 0 };
         readonly string[] tags;
+        RoundPhase shownPhase = (RoundPhase)(-1);
+        float phaseStart;
+
+        /// <summary>Invite de fin de manche ; null si l'écran affiche la sienne (en ligne).</summary>
+        public string EndPrompt = "Entrée ou Start : continuer      F5 : rejouer la manche";
+        /// <summary>Ligne d'aide en bas d'écran : les touches de service du mode.</summary>
+        public string HelpLine = "F1 : débogage   F2 : commandes   F3 / F4 : changer de combattant   F5 : recommencer   Échap : pause";
 
         /// <param name="players">Source des commandes de chaque place, affichée sous le nom (« J1 · Clavier droit »).</param>
         public Hud(PlayerSource[] players = null)
@@ -55,15 +62,14 @@ namespace Patate.UnityAdapters
                 Ui.Text(new Rect(0, 400, width, 140), "PAUSE", Ui.Style(120), Ui.Yellow, 6);
                 Ui.Text(new Rect(0, 560, width, 50), "Échap : reprendre      F5 : recommencer la manche", Ui.Style(32), Ui.Cream, 3);
             }
-            else if (state.Round.Phase == RoundPhase.Over)
+            else if (state.Round.Phase == RoundPhase.Over && EndPrompt != null)
             {
                 float blink = 0.6f + 0.4f * Mathf.Sin(time * 4);
-                Ui.Text(new Rect(0, 700, width, 50), "Entrée ou Start : continuer      F5 : rejouer la manche", Ui.Style(34), Ui.Cream, 3, blink);
+                Ui.Text(new Rect(0, 700, width, 50), EndPrompt, Ui.Style(34), Ui.Cream, 3, blink);
             }
 
             if (showHelp) DrawHelp(inputs, width, time);
-            else Ui.Text(new Rect(20, Ui.ReferenceHeight - 38, width - 40, 30),
-                "F1 : débogage   F2 : commandes   F3 / F4 : changer de combattant   F5 : recommencer   Échap : pause",
+            else Ui.Text(new Rect(20, Ui.ReferenceHeight - 38, width - 40, 30), HelpLine,
                 Ui.Style(20, TextAnchor.MiddleLeft, FontStyle.Normal), new Color(1, 1, 1, 0.75f), 1.5f);
             GUI.matrix = previous;
         }
@@ -144,7 +150,13 @@ namespace Patate.UnityAdapters
         {
             var round = state.Round;
             var center = new Vector2(width / 2, 440);
-            float age = round.PhaseTick / 60f;
+            // Âge de l'annonce : la simulation, ou l'horloge réelle quand elle s'arrête (fin de manche en ligne).
+            if (round.Phase != shownPhase)
+            {
+                shownPhase = round.Phase;
+                phaseStart = Time.unscaledTime;
+            }
+            float age = Mathf.Max(round.PhaseTick / 60f, Time.unscaledTime - phaseStart);
             switch (round.Phase)
             {
                 case RoundPhase.Intro:
@@ -166,7 +178,7 @@ namespace Patate.UnityAdapters
                     {
                         Ui.Word("victoire", "VICTOIRE !", center, 230, age);
                         var winner = fighters[round.Winner].Package.Name;
-                        Ui.Text(new Rect(0, center.y + 130, width, 60), $"{winner} (J{round.Winner + 1}) l'emporte", Ui.Style(44), Ui.Cream, 3, Mathf.Clamp01(age / 0.3f));
+                        Ui.Text(new Rect(0, center.y + 130, width, 60), $"{winner} ({tags[round.Winner]}) l'emporte", Ui.Style(44), Ui.Cream, 3, Mathf.Clamp01(age / 0.3f));
                     }
                     break;
             }

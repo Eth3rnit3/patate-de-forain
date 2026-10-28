@@ -6,6 +6,18 @@
       "runtimeExecutable": "python3",
       "runtimeArgs": ["-m", "http.server", "8765", "--directory", "game/WebBuild"],
       "port": 8765
+    },
+    {
+      "name": "relais-en-ligne",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["start", "--prefix", "server/relay"],
+      "port": 8787
+    },
+    {
+      "name": "web-build-en-ligne",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "8799", "--directory", "game/WebBuild"],
+      "port": 8799
     }
   ]
 }

@@ -1,0 +1,22 @@
+{
+  "name": "patate-relais",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Relais WebSocket des salons en ligne de Patate de Forain (local sous Node, déployé sur Cloudflare Workers)",
+  "scripts": {
+    "start": "node src/local.js",
+    "test": "node --test test/*.test.js",
+    "verifier": "node src/verify.js",
+    "essai:onglets": "node test/deux-onglets.mjs",
+    "dev:cloudflare": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "dependencies": {
+    "ws": "8.22.0"
+  },
+  "devDependencies": {
+    "playwright-core": "1.59.1",
+    "wrangler": "4.145.0"
+  }
+}

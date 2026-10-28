@@ -1,0 +1,19 @@
+# Relais en ligne de Patate de Forain sur Cloudflare Workers (offre gratuite).
+# Déploiement : voir README.md.
+name = "patate-relais"
+main = "src/worker.js"
+compatibility_date = "2025-09-01"
+
+[[durable_objects.bindings]]
+name = "SALONS"
+class_name = "Salon"
+
+# Les Durable Objects de l'offre gratuite sont ceux à stockage SQLite.
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["Salon"]
+
+[vars]
+# Origines autorisées, séparées par des virgules (vide : toutes).
+# Ex. "https://eth3rnit3.github.io,http://localhost:8000"
+ORIGINES = ""

@@ -61,7 +61,7 @@ Les effets visuels (impacts, tremblement de caméra) et les sons réagissent aux
 | Mécanique vraiment nouvelle (téléportation, prise…) | Une classe `SegmentAction`, son traitement dans `SegmentActions` (domaine), sa lecture dans `FighterPackageReader`. Disponible ensuite pour tous les combattants |
 | Sons | `Resources/Audio/sound-bank.json` (signaux communs) ou `presentation.json › sounds` (signaux propres à un combattant, ex. `moveStart:stand_kick_heavy`) |
 | Décors | `Resources/Stages/<id>/stage.json` : couleurs, calques d'image avec parallaxe, musique |
-| Autre source d'entrées (manette, IA, réseau) | Implémenter `IInputProvider` (`ILocalInput` si elle est lue sur cette machine) et la créer dans `InputSources` à partir d'un `PlayerSource` |
+| Autre source d'entrées (manette, IA) | Implémenter `IInputProvider` (`ILocalInput` si elle est lue sur cette machine) et la créer dans `InputSources` à partir d'un `PlayerSource`. Le joueur distant (`PlayerSource.Remote()`) ne passe pas par là : ses commandes viennent d'`OnlineMatch` |
 | Nouvel écran ou mode (menu, salon en ligne…) | Implémenter `IGameScreen` et ajouter sa fabrique à `GameFlow`. Les menus remplissent `GameFlow.Setup` (`MatchSetup` : mode, combattants, décor, source des commandes de chaque joueur), que `FightScreen` consomme |
 | Mode de jeu à statistiques encadrées | `StatPolicy` (voir plus bas) |
 
@@ -85,11 +85,31 @@ Le code ne contient aucune condition sur l'identité d'un personnage. Un test de
 
 **Pas encore fait**
 
-- Transport réseau, délai d'entrée et boucle de rollback.
 - Écran d'import de paquets.
 - Signature des paquets.
 - Chargement des images d'un paquet importé depuis des octets : `FighterVisuals` lit `Resources`, alors que la lecture des JSON depuis le disque existe déjà (`DirectoryFighterSource`).
 - Règles (`MatchRules`) chargées depuis des données : elles sont aujourd'hui des valeurs par défaut en C#.
+
+## Jeu en ligne
+
+Deux joueurs, deux machines, aucun serveur de jeu : chacun simule toute la manche à partir des commandes des deux. Un **relais** WebSocket ([server/relay](../server/relay/README.md)) réunit les joueurs par code de salon et se contente de transmettre les messages.
+
+| Pièce | Où | Rôle |
+|---|---|---|
+| `IRelaySocket` | Application | Connexion texte au relais, lue à chaque image sans bloquer |
+| `OnlineRelay` | Unity | WebSocket du navigateur en WebGL (`Plugins/WebGL/PatateRelay.jslib`), `ClientWebSocket` ailleurs ; `OnlineSettings` : adresse du relais, paramètres de la page ou de la ligne de commande |
+| `OnlineLink` | Application | Le salon vu par un joueur : place (0 ou 1), présence de l'adversaire, messages un par un |
+| `OnlineLobby` | Application | Salut (versions du protocole et des règles), choix du combattant, « prêt », accord mutuel ; produit le `MatchSetup` (`PlayerSource.Remote()` pour l'adversaire) |
+| `OnlineMatch` | Application | Délai d'entrée, prédiction et rollback, synchronisation du temps, comparaison des empreintes |
+| `LobbyScreen`, `OnlineFightScreen` | Unity | Affichage du salon et du combat ; réutilisent `MatchView`, `StageView`, `AudioCues` et `Hud` |
+
+**Délai d'entrée et rollback.** La commande lue au tick t est jouée au tick t + 2 des deux côtés (`OnlineProtocol.InputDelay`) et part aussitôt, par lots de deux ticks. Si celle de l'adversaire n'est pas encore là, on continue jusqu'à 8 ticks (`MaxRollback`) en supposant qu'il garde les mêmes touches. Quand elle arrive et diffère, l'état est restauré au tick fautif et la suite resimulée. L'état étant immuable, l'historique ne garde que des références. Au-delà de 8 ticks, on attend. Le joueur en avance cède un tick de temps en temps pour que l'autre rattrape. Les sons et effets ne sont joués qu'à la première simulation d'un tick : une resimulation qui fait apparaître un coup ne le fait pas entendre.
+
+**Désynchronisation.** Tous les 30 ticks confirmés (commandes réelles des deux côtés) et à la fin de la manche, chacun envoie l'empreinte de son état (`StateCodec.Checksum`). Une différence arrête le combat et l'affiche.
+
+**Tests.** `OnlineMatchTests` fait jouer deux machines simulées par un relais en mémoire à latence et gigue (`MemoryRelay`) : sans prédiction, avec rollback, avec un joueur deux fois plus rapide. Elles doivent finir sur le même état, égal à celui qu'on obtient en rejouant hors ligne les commandes échangées. Un écart de règles doit être détecté dès la première empreinte. `OnlineLobbyTests` couvre le salon. `OnlineRelayTests`, explicite, relie deux connexions .NET au relais local lancé.
+
+**Limites connues.** Pas de reconnexion : une coupure termine le combat. Un onglet caché est mis en pause par le navigateur et l'adversaire attend. Le relais déployé et l'offre gratuite de Cloudflare sont décrits dans le README du relais.
 
 ## Outillage hors moteur
 

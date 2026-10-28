@@ -116,6 +116,10 @@ Code : `Ui.cs` (palette et éléments graphiques), `MenuInput.cs` (commandes des
 - **Paquets de combattants** : menu *Patate de Forain › Valider les combattants*.
 - **Scénario en jeu scripté** : `AgentScripts/VerifyMatch.cs` (mode d'emploi en tête de fichier).
 
+## Jouer en ligne
+
+Deux joueurs, chacun sur sa machine (navigateur ou PC), dans un salon désigné par un code. Il faut un relais : en local, `cd server/relay && npm install && npm start`. L'un crée le salon, l'autre entre son code. Un lien `?salon=CODE` (ou `-salon CODE` sur PC) mène directement au salon : c'est le seul accès tant que le menu n'a pas d'entrée « En ligne ». Lancement, paramètres, essais et déploiement sur Cloudflare : [server/relay/README.md](server/relay/README.md).
+
 ## Intégrer des visuels
 
 Depuis la racine du dépôt (Node 22) :
@@ -129,7 +133,8 @@ L'outil lit les planches sources sans les modifier. Il produit des images indivi
 
 ## Documentation
 
-- [Architecture](docs/architecture.md) : les couches, la simulation, les points d'extension et la préparation du jeu en ligne.
+- [Architecture](docs/architecture.md) : les couches, la simulation, les points d'extension et le jeu en ligne.
+- [Relais en ligne](server/relay/README.md) : lancer le relais, essayer à deux, le déployer.
 - [Ajouter un combattant](docs/ajouter-un-combattant.md) : guide complet, avec l'exemple de Napoléon.
 - [État du prototype](docs/etat-du-prototype.md) : ce qui marche, ce qui est vérifié, les limites et les besoins artistiques.
 - [Standard personnage](docs/character-standard-v01.md) : direction artistique et format des exports.

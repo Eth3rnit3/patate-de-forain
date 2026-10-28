@@ -34,7 +34,8 @@ namespace Patate.UnityAdapters
             var camera = Camera.main ?? new GameObject("Caméra", typeof(Camera)).GetComponent<Camera>();
             camera.clearFlags = CameraClearFlags.SolidColor;
             flow = new GameFlow(catalog, camera, gameObject);
-            flow.Go(flow.Title());
+            // Lien d'invitation (?salon=CODE en WebGL, -salon CODE sur PC) : directement au salon en ligne.
+            flow.Go(OnlineSettings.Has("salon") ? flow.Lobby() : flow.Title());
         }
 
         void Update() => flow?.Current?.Update(Time.unscaledDeltaTime);

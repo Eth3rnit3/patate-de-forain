@@ -63,19 +63,19 @@ namespace Patate.Tests
         [Test]
         public void PlusieursDecorsAjoutentUneEtapeDeChoix()
         {
-            var selection = Versus("fete", "training");
+            var selection = Versus("training", "fete-foraine");
             selection.Join(Left);
             selection.Join(Right);
             selection.Command(Left, MenuCommand.Confirm);
             selection.Command(Right, MenuCommand.Confirm);
             Assert.AreEqual(SelectionPhase.Stage, selection.Phase);
-            Assert.AreEqual("training", selection.Stages[selection.StageCursor], "décor de départ : le précédent");
+            Assert.AreEqual(MatchSetup.Default().Stage, selection.Stages[selection.StageCursor], "décor de départ : le précédent");
             selection.Command(Right, MenuCommand.Right);
             selection.Command(Right, MenuCommand.Back);
             Assert.AreEqual(SelectionPhase.Fighters, selection.Phase, "retour : on revient aux combattants");
             selection.Command(Right, MenuCommand.Confirm);
             selection.Command(Left, MenuCommand.Confirm);
-            Assert.AreEqual("fete", selection.ToSetup().Stage);
+            Assert.AreEqual("training", selection.ToSetup().Stage);
         }
 
         [Test]

@@ -26,7 +26,7 @@ Combat miroir Saint Louis contre Saint Louis, à deux joueurs sur un clavier, da
 
 ## Ce qui a été vérifié, et comment
 
-- **77 tests EditMode, tous verts** : 77/77 au dernier lancement, en mode batch via la CLI `unity`. Ils couvrent :
+- **80 tests EditMode, tous verts** : 80/80 au dernier lancement, en mode batch via la CLI `unity`. Ils couvrent :
   - **chronologie** : les phases tombent aux ticks exacts, l'appui sur un bouton déclenche le coup mais pas son maintien, quart de cercle selon l'orientation ;
   - **dégâts** : un seul impact par coup, étourdissement plus gel, recul exact, échange de coups simultanés ;
   - **garde** : tenir arrière, garde de proximité, pas de garde en pleine attaque, attaque non blocable ;
@@ -40,7 +40,8 @@ Combat miroir Saint Louis contre Saint Louis, à deux joueurs sur un clavier, da
   - **politiques de statistiques** : modes libre et équilibré ;
   - **session** : combat miroir réel joué jusqu'au KO sans rendu, replay par le journal d'entrées, nouvelle manche, horloge à pas fixe à 144 Hz ;
   - **clavier** : correspondances des deux joueurs, vérifiées sur un clavier virtuel ;
-  - **sélection des personnages** : rejoindre, déplacer et verrouiller, revenir en arrière, étape du décor, Solo (le joueur choisit pour l'ordinateur), joueurs gardés en changeant de personnage, réglages produits.
+  - **sélection des personnages** : rejoindre, déplacer et verrouiller, revenir en arrière, étape du décor, Solo (le joueur choisit pour l'ordinateur), joueurs gardés en changeant de personnage, réglages produits ;
+  - **menus à la manette** : stick (un appui, puis attente avant répétition, seuil, direction dominante) et liste des appareils, sur une manette virtuelle. Les boutons et la croix (appuis « cette image ») ne se testent pas en EditMode sans le cadre de test de l'Input System : non vérifiés.
 - **Les tests détectent bien les régressions** : en cassant volontairement « un seul impact par coup » et la garde, 12 tests échouent.
 - **Le domaine ne dépend pas d'Unity** : `noEngineReferences` sur Combat, Content et Application.
 - **En jeu, mode Play** : un scénario scripté (`AgentScripts/VerifyMatch.cs`) a été joué jusqu'au bout, avec des captures d'écran contrôlées à chaque étape :
@@ -53,7 +54,7 @@ Combat miroir Saint Louis contre Saint Louis, à deux joueurs sur un clavier, da
 
 - **Export WebGL** : construit en mode batch (`WebBuilder`, 82 s), servi en statique et ouvert dans un navigateur Chromium : les deux Saint Louis se chargent (lecture des paquets JSON avec Newtonsoft intacte après IL2CPP, sans `link.xml`), marchent et se frappent sur des touches maintenues (événements clavier simulés dans la page, pas une frappe humaine), les jauges baissent, aucune erreur dans la console. Environ 13 Mo à télécharger. Seuls avertissements : `getInternalformatParameter: invalid internalformat`, émis par le moteur au démarrage, sans effet visible. L'atlas en BC7 dépend de l'extension `EXT_texture_compression_bptc`, présente ici ; non essayé sans.
 
-- **Interface, en WebGL au clavier** (événements clavier simulés dans la page, Chromium) : logo et progression pendant le chargement ; titre → modes (Solo refusé tant que l'ordinateur n'est pas branché, En ligne → salon provisoire → titre) → sélection (deux joueurs rejoignent avec F et Entrée, verrouillent, annulent avec G, aucun joueur placé par l'appui qui ouvre l'écran) → combat (annonces, jauges, étiquettes « J1 · Clavier gauche ») → K.O. → victoire → résultat → changer de personnage (joueurs gardés) et retour au menu. Page ajustée à une fenêtre 16:9 et à une fenêtre plus haute que large. Revanche non rejouée en WebGL (même appel que l'ancien écran provisoire). Manettes : navigation non essayée sur une vraie manette.
+- **Interface, en WebGL au clavier** (événements clavier simulés dans la page, Chromium) : logo et progression pendant le chargement ; titre → modes (Solo refusé tant que l'ordinateur n'est pas branché, En ligne → salon provisoire → titre) → sélection (deux joueurs rejoignent avec F et Entrée, verrouillent, annulent avec G, aucun joueur placé par l'appui qui ouvre l'écran) → combat (annonces, jauges, étiquettes « J1 · Clavier gauche ») → K.O. → victoire → résultat → changer de personnage (joueurs gardés) et retour au menu. Page ajustée à une fenêtre 16:9 et à une fenêtre plus haute que large. Revanche non rejouée en WebGL (même appel que l'ancien écran provisoire). Manettes : navigation non essayée sur une vraie manette (seul le stick l'est, sur une manette virtuelle).
 
 **Pas vérifié par moi** : une vraie partie au clavier, à deux humains, avec la sensation de jeu. C'est le prochain essai à faire. Il n'y a pas eu d'export autonome (PC, Mac), ni d'essai WebGL sous Safari ou Firefox.
 

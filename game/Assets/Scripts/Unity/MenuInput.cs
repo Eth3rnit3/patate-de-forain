@@ -161,16 +161,22 @@ namespace Patate.UnityAdapters
     /// </summary>
     public static class InputSupport
     {
-        public static bool Available(PlayerSource source)
+        public static bool Available(PlayerSource device)
         {
             try
             {
-                var input = InputSources.Create(source, 1, () => null);
+                var input = InputSources.Create(device, 1, () => null);
                 (input as IDisposable)?.Dispose();
                 return true;
             }
             catch (NotSupportedException)
             {
+                return false;
+            }
+            catch (Exception exception)
+            {
+                // Une source qui échoue autrement reste indisponible : le menu ne doit pas tomber avec elle.
+                Debug.LogWarning($"{device} : {exception.Message}");
                 return false;
             }
         }

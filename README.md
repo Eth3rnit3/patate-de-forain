@@ -93,7 +93,7 @@ Code : `Ui.cs` (palette et éléments graphiques), `MenuInput.cs` (commandes des
 
 ## Vérifier
 
-- **Tests (77)** : dans Unity, *Window › General › Test Runner › EditMode › Run All*. Ou en ligne de commande, éditeur ouvert, depuis `game/` : `unity command test run --mode editor`.
+- **Tests (80)** : dans Unity, *Window › General › Test Runner › EditMode › Run All*. Ou en ligne de commande, éditeur ouvert, depuis `game/` : `unity command test run --mode editor`.
 - **Paquets de combattants** : menu *Patate de Forain › Valider les combattants*.
 - **Scénario en jeu scripté** : `AgentScripts/VerifyMatch.cs` (mode d'emploi en tête de fichier).
 

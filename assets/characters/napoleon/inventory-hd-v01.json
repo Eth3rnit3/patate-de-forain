@@ -1,0 +1,160 @@
+{
+  "fighter_id": "napoleon",
+  "stage": "graphic-sources",
+  "assets": [
+    {
+      "asset": "idle",
+      "file": "source/napoleon_idle_hd_v01.png",
+      "width": 1536,
+      "height": 1024,
+      "has_alpha_channel": true,
+      "has_fully_transparent_pixel_in_first_row": true,
+      "expected_frames": 6,
+      "requested_grid": {
+        "columns": 3,
+        "rows": 2
+      },
+      "status": "source-needs-cleanup-and-alignment"
+    },
+    {
+      "asset": "walk_forward",
+      "file": "source/napoleon_walk_forward_hd_v01.png",
+      "width": 1536,
+      "height": 1024,
+      "has_alpha_channel": true,
+      "has_fully_transparent_pixel_in_first_row": true,
+      "expected_frames": 8,
+      "requested_grid": {
+        "columns": 4,
+        "rows": 2
+      },
+      "status": "source-needs-cleanup-and-alignment"
+    },
+    {
+      "asset": "stand_punch_light",
+      "file": "source/napoleon_stand_punch_light_hd_v01.png",
+      "width": 1536,
+      "height": 1024,
+      "has_alpha_channel": true,
+      "has_fully_transparent_pixel_in_first_row": true,
+      "expected_frames": 6,
+      "requested_grid": {
+        "columns": 3,
+        "rows": 2
+      },
+      "status": "source-needs-cleanup-and-alignment"
+    },
+    {
+      "asset": "hit_high",
+      "file": "source/napoleon_hit_high_hd_v01.png",
+      "width": 1536,
+      "height": 1024,
+      "has_alpha_channel": true,
+      "has_fully_transparent_pixel_in_first_row": true,
+      "expected_frames": 3,
+      "requested_grid": {
+        "columns": 3,
+        "rows": 1
+      },
+      "status": "source-needs-cleanup-and-alignment"
+    },
+    {
+      "asset": "block_high",
+      "file": "source/napoleon_block_high_hd_v01.png",
+      "width": 1930,
+      "height": 815,
+      "has_alpha_channel": true,
+      "has_fully_transparent_pixel_in_first_row": true,
+      "expected_frames": 3,
+      "requested_grid": {
+        "columns": 3,
+        "rows": 1
+      },
+      "status": "source-needs-cleanup-and-alignment"
+    },
+    {
+      "asset": "stand_kick_light",
+      "file": "source/napoleon_stand_kick_light_hd_v01.png",
+      "width": 1536,
+      "height": 1024,
+      "has_alpha_channel": true,
+      "has_fully_transparent_pixel_in_first_row": true,
+      "expected_frames": 6,
+      "requested_grid": {
+        "columns": 3,
+        "rows": 2
+      },
+      "status": "source-needs-cleanup-and-alignment"
+    },
+    {
+      "asset": "stand_kick_heavy",
+      "file": "source/napoleon_stand_kick_heavy_hd_v01.png",
+      "width": 1536,
+      "height": 1024,
+      "has_alpha_channel": true,
+      "has_fully_transparent_pixel_in_first_row": true,
+      "expected_frames": 8,
+      "requested_grid": {
+        "columns": 4,
+        "rows": 2
+      },
+      "status": "source-needs-cleanup-and-alignment"
+    },
+    {
+      "asset": "special_imperial_volley_cast",
+      "file": "source/napoleon_special_imperial_volley_cast_hd_v01.png",
+      "width": 1536,
+      "height": 1024,
+      "has_alpha_channel": true,
+      "has_fully_transparent_pixel_in_first_row": true,
+      "expected_frames": 8,
+      "requested_grid": {
+        "columns": 4,
+        "rows": 2
+      },
+      "status": "source-needs-cleanup-and-alignment"
+    },
+    {
+      "asset": "portrait",
+      "file": "source/napoleon_portrait_hd_v01.png",
+      "width": 1254,
+      "height": 1254,
+      "has_alpha_channel": true,
+      "has_fully_transparent_pixel_in_first_row": true,
+      "expected_frames": 1,
+      "requested_grid": {
+        "columns": 1,
+        "rows": 1
+      },
+      "status": "source-needs-cleanup-and-alignment"
+    },
+    {
+      "asset": "special_imperial_volley_projectile",
+      "file": "source/napoleon_special_imperial_volley_projectile_hd_v01.png",
+      "width": 1254,
+      "height": 1254,
+      "has_alpha_channel": true,
+      "has_fully_transparent_pixel_in_first_row": true,
+      "expected_frames": 4,
+      "requested_grid": {
+        "columns": 2,
+        "rows": 2
+      },
+      "status": "source-needs-cleanup-and-alignment"
+    },
+    {
+      "asset": "special_imperial_volley_impact",
+      "file": "source/napoleon_special_imperial_volley_impact_hd_v01.png",
+      "width": 1254,
+      "height": 1254,
+      "has_alpha_channel": true,
+      "has_fully_transparent_pixel_in_first_row": true,
+      "expected_frames": 4,
+      "requested_grid": {
+        "columns": 2,
+        "rows": 2
+      },
+      "status": "source-needs-cleanup-and-alignment"
+    }
+  ]
+}

@@ -1,0 +1,124 @@
+[
+  {
+    "asset": "idle",
+    "expected_frames": 6,
+    "expected_grid": {
+      "columns": 3,
+      "rows": 2
+    },
+    "status": "source-to-review",
+    "prompt": "Use case: identity-preserve. Asset type: HD hand-drawn 2D fighting-game animation SOURCE SHEET.\nInput is the MASTER NAPOLEON CHARACTER IDENTITY REFERENCE. Match its CENTRAL combat figure exactly: clean-shaven stern adult Napoleon, short dark brown hair, broad black bicorne worn across head with thin gold trim, small tricolor cockade, open gray knee-length greatcoat with split tails and fitted sleeves, forest-green inner uniform with scarlet collar and cuffs, small gold chest medal, white waistcoat and trousers, black knee-high boots, curved sabre always SHEATHED at hip. Same face, costume and compact athletic proportions in EVERY pose. No Saint Louis costume, no crown, no fleurs-de-lis. Bare hands.\nExact polished HD ink linework and cel shading of reference, smooth clean anti-aliased contours, discreet gradients, NO pixel art, no 3D. Fighter always faces RIGHT in three-quarter fighting-game side view. Two arms and two legs only, plausible joints. Full bicorne and boots visible. Same body scale, same grounded baseline relative to each equal-sized cell, wide transparent gutters, no overlapping subjects, room for extended limbs.\nActual transparent alpha background. NO scenery, NO floor shadows, NO lettering, NO panel borders, NO painted checkerboard or solid background. Clean color edges matching local costume colors: no red/green chroma-key fringe or stray colored matte pixels. Read poses left to right then next row. Exactly SIX full-body poses in a regular 3-column by 2-row grid. Subtle idle breathing loop, both fists in guard. 1 neutral, 2 slight inhale, 3 highest inhale, 4 halfway exhale, 5 lowest exhale, 6 near neutral. Feet planted in exactly same places, tiny shoulder and head motion, no walking. Greatcoat and sabre stable.",
+    "file": "/Users/eth3rnit3/code/patate-de-forain/assets/characters/napoleon/source/napoleon_idle_hd_v01.png"
+  },
+  {
+    "asset": "walk_forward",
+    "expected_frames": 8,
+    "expected_grid": {
+      "columns": 4,
+      "rows": 2
+    },
+    "status": "source-to-review",
+    "prompt": "Use case: identity-preserve. Asset type: HD hand-drawn 2D fighting-game animation SOURCE SHEET.\nInput is the MASTER NAPOLEON CHARACTER IDENTITY REFERENCE. Match its CENTRAL combat figure exactly: clean-shaven stern adult Napoleon, short dark brown hair, broad black bicorne worn across head with thin gold trim, small tricolor cockade, open gray knee-length greatcoat with split tails and fitted sleeves, forest-green inner uniform with scarlet collar and cuffs, small gold chest medal, white waistcoat and trousers, black knee-high boots, curved sabre always SHEATHED at hip. Same face, costume and compact athletic proportions in EVERY pose. No Saint Louis costume, no crown, no fleurs-de-lis. Bare hands.\nExact polished HD ink linework and cel shading of reference, smooth clean anti-aliased contours, discreet gradients, NO pixel art, no 3D. Fighter always faces RIGHT in three-quarter fighting-game side view. Two arms and two legs only, plausible joints. Full bicorne and boots visible. Same body scale, same grounded baseline relative to each equal-sized cell, wide transparent gutters, no overlapping subjects, room for extended limbs.\nActual transparent alpha background. NO scenery, NO floor shadows, NO lettering, NO panel borders, NO painted checkerboard or solid background. Clean color edges matching local costume colors: no red/green chroma-key fringe or stray colored matte pixels. Read poses left to right then next row. Exactly EIGHT full-body poses in a regular 4-column by 2-row grid. Forward WALKING cycle toward RIGHT rendered IN PLACE, fists held in guard. 1 front foot contact, 2 down, 3 passing feet close, 4 up with rear foot coming forward, 5 opposite foot contact, 6 down, 7 opposite passing, 8 up. Clearly alternate which boot is forward. It must read as walking, NOT running or hopping; at least one boot touching ground in every pose. Coat tails subtly sway without hiding legs.",
+    "file": "/Users/eth3rnit3/code/patate-de-forain/assets/characters/napoleon/source/napoleon_walk_forward_hd_v01.png"
+  },
+  {
+    "asset": "stand_punch_light",
+    "expected_frames": 6,
+    "expected_grid": {
+      "columns": 3,
+      "rows": 2
+    },
+    "status": "source-to-review",
+    "prompt": "Use case: identity-preserve. Asset type: HD hand-drawn 2D fighting-game animation SOURCE SHEET.\nInput is the MASTER NAPOLEON CHARACTER IDENTITY REFERENCE. Match its CENTRAL combat figure exactly: clean-shaven stern adult Napoleon, short dark brown hair, broad black bicorne worn across head with thin gold trim, small tricolor cockade, open gray knee-length greatcoat with split tails and fitted sleeves, forest-green inner uniform with scarlet collar and cuffs, small gold chest medal, white waistcoat and trousers, black knee-high boots, curved sabre always SHEATHED at hip. Same face, costume and compact athletic proportions in EVERY pose. No Saint Louis costume, no crown, no fleurs-de-lis. Bare hands.\nExact polished HD ink linework and cel shading of reference, smooth clean anti-aliased contours, discreet gradients, NO pixel art, no 3D. Fighter always faces RIGHT in three-quarter fighting-game side view. Two arms and two legs only, plausible joints. Full bicorne and boots visible. Same body scale, same grounded baseline relative to each equal-sized cell, wide transparent gutters, no overlapping subjects, room for extended limbs.\nActual transparent alpha background. NO scenery, NO floor shadows, NO lettering, NO panel borders, NO painted checkerboard or solid background. Clean color edges matching local costume colors: no red/green chroma-key fringe or stray colored matte pixels. Read poses left to right then next row. Exactly SIX full-body poses in 3 columns and 2 rows. Fast lead straight jab toward RIGHT at face height. 1 guard, 2 slight anticipation, 3 lead fist halfway extending, 4 fully extended lead punch while rear fist protects jaw, 5 halfway retraction, 6 original guard. Feet planted, subtle hip turn, sabre never drawn. Every cell wide enough to fit full extended fist.",
+    "file": "/Users/eth3rnit3/code/patate-de-forain/assets/characters/napoleon/source/napoleon_stand_punch_light_hd_v01.png"
+  },
+  {
+    "asset": "hit_high",
+    "expected_frames": 3,
+    "expected_grid": {
+      "columns": 3,
+      "rows": 1
+    },
+    "status": "source-to-review",
+    "prompt": "Use case: identity-preserve. Asset type: HD hand-drawn 2D fighting-game animation SOURCE SHEET.\nInput is the MASTER NAPOLEON CHARACTER IDENTITY REFERENCE. Match its CENTRAL combat figure exactly: clean-shaven stern adult Napoleon, short dark brown hair, broad black bicorne worn across head with thin gold trim, small tricolor cockade, open gray knee-length greatcoat with split tails and fitted sleeves, forest-green inner uniform with scarlet collar and cuffs, small gold chest medal, white waistcoat and trousers, black knee-high boots, curved sabre always SHEATHED at hip. Same face, costume and compact athletic proportions in EVERY pose. No Saint Louis costume, no crown, no fleurs-de-lis. Bare hands.\nExact polished HD ink linework and cel shading of reference, smooth clean anti-aliased contours, discreet gradients, NO pixel art, no 3D. Fighter always faces RIGHT in three-quarter fighting-game side view. Two arms and two legs only, plausible joints. Full bicorne and boots visible. Same body scale, same grounded baseline relative to each equal-sized cell, wide transparent gutters, no overlapping subjects, room for extended limbs.\nActual transparent alpha background. NO scenery, NO floor shadows, NO lettering, NO panel borders, NO painted checkerboard or solid background. Clean color edges matching local costume colors: no red/green chroma-key fringe or stray colored matte pixels. Read poses left to right then next row. Exactly THREE full-body poses in ONE ROW of three equal cells. Reaction to invisible punch coming from RIGHT. 1 face grimaces and head recoils slightly LEFT, 2 strongest backward head and torso recoil LEFT, 3 recovering toward original RIGHT-facing guard. Do not turn entire fighter around. Bicorne stays on head. Hands open slightly and guard disrupted, boots grounded. No attacker, no blood or injury marks, no effects.",
+    "file": "/Users/eth3rnit3/code/patate-de-forain/assets/characters/napoleon/source/napoleon_hit_high_hd_v01.png"
+  },
+  {
+    "asset": "block_high",
+    "expected_frames": 3,
+    "expected_grid": {
+      "columns": 3,
+      "rows": 1
+    },
+    "status": "source-to-review",
+    "prompt": "Use case: identity-preserve. Asset type: HD hand-drawn 2D fighting-game animation SOURCE SHEET.\nInput is the MASTER NAPOLEON CHARACTER IDENTITY REFERENCE. Match its CENTRAL combat figure exactly: clean-shaven stern adult Napoleon, short dark brown hair, broad black bicorne worn across head with thin gold trim, small tricolor cockade, open gray knee-length greatcoat with split tails and fitted sleeves, forest-green inner uniform with scarlet collar and cuffs, small gold chest medal, white waistcoat and trousers, black knee-high boots, curved sabre always SHEATHED at hip. Same face, costume and compact athletic proportions in EVERY pose. No Saint Louis costume, no crown, no fleurs-de-lis. Bare hands.\nExact polished HD ink linework and cel shading of reference, smooth clean anti-aliased contours, discreet gradients, NO pixel art, no 3D. Fighter always faces RIGHT in three-quarter fighting-game side view. Two arms and two legs only, plausible joints. Full bicorne and boots visible. Same body scale, same grounded baseline relative to each equal-sized cell, wide transparent gutters, no overlapping subjects, room for extended limbs.\nActual transparent alpha background. NO scenery, NO floor shadows, NO lettering, NO panel borders, NO painted checkerboard or solid background. Clean color edges matching local costume colors: no red/green chroma-key fringe or stray colored matte pixels. Read poses left to right then next row. Exactly THREE full-body poses in ONE ROW of three equal cells. Standing high block against invisible attack from RIGHT. 1 both forearms rising in front of face, 2 tight forearm guard shielding face and upper chest with slight backward lean LEFT, 3 easing back toward original guard. Distinct arm positions. Feet planted, hat stays on, no attacker, no effects, no drawn weapon.",
+    "file": "/Users/eth3rnit3/code/patate-de-forain/assets/characters/napoleon/source/napoleon_block_high_hd_v01.png"
+  },
+  {
+    "asset": "stand_kick_light",
+    "expected_frames": 6,
+    "expected_grid": {
+      "columns": 3,
+      "rows": 2
+    },
+    "status": "source-to-review",
+    "prompt": "Use case: identity-preserve. Asset type: HD hand-drawn 2D fighting-game animation SOURCE SHEET.\nInput is the MASTER NAPOLEON CHARACTER IDENTITY REFERENCE. Match its CENTRAL combat figure exactly: clean-shaven stern adult Napoleon, short dark brown hair, broad black bicorne worn across head with thin gold trim, small tricolor cockade, open gray knee-length greatcoat with split tails and fitted sleeves, forest-green inner uniform with scarlet collar and cuffs, small gold chest medal, white waistcoat and trousers, black knee-high boots, curved sabre always SHEATHED at hip. Same face, costume and compact athletic proportions in EVERY pose. No Saint Louis costume, no crown, no fleurs-de-lis. Bare hands.\nExact polished HD ink linework and cel shading of reference, smooth clean anti-aliased contours, discreet gradients, NO pixel art, no 3D. Fighter always faces RIGHT in three-quarter fighting-game side view. Two arms and two legs only, plausible joints. Full bicorne and boots visible. Same body scale, same grounded baseline relative to each equal-sized cell, wide transparent gutters, no overlapping subjects, room for extended limbs.\nActual transparent alpha background. NO scenery, NO floor shadows, NO lettering, NO panel borders, NO painted checkerboard or solid background. Clean color edges matching local costume colors: no red/green chroma-key fringe or stray colored matte pixels. Read poses left to right then next row. Exactly SIX full-body poses in 3 columns and 2 rows. One fast FRONT SNAP KICK toward RIGHT at waist level. 1 guard, 2 front knee chambers high, 3 boot starts extending forward, 4 fully extended kick with boot sole striking right and rear support boot planted, 5 retract front knee bent, 6 return to original guard. Hands protect face, torso leans slightly back at extension. Separate coat tails clearly expose the kicking leg. No additional limbs. Enough margin for extended boot.",
+    "file": "/Users/eth3rnit3/code/patate-de-forain/assets/characters/napoleon/source/napoleon_stand_kick_light_hd_v01.png"
+  },
+  {
+    "asset": "stand_kick_heavy",
+    "expected_frames": 8,
+    "expected_grid": {
+      "columns": 4,
+      "rows": 2
+    },
+    "status": "source-to-review",
+    "prompt": "Use case: identity-preserve. Asset type: HD hand-drawn 2D fighting-game animation SOURCE SHEET.\nInput is the MASTER NAPOLEON CHARACTER IDENTITY REFERENCE. Match its CENTRAL combat figure exactly: clean-shaven stern adult Napoleon, short dark brown hair, broad black bicorne worn across head with thin gold trim, small tricolor cockade, open gray knee-length greatcoat with split tails and fitted sleeves, forest-green inner uniform with scarlet collar and cuffs, small gold chest medal, white waistcoat and trousers, black knee-high boots, curved sabre always SHEATHED at hip. Same face, costume and compact athletic proportions in EVERY pose. No Saint Louis costume, no crown, no fleurs-de-lis. Bare hands.\nExact polished HD ink linework and cel shading of reference, smooth clean anti-aliased contours, discreet gradients, NO pixel art, no 3D. Fighter always faces RIGHT in three-quarter fighting-game side view. Two arms and two legs only, plausible joints. Full bicorne and boots visible. Same body scale, same grounded baseline relative to each equal-sized cell, wide transparent gutters, no overlapping subjects, room for extended limbs.\nActual transparent alpha background. NO scenery, NO floor shadows, NO lettering, NO panel borders, NO painted checkerboard or solid background. Clean color edges matching local costume colors: no red/green chroma-key fringe or stray colored matte pixels. Read poses left to right then next row. Exactly EIGHT full-body poses in 4 columns and 2 rows. One powerful HIGH SIDE KICK toward RIGHT at shoulder/head level. 1 guard, 2 shift weight onto rear supporting boot, 3 front knee chambered across torso, 4 leg halfway extended, 5 full side-kick extension with torso leaning LEFT and standing leg firmly on ground, 6 knee retracting, 7 boot lowering, 8 original guard. Strong distinct attack silhouette, no splits or extra legs. Open gray coat tails flow naturally. Generous cell widths for extension, no clipped boots.",
+    "file": "/Users/eth3rnit3/code/patate-de-forain/assets/characters/napoleon/source/napoleon_stand_kick_heavy_hd_v01.png"
+  },
+  {
+    "asset": "special_imperial_volley_cast",
+    "expected_frames": 8,
+    "expected_grid": {
+      "columns": 4,
+      "rows": 2
+    },
+    "status": "source-to-review",
+    "prompt": "Use case: identity-preserve. Asset type: HD hand-drawn 2D fighting-game animation SOURCE SHEET.\nInput is the MASTER NAPOLEON CHARACTER IDENTITY REFERENCE. Match its CENTRAL combat figure exactly: clean-shaven stern adult Napoleon, short dark brown hair, broad black bicorne worn across head with thin gold trim, small tricolor cockade, open gray knee-length greatcoat with split tails and fitted sleeves, forest-green inner uniform with scarlet collar and cuffs, small gold chest medal, white waistcoat and trousers, black knee-high boots, curved sabre always SHEATHED at hip. Same face, costume and compact athletic proportions in EVERY pose. No Saint Louis costume, no crown, no fleurs-de-lis. Bare hands.\nExact polished HD ink linework and cel shading of reference, smooth clean anti-aliased contours, discreet gradients, NO pixel art, no 3D. Fighter always faces RIGHT in three-quarter fighting-game side view. Two arms and two legs only, plausible joints. Full bicorne and boots visible. Same body scale, same grounded baseline relative to each equal-sized cell, wide transparent gutters, no overlapping subjects, room for extended limbs.\nActual transparent alpha background. NO scenery, NO floor shadows, NO lettering, NO panel borders, NO painted checkerboard or solid background. Clean color edges matching local costume colors: no red/green chroma-key fringe or stray colored matte pixels. Read poses left to right then next row. Exactly EIGHT full-body poses in 4 columns and 2 rows. Special attack IMPERIAL VOLLEY: Napoleon gives a forceful command that will summon a separately composited spectral cannonball. Character ONLY, no projectile or cannon or effects. 1 original fist guard, 2 plant boots and straighten torso slightly, 3 front hand drawn back near chest opening to command, 4 front arm beginning to extend RIGHT, 5 full commanding point RIGHT with front index finger extended at opponent chest height and rear hand near torso, 6 hold decisive pointing release pose, 7 retract front arm closing hand, 8 original fists guard. No weapon draw, no salute, no walking. Commander body language with readable forefinger silhouette, same grounded baseline.",
+    "file": "/Users/eth3rnit3/code/patate-de-forain/assets/characters/napoleon/source/napoleon_special_imperial_volley_cast_hd_v01.png"
+  },
+  {
+    "asset": "portrait",
+    "expected_frames": 1,
+    "expected_grid": {
+      "columns": 1,
+      "rows": 1
+    },
+    "status": "source-to-review",
+    "prompt": "Use case: identity-preserve. Asset type: HD hand-drawn 2D fighting-game animation SOURCE SHEET.\nInput is the MASTER NAPOLEON CHARACTER IDENTITY REFERENCE. Match its CENTRAL combat figure exactly: clean-shaven stern adult Napoleon, short dark brown hair, broad black bicorne worn across head with thin gold trim, small tricolor cockade, open gray knee-length greatcoat with split tails and fitted sleeves, forest-green inner uniform with scarlet collar and cuffs, small gold chest medal, white waistcoat and trousers, black knee-high boots, curved sabre always SHEATHED at hip. Same face, costume and compact athletic proportions in EVERY pose. No Saint Louis costume, no crown, no fleurs-de-lis. Bare hands.\nExact polished HD ink linework and cel shading of reference, smooth clean anti-aliased contours, discreet gradients, NO pixel art, no 3D. Fighter always faces RIGHT in three-quarter fighting-game side view. Two arms and two legs only, plausible joints. Full bicorne and boots visible. Same body scale, same grounded baseline relative to each equal-sized cell, wide transparent gutters, no overlapping subjects, room for extended limbs.\nActual transparent alpha background. NO scenery, NO floor shadows, NO lettering, NO panel borders, NO painted checkerboard or solid background. Clean color edges matching local costume colors: no red/green chroma-key fringe or stray colored matte pixels. Read poses left to right then next row. ONE SINGLE square selection portrait, from mid-chest up. Ignore animation grid instructions: one subject only. Napoleon looks three-quarter RIGHT with stern confident commanding expression. Exact face and costume of reference, black gold-trimmed bicorne ENTIRELY visible with at least ten percent clear margin above and to either side, chest medal, red collar, green uniform and gray coat lapels. Same polished HD cel-shaded ink art, detailed readable face. No UI frame, no text, transparent background.",
+    "file": "/Users/eth3rnit3/code/patate-de-forain/assets/characters/napoleon/source/napoleon_portrait_hd_v01.png"
+  },
+  {
+    "asset": "special_imperial_volley_projectile",
+    "expected_frames": 4,
+    "expected_grid": {
+      "columns": 2,
+      "rows": 2
+    },
+    "status": "source-to-review",
+    "prompt": "Use case: stylized-concept. Asset type: transparent HD 2D fighting-game projectile animation source sheet. Input image is only a visual style reference. Create EXACTLY FOUR isolated frames in a 2-column by 2-row square sheet of equal cells, read left-right then next row. ONE spectral cannonball traveling RIGHT: a compact dark gunmetal iron sphere, bright icy BLUE and pale CYAN magical rim, short tapered cool-blue smoky energy trail flowing LEFT. Distinct from a gold fireball. No actual cannon or character. Same ball diameter and core center in all four cells, small rhythmic variations in trail and rim light for a seamless looping flight animation. Crisp polished hand-drawn ink/cel-shaded style, controlled small glow with genuine alpha. Each effect fits within its cell with at least 15 percent empty padding ALL AROUND, no overlap or clipping. True transparent background, no solid color, no checkerboard, no text, no gridlines, no noise or colored matte fringes. Palette charcoal, slate blue, cyan and pale white only.",
+    "file": "/Users/eth3rnit3/code/patate-de-forain/assets/characters/napoleon/source/napoleon_special_imperial_volley_projectile_hd_v01.png"
+  },
+  {
+    "asset": "special_imperial_volley_impact",
+    "expected_frames": 4,
+    "expected_grid": {
+      "columns": 2,
+      "rows": 2
+    },
+    "status": "source-to-review",
+    "prompt": "Use case: stylized-concept. Asset type: transparent HD 2D fighting-game magical impact source sheet. Input image is only a visual style reference. Create EXACTLY FOUR isolated impact animation stages in a 2-column by 2-row square sheet of equal cells, read left-right then next row. Hit effect for a SPECTRAL CANNONBALL: 1 small bright icy blue-white spark, 2 sharp expanding blue-white radial shock burst with a few slate-colored shards, 3 dispersing thin cyan arcs and cool gray wisps with center opening, 4 sparse fading blue sparks and gray wisps. Same effect center within each equal cell, largest burst shrunk enough to leave at least 15 percent empty padding on ALL FOUR SIDES. No touching or overlapping cells, nothing clipped. No literal cannonball remaining. Clean polished HD 2D ink and cel-shaded VFX, controlled glow with genuine transparent alpha background, no solid fill or checkerboard. No character, no environment, no lettering or gridlines. Cool blue/cyan/white/gray palette only, no red, green or gold matte fringes, no noisy speckles.",
+    "file": "/Users/eth3rnit3/code/patate-de-forain/assets/characters/napoleon/source/napoleon_special_imperial_volley_impact_hd_v01.png"
+  }
+]
+

@@ -27,7 +27,7 @@ Deux combattants jouables, **Saint Louis** et **Napoléon**, dans Unity 6000.4.7
 
 ## Ce qui a été vérifié, et comment
 
-- **@@TESTS@@ tests EditMode, tous verts** : @@TESTS@@/@@TESTS@@ au dernier lancement, en mode batch (`unity test --mode EditMode .`). Ils couvrent :
+- **115 tests EditMode, tous verts** : 115/115 au dernier lancement (le test du relais, `[Explicit]`, lancé à part avec le relais local), en mode batch (`unity test --mode EditMode .`). Ils couvrent :
   - **chronologie** : les phases tombent aux ticks exacts, l'appui sur un bouton déclenche le coup mais pas son maintien, quart de cercle selon l'orientation ;
   - **dégâts** : un seul impact par coup, étourdissement plus gel, recul exact, échange de coups simultanés ;
   - **garde** : tenir arrière, garde de proximité, pas de garde en pleine attaque, attaque non blocable ;
@@ -59,6 +59,8 @@ Deux combattants jouables, **Saint Louis** et **Napoléon**, dans Unity 6000.4.7
 - **Boucle temps réel, en mode Play normal sans pilotage** : 252 ticks simulés en environ 4,2 secondes, soit environ 60 par seconde ; l'horloge à pas fixe et la boucle `Update` fonctionnent.
 
 - **Export WebGL** : construit en mode batch (`WebBuilder`, 82 s), servi en statique et ouvert dans un navigateur Chromium : les deux Saint Louis se chargent (lecture des paquets JSON avec Newtonsoft intacte après IL2CPP, sans `link.xml`), marchent et se frappent sur des touches maintenues (événements clavier simulés dans la page, pas une frappe humaine), les jauges baissent, aucune erreur dans la console. Environ 13 Mo à télécharger à l'époque ; 14,4 Mo depuis le décor de la fête foraine (vérifié de même, décor affiché derrière le combat, aucune erreur). Seuls avertissements : `getInternalformatParameter: invalid internalformat`, émis par le moteur au démarrage, sans effet visible. L'atlas en BC7 dépend de l'extension `EXT_texture_compression_bptc`, présente ici ; non essayé sans.
+- **Ensemble fusionné (Napoléon, décor, manettes et IA, menus, en ligne), en WebGL** : environ 19 Mo à télécharger. Parcours vérifié au clavier simulé : titre au logo → modes → Solo → sélection (Napoléon contre Saint Louis tenu par l'ordinateur, décor) → combat sur la fête foraine, où l'ordinateur attaque, garde et lance la fleur de lys → KO → résultat → retour au menu → salon en ligne. En ligne : deux onglets Chrome sans interface (`server/relay`, `npm run essai:onglets`) jouent deux manches avec revanche via le relais local, même empreinte finale des deux côtés, rollbacks sans désynchronisation. Aucune erreur dans la console.
+- **Défauts vus à la fusion** : en fin de manche en ligne, l'invite propre au mode en ligne se superpose à celle du HUD ; le salon en ligne garde un style provisoire, pas celui des autres menus ; en Solo, l'annonce de victoire dit « J2 » plutôt que « Ordinateur ».
 
 - **Napoléon en WebGL** : build batch de la branche, servi en statique, ouvert dans Chromium. **F3** fait passer le joueur 1 à Napoléon, puis **F3**/**F4** inversent les côtés. Événements clavier simulés dans la page. Vérifié avec les boîtes (**F1**) :
   - la Salve impériale part du doigt, à hauteur de poitrine, et touche Saint Louis ;

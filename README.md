@@ -32,7 +32,7 @@ python3 -m http.server 8765 --directory game/WebBuild
 
 puis ouvrir <http://localhost:8765> et **cliquer dans le jeu** pour lui donner le clavier. Ouvrir `index.html` directement depuis le disque ne fonctionne pas.
 
-Poids téléchargé : environ **@@POIDS@@**.
+Poids téléchargé : environ **19 Mo** (code 7,6 Mo, données 10,5 Mo : atlas de Saint Louis et de Napoléon, décor de la fête foraine, images de l'interface).
 
 La page vient du gabarit `game/Assets/WebGLTemplates/PatateDeForain/` (choisi par `WebBuilder`) : le logo et une barre de progression pendant le chargement, puis le jeu en 16:9 ajusté à la taille de la fenêtre, un bouton plein écran et le rappel des commandes. L'écran « Made with Unity » est désactivé.
 
@@ -112,7 +112,7 @@ Code : `Ui.cs` (palette et éléments graphiques), `MenuInput.cs` (commandes des
 
 ## Vérifier
 
-- **Tests (@@TESTS@@)** : dans Unity, *Window › General › Test Runner › EditMode › Run All*. Ou en ligne de commande, éditeur ouvert, depuis `game/` : `unity command test run --mode editor`.
+- **Tests (115)** : dans Unity, *Window › General › Test Runner › EditMode › Run All*. Ou en ligne de commande, éditeur ouvert, depuis `game/` : `unity command test run --mode editor`.
 - **Paquets de combattants** : menu *Patate de Forain › Valider les combattants*.
 - **Scénario en jeu scripté** : `AgentScripts/VerifyMatch.cs` (mode d'emploi en tête de fichier).
 

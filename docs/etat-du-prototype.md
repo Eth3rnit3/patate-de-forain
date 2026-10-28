@@ -25,7 +25,7 @@ Deux combattants jouables, **Saint Louis** et **Napoléon**, à deux joueurs sur
 
 ## Ce qui a été vérifié, et comment
 
-- **74 tests EditMode, tous verts** : 74/74 au dernier lancement, en mode batch via la CLI `unity` (69 avant l'ajout de Napoléon). Ils couvrent :
+- **88 tests EditMode, tous verts** : 88/88 au dernier lancement, en mode batch (`unity test --mode EditMode .`). Ils couvrent :
   - **chronologie** : les phases tombent aux ticks exacts, l'appui sur un bouton déclenche le coup mais pas son maintien, quart de cercle selon l'orientation ;
   - **dégâts** : un seul impact par coup, étourdissement plus gel, recul exact, échange de coups simultanés ;
   - **garde** : tenir arrière, garde de proximité, pas de garde en pleine attaque, attaque non blocable ;
@@ -39,7 +39,9 @@ Deux combattants jouables, **Saint Louis** et **Napoléon**, à deux joueurs sur
   - **Napoléon contre Saint Louis** : la Salve impériale touche Saint Louis immobile (90 dégâts) ; Napoléon le met KO avec ses trois coups normaux, qui portent tous ;
   - **politiques de statistiques** : modes libre et équilibré ;
   - **session** : combat miroir réel joué jusqu'au KO sans rendu, replay par le journal d'entrées, nouvelle manche, horloge à pas fixe à 144 Hz ;
-  - **clavier** : correspondances des deux joueurs, vérifiées sur un clavier virtuel.
+  - **clavier** : correspondances des deux joueurs, vérifiées sur un clavier virtuel ;
+  - **manette** : directions (stick, croix), boutons de face, manette débranchée, « appuyer pour rejoindre », sur une manette virtuelle de l'Input System ;
+  - **adversaire de l'ordinateur** : il gagne par KO contre un adversaire immobile à chaque niveau, avec Saint Louis et avec le combattant de synthèse ; il garde parfois des projectiles ; le niveau difficile garde et frappe davantage que le facile ; même graine, même partie, y compris après « recommencer ».
 - **Les tests détectent bien les régressions** : en cassant volontairement « un seul impact par coup » et la garde, 12 tests échouent.
 - **Le domaine ne dépend pas d'Unity** : `noEngineReferences` sur Combat, Content et Application.
 - **En jeu, mode Play** : un scénario scripté (`AgentScripts/VerifyMatch.cs`) a été joué jusqu'au bout, avec des captures d'écran contrôlées à chaque étape :
@@ -61,6 +63,10 @@ Deux combattants jouables, **Saint Louis** et **Napoléon**, à deux joueurs sur
   - aucune erreur dans la console.
 
   Défaut relevé, antérieur à Napoléon : le panneau de débogage demande la police Menlo, absente en WebGL. Son texte reste vide et la console reçoit un avertissement à chaque image.
+
+- **Manettes et IA en WebGL** (même navigateur, page en arrière-plan, boucle d'affichage remplacée par une boucle à 60 Hz pour rester en temps réel) :
+  - clavier contre l'ordinateur (niveau normal) : l'IA avance, frappe, lance la fleur de lys et gagne la manche contre une suite de touches simulées ; l'aide **F2** affiche « Ordinateur — Niveau : Normal » ;
+  - manette simulée dans la page (faux `navigator.getGamepads()`, disposition standard) : Unity la reconnaît comme `WebGLGamepad`, chaque bouton donne la bonne commande (X poing, A pied rapide, B pied puissant, Y spécial, stick et croix pour les directions), `Connected()` et `JustPressed()` la signalent, l'aide affiche « X / Carré »… Ce n'est **pas une vraie manette** : aucune manette physique Xbox ou PlayStation n'a été essayée, ni dans le navigateur ni dans l'éditeur.
 
 **Pas vérifié par moi** : une vraie partie au clavier, à deux humains, avec la sensation de jeu. C'est le prochain essai à faire. Il n'y a pas eu d'export autonome (PC, Mac), ni d'essai WebGL sous Safari ou Firefox.
 
@@ -85,7 +91,8 @@ Deux combattants jouables, **Saint Louis** et **Napoléon**, à deux joueurs sur
 - **Alignement de l'export** : il cale le pied arrière (ou le buste pour la marche) mais ne conserve pas les déplacements dessinés dans les planches. Les échelles par planche gardent quelques pour cent d'écart.
 - **Animations de garde et de marche jouées telles quelles** : six poses de garde quasi identiques, cycle de marche non retravaillé (voir les contrôles de l'équipe artistique).
 - **Aucun son** : les signaux sont branchés, mais sans fichier.
-- **Clavier** : un seul échantillon par image d'affichage, donc un appui plus court qu'une image peut être manqué. Certains claviers ne détectent pas toutes les combinaisons de touches simultanées (ghosting). Pas de manette.
+- **Clavier** : un seul échantillon par image d'affichage, donc un appui plus court qu'une image peut être manqué. Certains claviers ne détectent pas toutes les combinaisons de touches simultanées (ghosting). Même échantillonnage par image pour la manette.
+- **Adversaire de l'ordinateur** : sans saut ni accroupissement, il n'a pas de réponse à un adversaire qui ne fait que lancer des projectiles de loin (il garde sans avancer). Pas de combos.
 - **Pause** : le jeu se met en pause quand la fenêtre perd le focus.
 - **Pas encore faits** : jeu en ligne, rollback, import de paquets et signature (voir l'[architecture](architecture.md)).
 

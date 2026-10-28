@@ -10,8 +10,8 @@ Chaque couche est une assembly (`.asmdef`). Les dépendances vont toujours vers 
 |---|---|---|---|
 | `Patate.Combat` | `game/Assets/Scripts/Combat` | **Domaine** : états, coups, chronologie, collisions, dégâts, garde, projectiles, manche, sérialisation | rien (`noEngineReferences`) |
 | `Patate.Content` | `game/Assets/Scripts/Content` | Format des paquets de combattants et de décors, validation, empreintes, choix de l'image à afficher | Combat, Newtonsoft.Json |
-| `Patate.Application` | `game/Assets/Scripts/Application` | **Cas d'usage** : sélectionner les combattants et lancer, avancer d'un tick, recommencer, horloge à pas fixe, sources d'entrées | Combat, Content |
-| `Patate.Unity` | `game/Assets/Scripts/Unity` | **Adaptateurs** : chargement depuis `Resources`, sprites, clavier, rendu, interface, audio, décor, préférences | tout ce qui précède + Unity |
+| `Patate.Application` | `game/Assets/Scripts/Application` | **Cas d'usage** : sélectionner les combattants et lancer, avancer d'un tick, recommencer, horloge à pas fixe, sources d'entrées, adversaire de l'ordinateur | Combat, Content |
+| `Patate.Unity` | `game/Assets/Scripts/Unity` | **Adaptateurs** : chargement depuis `Resources`, sprites, clavier, manettes, rendu, interface, audio, décor, préférences | tout ce qui précède + Unity |
 | `Patate.Editor` | `game/Assets/Scripts/Editor` | Réglages d'import des images, menu de validation | éditeur Unity |
 
 Les trois premières assemblies sont compilées avec `noEngineReferences: true`. Une référence à `UnityEngine` y est donc une **erreur de compilation**, pas une simple convention.
@@ -45,6 +45,40 @@ Ordre de résolution d'un tick, emplacement 0 avant 1 :
 - **Garde** : tenir la direction opposée à la source dans un état disponible. Face à une menace proche, le combattant garde sur place au lieu de reculer.
 - **Projectiles** : émission unique à l'entrée d'un segment, à un point relatif au pivot. Limite d'instances par lanceur, durée de vie, sortie d'arène, annulation entre projectiles adverses.
 
+## Les entrées : clavier, manette, ordinateur
+
+Le combat ne connaît que des `Buttons` par tick (`IInputProvider`). `FightScreen` crée une source par joueur avec `InputSources.Create(PlayerSource, place, session)`, appelle `Sample()` une fois par image, puis la session lit `InputFor(tick)` à chaque tick simulé.
+
+| Source | Classe | Particularités |
+|---|---|---|
+| `Keyboard(0)` / `Keyboard(1)` | `KeyboardInput` | Positions physiques de touches, moitiés gauche et droite |
+| `Gamepad(id)` | `GamepadInput` | `id` = `InputDevice.deviceId`, stable tant que la manette reste branchée. Stick gauche (seuil 0,5) ou croix ; poing à l'ouest (X, Carré), pied rapide au sud (A, Croix), pied puissant à l'est (B, Rond), spécial au nord (Y, Triangle). Une manette absente donne `None` |
+| `Cpu(niveau)` | `CpuInput` → `CpuPlayer` | Rien à lire par image : décide à chaque tick en lisant la session |
+
+En WebGL, l'Input System lit l'API Gamepad du navigateur (disposition standard). Le navigateur ne signale une manette qu'après un premier appui sur l'un de ses boutons.
+
+**Sélection des joueurs** : `InputSources.Connected()` liste les sources branchées (deux moitiés du clavier, chaque manette) ; `InputSources.JustPressed()` donne celles qui viennent d'appuyer sur un bouton d'attaque (ou Start, ou une gâchette haute) pendant l'image, pour « appuyer pour rejoindre » ; `InputSources.Describe` donne leur nom. Ces fonctions sont sans état : l'écran retient qui a rejoint.
+
+### L'adversaire de l'ordinateur
+
+`CpuPlayer` (`Patate.Application`, C# pur) reçoit l'état qui précède chaque tick et produit des `Buttons`, comme un joueur. Il ne connaît aucun personnage : tout est lu dans le gameplay compilé.
+
+- **Coups** : pour chaque coup, la commande la plus simple (appui direct de préférence, sinon le mouvement est exécuté tick par tick), le premier tick actif, et s'il lance un projectile (`SpawnProjectileAction`).
+- **Portée** : un coup est « à portée » si l'une de ses hitboxes actives, placée depuis la position actuelle (avancée des segments comprise), recouvre une hurtbox adverse. Ce sont les mêmes fonctions (`Geometry`, `Hitboxes`) que la résolution des contacts.
+- **Perception** : l'action adverse est vue avec le retard du niveau (temps de réaction). Chaque menace (coup proche, lancer en préparation, projectile qui approche) donne lieu à **un** tirage : garder ou non. La garde (tenir arrière) n'est prise que face à une menace réelle, pour ne pas reculer sans raison.
+- **Choix** : punir une récupération adverse, attaquer à portée (le coup le plus rapide ou un autre), lancer un projectile quand aucun projectile adverse ne toucherait pendant la préparation, sinon avancer, attendre ou reculer.
+- **Respect des règles d'entrée** : un bouton n'est appuyé que si le combattant peut agir et n'est pas gelé, puis relâché au tick suivant (les commandes se déclenchent à l'appui).
+
+| Niveau | Réaction | Choix tous les | Garde | Attaque à portée |
+|---|---|---|---|---|
+| 0 Facile | 24 ticks | 20 ticks | 20 % | 35 %, frappe parfois dans le vide |
+| 1 Normal | 14 ticks | 12 ticks | 50 % | 45 % |
+| 2 Difficile | 7 ticks | 6 ticks | 85 % | 60 %, coup le plus rapide de préférence |
+
+Le hasard est un xorshift à graine, identique sur toutes les plateformes : même graine et mêmes entrées adverses donnent la même partie, et **recommencer** rejoue la même suite. `InputSources` tire une graine différente à chaque combat ; les tests fixent la leur. Le journal des entrées (`InputLog`) suffit à rejouer une manche contre l'ordinateur.
+
+Limites : sans saut ni accroupissement dans le moteur, l'IA (comme un joueur) n'a pas de réponse à un adversaire qui ne fait que lancer des projectiles à distance : elle garde mais n'avance pas. Elle n'enchaîne pas de combos et ne lit pas les commandes adverses.
+
 ## Le rendu observe
 
 `MatchView` lit l'état après chaque tick et en déduit les images. Le choix de l'image (`FramePicker`, dans `Patate.Content`) dépend de l'action et de son tick, jamais de l'inverse. La durée d'un coup vient du gameplay ; la validation refuse une animation de coup dont la durée totale diffère de celle du coup.
@@ -61,7 +95,7 @@ Les effets visuels (impacts, tremblement de caméra) et les sons réagissent aux
 | Mécanique vraiment nouvelle (téléportation, prise…) | Une classe `SegmentAction`, son traitement dans `SegmentActions` (domaine), sa lecture dans `FighterPackageReader`. Disponible ensuite pour tous les combattants |
 | Sons | `Resources/Audio/sound-bank.json` (signaux communs) ou `presentation.json › sounds` (signaux propres à un combattant, ex. `moveStart:stand_kick_heavy`) |
 | Décors | `Resources/Stages/<id>/stage.json` : couleurs, calques d'image avec parallaxe, musique |
-| Autre source d'entrées (manette, IA, réseau) | Implémenter `IInputProvider` (`ILocalInput` si elle est lue sur cette machine) et la créer dans `InputSources` à partir d'un `PlayerSource` |
+| Autre source d'entrées (réseau, replay…) | Implémenter `IInputProvider` (`ILocalInput` si elle est lue sur cette machine) et la créer dans `InputSources` à partir d'un `PlayerSource` |
 | Nouvel écran ou mode (menu, salon en ligne…) | Implémenter `IGameScreen` et ajouter sa fabrique à `GameFlow`. Les menus remplissent `GameFlow.Setup` (`MatchSetup` : mode, combattants, décor, source des commandes de chaque joueur), que `FightScreen` consomme |
 | Mode de jeu à statistiques encadrées | `StatPolicy` (voir plus bas) |
 

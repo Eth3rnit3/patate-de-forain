@@ -50,6 +50,15 @@ namespace Patate.UnityAdapters
 
         public Buttons InputFor(int tick) => sampled;
 
+        /// <summary>Une touche d'attaque de cette moitié vient d'être enfoncée (appuyer pour rejoindre).</summary>
+        public bool JustPressed()
+        {
+            var keyboard = Keyboard.current;
+            if (keyboard == null) return false;
+            const Buttons directions = Buttons.Left | Buttons.Right | Buttons.Up | Buttons.Down;
+            return bindings.Any(b => (b.button & directions) == 0 && b.keys.Any(k => keyboard[k].wasPressedThisFrame));
+        }
+
         /// <summary>Aide lisible : nom affiché des touches selon la disposition active.</summary>
         public IEnumerable<(string action, string keys)> Help()
         {

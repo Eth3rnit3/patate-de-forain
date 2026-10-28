@@ -2,7 +2,7 @@
 
 ## Ce qui fonctionne en jeu
 
-Deux combattants jouables, **Saint Louis** et **Napoléon**, à deux joueurs sur un clavier, dans Unity 6000.4.7f1 (scène `Assets/Scenes/Combat.unity`). Le jeu démarre en miroir Saint Louis ; **F3** / **F4** changent le combattant du joueur 1 / 2.
+Deux combattants jouables, **Saint Louis** et **Napoléon**, dans Unity 6000.4.7f1 (scène `Assets/Scenes/Combat.unity`), au clavier ou à la manette, avec le parcours complet : titre, choix du mode (versus local, solo contre l'ordinateur, en ligne), sélection des personnages et du décor, combat, résultat.
 
 - **Déplacements** : marche avant et arrière, orientation automatique vers l'adversaire, collision corporelle (pousser l'adversaire en avançant), limites de l'arène, écart maximal entre combattants.
 - **Coups** :
@@ -15,8 +15,10 @@ Deux combattants jouables, **Saint Louis** et **Napoléon**, à deux joueurs sur
   - dégâts, étourdissement, gel d'impact, recul (reporté sur l'attaquant si la cible est coincée), puis retour en garde ;
   - garde en tenant arrière, avec garde sur place face à une attaque ou un projectile proche ;
   - deux projectiles adverses s'annulent ; deux coups simultanés s'échangent.
-- **Manche** : introduction, chronomètre de 99 secondes, KO ou temps écoulé, annonce du vainqueur, nouvelle manche avec **F5** ou **Entrée**.
-- **Interface** : barres de vie, portraits, chronomètre, messages, aide des commandes (**F2**), changement de combattant (**F3**/**F4**), pause (**Échap**).
+- **Manche** : introduction, chronomètre de 99 secondes, KO ou temps écoulé, annonce du vainqueur, puis **Entrée** (ou **Start**) vers l'écran de résultat ; **F5** recommence la manche.
+- **Menus** : écran titre avec le logo, choix du mode (Versus local, Solo contre l'ordinateur avec trois niveaux, En ligne), sélection des personnages (appuyer pour rejoindre au clavier ou à la manette, portraits, choix du décor quand il y en a plusieurs), résultat (revanche, changer de personnage, retour au menu). Navigation au clavier et à la manette.
+- **Interface de combat** : portraits, jauges de vie avec traînée des dégâts, chronomètre, noms et appareil de chaque joueur, annonces de manche peintes, pause, aide des commandes (**F2**), changement de combattant (**F3**/**F4**).
+- **Navigateur** : gabarit WebGL au logo du jeu pendant le chargement, jeu ajusté à la fenêtre.
 - **Débogage (F1)** :
   - boîtes de la simulation : pushbox, hurtboxes, hitboxes actives et consommées, projectiles ;
   - pivot, état, tick et gel de chaque combattant ;
@@ -25,7 +27,7 @@ Deux combattants jouables, **Saint Louis** et **Napoléon**, à deux joueurs sur
 
 ## Ce qui a été vérifié, et comment
 
-- **88 tests EditMode, tous verts** : 88/88 au dernier lancement, en mode batch (`unity test --mode EditMode .`). Ils couvrent :
+- **@@TESTS@@ tests EditMode, tous verts** : @@TESTS@@/@@TESTS@@ au dernier lancement, en mode batch (`unity test --mode EditMode .`). Ils couvrent :
   - **chronologie** : les phases tombent aux ticks exacts, l'appui sur un bouton déclenche le coup mais pas son maintien, quart de cercle selon l'orientation ;
   - **dégâts** : un seul impact par coup, étourdissement plus gel, recul exact, échange de coups simultanés ;
   - **garde** : tenir arrière, garde de proximité, pas de garde en pleine attaque, attaque non blocable ;
@@ -42,6 +44,8 @@ Deux combattants jouables, **Saint Louis** et **Napoléon**, à deux joueurs sur
   - **clavier** : correspondances des deux joueurs, vérifiées sur un clavier virtuel ;
   - **manette** : directions (stick, croix), boutons de face, manette débranchée, « appuyer pour rejoindre », sur une manette virtuelle de l'Input System ;
   - **adversaire de l'ordinateur** : il gagne par KO contre un adversaire immobile à chaque niveau, avec Saint Louis et avec le combattant de synthèse ; il garde parfois des projectiles ; le niveau difficile garde et frappe davantage que le facile ; même graine, même partie, y compris après « recommencer ».
+  - **sélection des personnages** : rejoindre, déplacer et verrouiller, revenir en arrière, étape du décor, Solo (le joueur choisit pour l'ordinateur), joueurs gardés en changeant de personnage, réglages produits ;
+  - **menus à la manette** : stick (un appui, puis attente avant répétition, seuil, direction dominante) et liste des appareils, sur une manette virtuelle. Les boutons et la croix (appuis « cette image ») ne se testent pas en EditMode sans le cadre de test de l'Input System : non vérifiés.
 - **Les tests détectent bien les régressions** : en cassant volontairement « un seul impact par coup » et la garde, 12 tests échouent.
 - **Le domaine ne dépend pas d'Unity** : `noEngineReferences` sur Combat, Content et Application.
 - **En jeu, mode Play** : un scénario scripté (`AgentScripts/VerifyMatch.cs`) a été joué jusqu'au bout, avec des captures d'écran contrôlées à chaque étape :
@@ -68,6 +72,8 @@ Deux combattants jouables, **Saint Louis** et **Napoléon**, à deux joueurs sur
   - clavier contre l'ordinateur (niveau normal) : l'IA avance, frappe, lance la fleur de lys et gagne la manche contre une suite de touches simulées ; l'aide **F2** affiche « Ordinateur — Niveau : Normal » ;
   - manette simulée dans la page (faux `navigator.getGamepads()`, disposition standard) : Unity la reconnaît comme `WebGLGamepad`, chaque bouton donne la bonne commande (X poing, A pied rapide, B pied puissant, Y spécial, stick et croix pour les directions), `Connected()` et `JustPressed()` la signalent, l'aide affiche « X / Carré »… Ce n'est **pas une vraie manette** : aucune manette physique Xbox ou PlayStation n'a été essayée, ni dans le navigateur ni dans l'éditeur.
 
+- **Interface, en WebGL au clavier** (événements clavier simulés dans la page, Chromium) : logo et progression pendant le chargement ; titre → modes (Solo refusé tant que l'ordinateur n'est pas branché, En ligne → salon provisoire → titre) → sélection (deux joueurs rejoignent avec F et Entrée, verrouillent, annulent avec G, aucun joueur placé par l'appui qui ouvre l'écran) → combat (annonces, jauges, étiquettes « J1 · Clavier gauche ») → K.O. → victoire → résultat → changer de personnage (joueurs gardés) et retour au menu. Page ajustée à une fenêtre 16:9 et à une fenêtre plus haute que large. Revanche non rejouée en WebGL (même appel que l'ancien écran provisoire). Manettes : navigation non essayée sur une vraie manette (seul le stick l'est, sur une manette virtuelle).
+
 **Pas vérifié par moi** : une vraie partie au clavier, à deux humains, avec la sensation de jeu. C'est le prochain essai à faire. Il n'y a pas eu d'export autonome (PC, Mac), ni d'essai WebGL sous Safari ou Firefox.
 
 ## Hypothèses à régler en jouant
@@ -81,7 +87,9 @@ Deux combattants jouables, **Saint Louis** et **Napoléon**, à deux joueurs sur
 
 ## Limites actuelles
 
-- **Une seule manche** : pas de match en deux manches gagnantes ni de sélection des combattants par écran (**F3**/**F4** font défiler le catalogue).
+- **Une seule manche** : pas de match en deux manches gagnantes.
+- **Pas de retour au menu pendant un combat** : la pause (**Échap**) n'a pas encore de menu ; il faut finir la manche.
+- **Solo et manettes en attente** : les menus sont prêts, mais l'adversaire ordinateur et la lecture des manettes en combat restent à brancher dans `InputSources` (session en cours). D'ici là, Solo est affiché « Bientôt » et une manette qui veut rejoindre est refusée avec un message.
 - **Pas d'animation dédiée** :
   - recul : marche avant lue à l'envers ;
   - KO : 2ᵉ pose de réaction tenue ;
@@ -124,7 +132,7 @@ Classés par effet sur le jeu.
    - musique du décor.
 
    OGG ou WAV. Un son propre à un coup se déclare par exemple sous `moveStart:stand_kick_heavy`.
-5. **Interface** : police, cadres des barres de vie, chronomètre, écran de sélection.
+5. **Interface** : une police au style du logo (aujourd'hui la police par défaut, détourée) ; le fond de menu et les mots d'annonce ont été générés avec Codex CLI et peuvent être remplacés dans `game/Assets/Resources/UI/` sans toucher au code.
 6. **Pour aller vers six boutons** : poing moyen et fort, pied moyen, puis les coups accroupis et sautés si on les ajoute.
 7. **Napoléon** : les mêmes besoins que Saint Louis (KO, victoire, marche arrière, impact de blocage), plus :
    - réaction haute : écarter les poses 2 et 3. La pointe de botte de la pose 2 masque le talon de la pose 3, auquel il manque donc un petit morceau ;

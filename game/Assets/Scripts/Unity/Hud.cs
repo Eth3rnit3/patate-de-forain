@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Patate.Application;
 using Patate.Combat;
 using Patate.Content;
 using UnityEngine;
@@ -7,98 +8,187 @@ using UnityEngine;
 namespace Patate.UnityAdapters
 {
     /// <summary>
-    /// Interface simple en IMGUI : barres de vie, chronomètre, messages de
-    /// manche, aide des commandes, et affichage de débogage (boîtes de
-    /// collision exactes de la simulation, états, entrées).
+    /// Interface du combat, au style de la fête foraine (voir <see cref="Ui"/>) :
+    /// portraits, jauges de vie avec traînée des dégâts récents, médaillon du
+    /// chronomètre, noms, annonces de manche peintes, pause et aide des
+    /// commandes ; plus l'affichage de débogage (boîtes de collision exactes de
+    /// la simulation, états, entrées).
     /// </summary>
     public sealed class Hud
     {
-        const float ReferenceHeight = 1080f;
-        readonly GUIStyle big, medium, small, mono;
+        const float Top = 34, BarHeight = 46, PortraitSize = 150;
+        /// <summary>Délai avant que la traînée rattrape la jauge, et sa vitesse (fraction de jauge par seconde).</summary>
+        const float TrailDelay = 0.45f, TrailSpeed = 0.7f;
 
-        public Hud()
+        readonly GUIStyle mono;
+        readonly float[] trail = { 1, 1 }, shown = { 1, 1 }, trailWait = { 0, 0 };
+        readonly string[] tags;
+
+        /// <param name="players">Source des commandes de chaque place, affichée sous le nom (« J1 · Clavier droit »).</param>
+        public Hud(PlayerSource[] players = null)
         {
-            big = new GUIStyle { fontSize = 96, fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter, normal = { textColor = new Color(1f, 0.85f, 0.3f) } };
-            medium = new GUIStyle { fontSize = 34, fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleLeft, normal = { textColor = Color.white } };
-            small = new GUIStyle { fontSize = 22, alignment = TextAnchor.UpperLeft, normal = { textColor = new Color(0.92f, 0.92f, 0.95f) }, richText = true };
-            mono = new GUIStyle(small) { fontSize = 18, font = Font.CreateDynamicFontFromOSFont(new[] { "Menlo", "Consolas", "Courier New" }, 18) };
+            tags = new string[2];
+            for (int slot = 0; slot < 2; slot++)
+                tags[slot] = players == null ? $"J{slot + 1}" : $"J{slot + 1} · {MenuInput.DeviceName(players[slot])}";
+            mono = new GUIStyle { fontSize = 18, font = Font.CreateDynamicFontFromOSFont(new[] { "Menlo", "Consolas", "Courier New" }, 18), normal = { textColor = new Color(0.92f, 0.92f, 0.95f) }, richText = true };
         }
 
         public void Draw(MatchState state, FighterVisuals[] fighters, ILocalInput[] inputs, bool showHelp, bool paused)
         {
-            var previous = GUI.matrix;
-            float scale = Screen.height / ReferenceHeight;
-            GUI.matrix = Matrix4x4.Scale(new Vector3(scale, scale, 1));
-            float width = Screen.width / scale;
+            var previous = Ui.Begin();
+            float width = Ui.Width, time = Time.unscaledTime;
+            // Voile en haut : les jauges restent lisibles sur n'importe quel décor.
+            Ui.Gradient(new Rect(0, 0, width, 240), new Color(0.02f, 0.03f, 0.12f, 0.7f), new Color(0.02f, 0.03f, 0.12f, 0));
 
-            for (int slot = 0; slot < 2; slot++) DrawHealth(slot, state.Fighters[slot], fighters[slot], width);
-            int seconds = (state.Round.Timer + 59) / 60;
-            var timerStyle = new GUIStyle(big) { fontSize = 72, normal = { textColor = Color.white } };
-            GUI.Label(new Rect(width / 2 - 80, 20, 160, 90), seconds.ToString("00"), timerStyle);
+            for (int slot = 0; slot < 2; slot++)
+            {
+                float max = Mathf.Max(1, fighters[slot].Package.Gameplay.Stats.Health);
+                UpdateTrail(slot, Mathf.Clamp01(state.Fighters[slot].Health / max));
+                DrawFighter(slot, fighters[slot], width, time);
+            }
+            DrawTimer(state, width, time);
+            DrawAnnouncement(state, fighters, width);
 
-            var message = RoundMessage(state, fighters);
-            if (message != null) GUI.Label(new Rect(0, 380, width, 200), message, big);
-            if (state.Round.Phase == RoundPhase.Over || paused)
-                GUI.Label(new Rect(0, 560, width, 60), paused ? "Pause — Échap pour reprendre" : "Entrée ou F5 : nouvelle manche", new GUIStyle(medium) { alignment = TextAnchor.MiddleCenter });
+            if (paused)
+            {
+                Ui.Fill(new Rect(0, 0, width, Ui.ReferenceHeight), new Color(0.02f, 0.03f, 0.1f, 0.6f));
+                Ui.Text(new Rect(0, 400, width, 140), "PAUSE", Ui.Style(120), Ui.Yellow, 6);
+                Ui.Text(new Rect(0, 560, width, 50), "Échap : reprendre      F5 : recommencer la manche", Ui.Style(32), Ui.Cream, 3);
+            }
+            else if (state.Round.Phase == RoundPhase.Over)
+            {
+                float blink = 0.6f + 0.4f * Mathf.Sin(time * 4);
+                Ui.Text(new Rect(0, 700, width, 50), "Entrée ou Start : continuer      F5 : rejouer la manche", Ui.Style(34), Ui.Cream, 3, blink);
+            }
 
-            if (showHelp) DrawHelp(inputs, width);
-            else GUI.Label(new Rect(20, ReferenceHeight - 40, width, 30), "F1 : débogage   F2 : commandes   F3 / F4 : changer de combattant   F5 : recommencer   Échap : pause", small);
+            if (showHelp) DrawHelp(inputs, width, time);
+            else Ui.Text(new Rect(20, Ui.ReferenceHeight - 38, width - 40, 30),
+                "F1 : débogage   F2 : commandes   F3 / F4 : changer de combattant   F5 : recommencer   Échap : pause",
+                Ui.Style(20, TextAnchor.MiddleLeft, FontStyle.Normal), new Color(1, 1, 1, 0.75f), 1.5f);
             GUI.matrix = previous;
         }
 
-        void DrawHealth(int slot, FighterState fighter, FighterVisuals visuals, float width)
+        /// <summary>
+        /// La traînée claire montre les dégâts récents puis rejoint la jauge.
+        /// Avance seulement au dessin final de l'image (OnGUI est appelé
+        /// plusieurs fois par image).
+        /// </summary>
+        void UpdateTrail(int slot, float ratio)
         {
-            const float barWidth = 620, barHeight = 36, top = 40, portrait = 110;
-            float max = Mathf.Max(1, visuals.Package.Gameplay.Stats.Health);
-            float ratio = Mathf.Clamp01(fighter.Health / max);
-            float x = slot == 0 ? 40 + portrait + 10 : width - 40 - portrait - 10 - barWidth;
-            Fill(new Rect(x - 4, top - 4, barWidth + 8, barHeight + 8), new Color(0, 0, 0, 0.7f));
-            Fill(new Rect(x, top, barWidth, barHeight), new Color(0.45f, 0.05f, 0.05f));
-            float fill = barWidth * ratio;
-            // La barre se vide vers le chronomètre, comme en arcade.
-            Fill(new Rect(slot == 0 ? x + barWidth - fill : x, top, fill, barHeight), Color.Lerp(new Color(0.95f, 0.25f, 0.1f), new Color(1f, 0.85f, 0.2f), ratio));
-            var name = new GUIStyle(medium) { alignment = slot == 0 ? TextAnchor.MiddleLeft : TextAnchor.MiddleRight };
-            GUI.Label(new Rect(x, top + barHeight + 6, barWidth, 40), $"{visuals.Package.Name}  <size=22>J{slot + 1}</size>", new GUIStyle(name) { richText = true });
-            if (visuals.Portrait != null)
+            shown[slot] = ratio;
+            if (Event.current.type != EventType.Repaint) return;
+            if (ratio >= trail[slot])
             {
-                var rect = new Rect(slot == 0 ? 40 : width - 40 - portrait, top - 10, portrait, portrait);
-                Fill(rect, new Color(0, 0, 0, 0.5f));
-                // Portrait dessiné regardant à droite : miroir pour le joueur 2.
-                if (slot == 1) GUI.DrawTextureWithTexCoords(rect, visuals.Portrait, new Rect(1, 0, -1, 1));
-                else GUI.DrawTexture(rect, visuals.Portrait, ScaleMode.ScaleToFit);
+                trail[slot] = ratio; // soin ou nouvelle manche : pas de traînée
+                trailWait[slot] = TrailDelay;
+                return;
             }
+            float delta = Time.unscaledDeltaTime;
+            if (trailWait[slot] > 0) trailWait[slot] -= delta;
+            else trail[slot] = Mathf.Max(ratio, trail[slot] - TrailSpeed * delta);
         }
 
-        static string RoundMessage(MatchState state, FighterVisuals[] fighters)
+        void DrawFighter(int slot, FighterVisuals visuals, float width, float time)
+        {
+            bool left = slot == 0;
+            var color = Ui.PlayerColors[slot];
+            float barWidth = Mathf.Max(200, width / 2 - 110 - 30 - PortraitSize - 24);
+
+            // Portrait : médaillon cerclé de la couleur du joueur.
+            var portrait = new Rect(left ? 30 : width - 30 - PortraitSize, Top - 10, PortraitSize, PortraitSize);
+            Ui.Fill(new Rect(portrait.x + 5, portrait.y + 7, portrait.width, portrait.height), new Color(0, 0, 0, 0.45f));
+            Ui.Fill(portrait, color);
+            var inner = new Rect(portrait.x + 6, portrait.y + 6, portrait.width - 12, portrait.height - 12);
+            Ui.Gradient(inner, Ui.NavyLight, Ui.Navy);
+            // Portrait dessiné regardant à droite : miroir pour le joueur 2.
+            Ui.Texture(inner, visuals.Portrait, mirror: !left);
+            Ui.Bulbs(new Rect(portrait.x + 3, portrait.y + 3, portrait.width - 6, portrait.height - 6), false, time, 37);
+
+            // Jauge de vie : cadre bleu marine et jaune, se vide vers le chronomètre comme en arcade.
+            float x = left ? portrait.xMax + 24 : portrait.x - 24 - barWidth;
+            var frame = new Rect(x - 8, Top - 8, barWidth + 16, BarHeight + 16);
+            Ui.Fill(new Rect(frame.x + 4, frame.y + 6, frame.width, frame.height), new Color(0, 0, 0, 0.45f));
+            Ui.Fill(frame, Ui.Navy);
+            Ui.Frame(new Rect(frame.x + 3, frame.y + 3, frame.width - 6, frame.height - 6), Ui.Yellow, 3);
+            var bar = new Rect(x, Top, barWidth, BarHeight);
+            Ui.Fill(bar, new Color(0.22f, 0.03f, 0.05f));
+            Rect Part(float ratio) => new Rect(left ? bar.xMax - bar.width * ratio : bar.x, bar.y, bar.width * ratio, bar.height);
+            Ui.Fill(Part(trail[slot]), new Color(1f, 0.93f, 0.8f));
+            float health = shown[slot];
+            bool danger = health < 0.25f;
+            var top = danger ? Color.Lerp(Ui.Red, Ui.Orange, 0.5f + 0.5f * Mathf.Sin(time * 10)) : Color.Lerp(Ui.Orange, Ui.Yellow, health);
+            Ui.Gradient(Part(health), top, danger ? new Color(0.6f, 0.05f, 0.05f) : Ui.Orange);
+            Ui.Fill(new Rect(bar.x, bar.y + 4, bar.width, 5), new Color(1, 1, 1, 0.18f)); // reflet
+
+            // Nom et origine des commandes sous la jauge.
+            var nameRect = new Rect(x, Top + BarHeight + 12, barWidth, 46);
+            var align = left ? TextAnchor.MiddleLeft : TextAnchor.MiddleRight;
+            Ui.Text(nameRect, visuals.Package.Name.ToUpperInvariant(), Ui.Style(36, align), Ui.Cream, 3);
+            Ui.Text(new Rect(x, nameRect.yMax, barWidth, 30), tags[slot], Ui.Style(22, align, FontStyle.Normal), color, 2);
+        }
+
+        static void DrawTimer(MatchState state, float width, float time)
+        {
+            int seconds = (state.Round.Timer + 59) / 60;
+            bool hurry = seconds <= 10 && state.Round.Phase == RoundPhase.Fight;
+            var center = new Vector2(width / 2, Top + 50);
+            float pulse = hurry ? 1 + 0.06f * Mathf.Sin(time * 12) : 1;
+            Ui.Disc(center + new Vector2(4, 6), 80, new Color(0, 0, 0, 0.45f));
+            Ui.Disc(center, 82 * pulse, Ui.Navy);
+            Ui.Disc(center, 74 * pulse, hurry ? Ui.Red : Ui.Yellow);
+            Ui.Disc(center, 66 * pulse, Ui.Navy);
+            Ui.Text(new Rect(center.x - 80, center.y - 50, 160, 100), seconds.ToString("00"), Ui.Style(Mathf.RoundToInt(72 * pulse)), hurry ? Ui.Red : Ui.Cream, 4);
+        }
+
+        void DrawAnnouncement(MatchState state, FighterVisuals[] fighters, float width)
         {
             var round = state.Round;
+            var center = new Vector2(width / 2, 440);
+            float age = round.PhaseTick / 60f;
             switch (round.Phase)
             {
-                case RoundPhase.Intro: return round.PhaseTick < 45 ? "Manche 1" : "Prêts ?";
-                case RoundPhase.Fight: return round.PhaseTick < 50 ? "Combat !" : null;
-                case RoundPhase.KO: return "K.O. !";
-                case RoundPhase.TimeOver: return "Temps écoulé";
+                case RoundPhase.Intro:
+                    if (round.PhaseTick < 45) Ui.Word("manche-1", "MANCHE 1", center, 230, age);
+                    else Ui.Word("prets", "PRÊTS ?", center, 230, (round.PhaseTick - 45) / 60f);
+                    break;
+                case RoundPhase.Fight:
+                    if (round.PhaseTick < 50) Ui.Word("combat", "COMBAT !", center, 260, age);
+                    break;
+                case RoundPhase.KO:
+                    Ui.Word("ko", "K.O. !", center, 300, age);
+                    break;
+                case RoundPhase.TimeOver:
+                    Ui.Word("temps-ecoule", "TEMPS ÉCOULÉ !", center, 230, age);
+                    break;
                 case RoundPhase.Over:
-                    return round.Winner == RoundState.Draw ? "Égalité" : $"{fighters[round.Winner].Package.Name} (J{round.Winner + 1}) l'emporte";
-                default: return null;
+                    if (round.Winner == RoundState.Draw) Ui.Word("egalite", "ÉGALITÉ", center, 230, age);
+                    else
+                    {
+                        Ui.Word("victoire", "VICTOIRE !", center, 230, age);
+                        var winner = fighters[round.Winner].Package.Name;
+                        Ui.Text(new Rect(0, center.y + 130, width, 60), $"{winner} (J{round.Winner + 1}) l'emporte", Ui.Style(44), Ui.Cream, 3, Mathf.Clamp01(age / 0.3f));
+                    }
+                    break;
             }
         }
 
-        void DrawHelp(ILocalInput[] inputs, float width)
+        void DrawHelp(ILocalInput[] inputs, float width, float time)
         {
-            var panel = new Rect(width / 2 - 620, 200, 1240, 520);
-            Fill(panel, new Color(0, 0, 0, 0.8f));
+            var panel = new Rect(width / 2 - 640, 190, 1280, 600);
+            Ui.Marquee(panel, Ui.Red, false, time, 40);
+            Ui.Text(new Rect(panel.x, panel.y + 26, panel.width, 50), "COMMANDES", Ui.Style(44), Ui.Yellow, 3);
             for (int slot = 0; slot < 2; slot++)
             {
-                float x = panel.x + 40 + slot * 600;
-                GUI.Label(new Rect(x, panel.y + 20, 560, 40), inputs[slot].Label, medium);
+                float x = panel.x + 60 + slot * 600;
+                Ui.Text(new Rect(x, panel.y + 90, 560, 40), tags[slot], Ui.Style(32, TextAnchor.MiddleLeft), Ui.PlayerColors[slot], 2);
                 int line = 0;
                 foreach (var (action, keys) in inputs[slot].Help())
-                    GUI.Label(new Rect(x, panel.y + 80 + 40 * line++, 560, 40), $"<b>{action}</b> : {keys}", small);
+                    Ui.Text(new Rect(x, panel.y + 145 + 42 * line++, 560, 40), $"<b>{action}</b> : {keys}", Ui.Style(22, TextAnchor.MiddleLeft, FontStyle.Normal, true), Ui.Cream, 0);
             }
-            GUI.Label(new Rect(panel.x + 40, panel.yMax - 120, 1160, 100),
+            Ui.Text(new Rect(panel.x + 60, panel.yMax - 120, panel.width - 120, 90),
                 "Les touches sont des positions physiques : les noms affichés suivent la disposition de votre clavier.\n" +
-                "F1 : débogage   F2 : fermer l'aide   F3 / F4 : combattant J1 / J2   F5 : recommencer   Échap : pause", small);
+                "F1 : débogage   F2 : fermer l'aide   F3 / F4 : combattant J1 / J2   F5 : recommencer   Échap : pause",
+                Ui.Style(20, TextAnchor.MiddleLeft, FontStyle.Normal, true), Ui.Muted, 0);
         }
 
         // --------------------------------------------------------------- débogage
@@ -163,12 +253,6 @@ namespace Patate.UnityAdapters
             Fill(new Rect(rect.xMax - thickness, rect.y, thickness, rect.height), color);
         }
 
-        static void Fill(Rect rect, Color color)
-        {
-            var previous = GUI.color;
-            GUI.color = color;
-            GUI.DrawTexture(rect, Texture2D.whiteTexture);
-            GUI.color = previous;
-        }
+        static void Fill(Rect rect, Color color) => Ui.Fill(rect, color);
     }
 }

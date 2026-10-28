@@ -5,8 +5,8 @@ namespace Patate.Content
 {
     /// <summary>
     /// Décor : purement visuel, il n'influence pas le combat (les limites de
-    /// l'arène sont dans MatchRules). Fond uni pour le prototype ; les calques
-    /// d'image avec parallaxe sont prêts pour les futurs décors.
+    /// l'arène sont dans MatchRules) : une couleur de fond, une couleur de sol
+    /// et des calques d'image avec parallaxe.
     /// </summary>
     public sealed class StageDefinition
     {
@@ -36,11 +36,12 @@ namespace Patate.Content
             };
             foreach (var layer in node.Array("layers", 16, required: false))
             {
-                layer.AllowOnly("image", "parallax", "y", "order");
+                layer.AllowOnly("image", "parallax", "scale", "y", "order");
                 stage.Layers.Add(new StageLayer
                 {
                     Image = layer.String("image", Image, "fichier .png du dossier du décor"),
                     ParallaxPercent = layer.Int("parallax", 0, 200, 100),
+                    ScalePercent = layer.Int("scale", 25, 400, 100),
                     Y = layer.Int("y", -4096, 4096, 0),
                     Order = layer.Int("order", -100, 100, 0),
                 });
@@ -54,6 +55,8 @@ namespace Patate.Content
         public string Image;
         /// <summary>100 = suit le sol, 0 = immobile à l'écran.</summary>
         public int ParallaxPercent = 100;
+        /// <summary>Agrandissement à l'affichage : 100 = un pixel par unité monde, 200 = deux unités par pixel.</summary>
+        public int ScalePercent = 100;
         /// <summary>Position verticale du bas de l'image, en unités monde (0 = sol).</summary>
         public int Y;
         /// <summary>Ordre d'affichage ; négatif = derrière les combattants.</summary>

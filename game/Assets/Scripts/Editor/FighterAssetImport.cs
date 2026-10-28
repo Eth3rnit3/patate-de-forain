@@ -9,6 +9,8 @@ namespace Patate.EditorTools
     /// Réglages d'import imposés aux images des paquets de combattants et de
     /// décors : taille native (les rectangles de l'atlas sont en pixels), pas
     /// de mipmaps ni de redimensionnement, filtrage linéaire pour le rendu HD.
+    /// Les dimensions doivent être des multiples de 4, sinon la compression
+    /// par blocs est impossible et l'image reste brute.
     /// </summary>
     public sealed class FighterAssetImport : AssetPostprocessor
     {
@@ -24,7 +26,11 @@ namespace Patate.EditorTools
             importer.wrapMode = TextureWrapMode.Clamp;
             importer.filterMode = FilterMode.Bilinear;
             importer.maxTextureSize = 4096;
-            importer.textureCompression = TextureImporterCompression.CompressedHQ;
+            // Décors : qualité normale. Un calque opaque passe en DXT1, deux fois
+            // plus léger que le BC7 des combattants ; un calque transparent en DXT5.
+            importer.textureCompression = assetPath.StartsWith("Assets/Resources/Stages/")
+                ? TextureImporterCompression.Compressed
+                : TextureImporterCompression.CompressedHQ;
             importer.crunchedCompression = false;
         }
     }

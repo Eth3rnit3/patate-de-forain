@@ -30,7 +30,7 @@ python3 -m http.server 8765 --directory game/WebBuild
 
 puis ouvrir <http://localhost:8765> et **cliquer dans le jeu** pour lui donner le clavier. Ouvrir `index.html` directement depuis le disque ne fonctionne pas.
 
-Poids téléchargé : environ **13 Mo** (code 7,6 Mo, données 5 Mo, dont l'atlas de Saint Louis : 4048 × 2680 en BC7, 10,3 Mo avant Gzip).
+Poids téléchargé : environ **14,4 Mo** (code 7,8 Mo, données 6,4 Mo, dont l'atlas de Saint Louis : 4048 × 2680 en BC7, 10,3 Mo avant Gzip, et le décor de la fête foraine : trois calques en DXT1/DXT5, environ 1,4 Mo).
 
 ## Commandes
 

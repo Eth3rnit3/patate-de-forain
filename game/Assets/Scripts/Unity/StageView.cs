@@ -5,9 +5,8 @@ using UnityEngine;
 namespace Patate.UnityAdapters
 {
     /// <summary>
-    /// Décor chargé depuis Resources/Stages/&lt;id&gt;/stage.json. Le prototype n'a
-    /// qu'un fond uni et une bande de sol ; les calques d'image avec parallaxe
-    /// s'afficheront dès qu'un décor en déclarera.
+    /// Décor chargé depuis Resources/Stages/&lt;id&gt;/stage.json : fond uni, bande
+    /// de sol sous y = 0 et calques d'image avec parallaxe.
     /// </summary>
     public sealed class StageView
     {
@@ -44,8 +43,9 @@ namespace Patate.UnityAdapters
                 var go = new GameObject(layer.Image);
                 go.transform.SetParent(root, false);
                 var renderer = go.AddComponent<SpriteRenderer>();
-                // Une unité monde par pixel, ancré en bas au centre.
-                renderer.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0f), FighterVisuals.WorldUnitsPerUnityUnit);
+                // Une unité monde par pixel à l'échelle 100, ancré en bas au centre.
+                float pixelsPerUnit = FighterVisuals.WorldUnitsPerUnityUnit * 100f / layer.ScalePercent;
+                renderer.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0f), pixelsPerUnit);
                 renderer.sortingOrder = layer.Order;
                 layers.Add((go.transform, layer));
             }

@@ -52,7 +52,7 @@ Deux combattants jouables, **Saint Louis** et **Napoléon**, à deux joueurs sur
 
 - **Boucle temps réel, en mode Play normal sans pilotage** : 252 ticks simulés en environ 4,2 secondes, soit environ 60 par seconde ; l'horloge à pas fixe et la boucle `Update` fonctionnent.
 
-- **Export WebGL** : construit en mode batch (`WebBuilder`, 82 s), servi en statique et ouvert dans un navigateur Chromium : les deux Saint Louis se chargent (lecture des paquets JSON avec Newtonsoft intacte après IL2CPP, sans `link.xml`), marchent et se frappent sur des touches maintenues (événements clavier simulés dans la page, pas une frappe humaine), les jauges baissent, aucune erreur dans la console. Environ 13 Mo à télécharger. Seuls avertissements : `getInternalformatParameter: invalid internalformat`, émis par le moteur au démarrage, sans effet visible. L'atlas en BC7 dépend de l'extension `EXT_texture_compression_bptc`, présente ici ; non essayé sans.
+- **Export WebGL** : construit en mode batch (`WebBuilder`, 82 s), servi en statique et ouvert dans un navigateur Chromium : les deux Saint Louis se chargent (lecture des paquets JSON avec Newtonsoft intacte après IL2CPP, sans `link.xml`), marchent et se frappent sur des touches maintenues (événements clavier simulés dans la page, pas une frappe humaine), les jauges baissent, aucune erreur dans la console. Environ 13 Mo à télécharger à l'époque ; 14,4 Mo depuis le décor de la fête foraine (vérifié de même, décor affiché derrière le combat, aucune erreur). Seuls avertissements : `getInternalformatParameter: invalid internalformat`, émis par le moteur au démarrage, sans effet visible. L'atlas en BC7 dépend de l'extension `EXT_texture_compression_bptc`, présente ici ; non essayé sans.
 
 - **Napoléon en WebGL** : build batch de la branche, servi en statique, ouvert dans Chromium. **F3** fait passer le joueur 1 à Napoléon, puis **F3**/**F4** inversent les côtés. Événements clavier simulés dans la page. Vérifié avec les boîtes (**F1**) :
   - la Salve impériale part du doigt, à hauteur de poitrine, et touche Saint Louis ;
@@ -100,12 +100,12 @@ Classés par effet sur le jeu.
    - impact de blocage ;
    - étincelle d'impact pour les coups au corps (aujourd'hui seul le projectile a un effet).
 2. **Stabilisation** de la boucle de garde et du cycle de marche : appuis fixes, détails constants (fleurs de lys, couronne, épée).
-3. **Décor**. Le moteur affiche déjà des calques avec parallaxe (`Resources/Stages/<id>/`). Repères :
-   - 1 unité = 1 px ;
+3. **Décors**. Le premier, la fête foraine, est en jeu et sert par défaut ; sa musique manque (champ `music` de `stage.json`). Pour les suivants, suivre [son dossier](../assets/stages/fete-foraine/README.md). Repères (`Resources/Stages/<id>/`) :
+   - 1 unité = 1 px à l'échelle 100 ; le champ `scale` d'un calque l'agrandit à l'affichage ;
    - zone visible de 1920 × 1080 ;
    - sol à 130 px du bas ;
-   - arène de 2400 px plus 240 px de débord de chaque côté, soit un plan du sol d'**au moins 2880 px de large**, plus pour les plans éloignés ;
-   - PNG, plusieurs calques si possible : fond, plan moyen, sol.
+   - arène de 2400 px plus 240 px de débord de chaque côté, soit un plan du sol d'**au moins 2880 px de large** (2900 avec le tremblement), et environ 1920 + 9,6 × parallaxe pour un plan éloigné ;
+   - PNG, dimensions multiples de 4 ; plusieurs calques : fond, plan moyen, sol.
 4. **Sons**. Signaux attendus :
    - début de manche ;
    - lancement de coup ;

@@ -11,6 +11,7 @@ Suivre le [standard personnage](character-standard-v01.md) : un dossier `assets/
 L'outil d'export accepte des planches de tailles et de grilles différentes. Il lui faut seulement :
 - des **rangées de hauteur égale** ;
 - des poses qui **ne se touchent pas** à l'intérieur d'une rangée (un membre peut déborder au-dessus de la pose voisine, tant qu'il ne la touche pas) ;
+  si deux poses se touchent malgré tout (pans de manteau, semelles), une **couture** les sépare (voir `seams` plus bas) ;
 - pour les effets (projectile, impact), une **grille régulière**.
 
 Animations minimales :
@@ -58,6 +59,7 @@ Les options d'une animation :
 | `scaleLike` | Réutilise l'échelle d'une planche dessinée à la même taille |
 | `anchor` | Repère d'alignement : `rearFoot` (garde, coups, réactions), `torso` (marche), `head` (projectile), `centroid` (impact) |
 | `nudge` | Correction manuelle en pixels de cellule, par pose : `{ "3": [-12, 0] }` |
+| `layout.seams` | Sépare deux poses qui se touchent dans une rangée : `[{ "row": 1, "x": 1050 }]`. L'outil trace, autour de la colonne `x` de la planche source (± `radius`, 60 par défaut), le chemin de haut en bas qui traverse le moins de pixels opaques ; les poses ne le franchissent pas. Si une pose est dessinée **devant** sa voisine (pointe de botte sur le talon), imposer le passage avec `"through": [[x, y], …]` pour que la partie cachée reste à la pose du dessous. Exemple réel : `hit_high` de Napoléon |
 
 Lancer l'export :
 

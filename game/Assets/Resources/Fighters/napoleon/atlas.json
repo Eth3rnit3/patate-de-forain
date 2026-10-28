@@ -1,0 +1,518 @@
+{
+  "formatVersion": 1,
+  "generator": "tools/export-character (tools/export-character/configs/napoleon.json)",
+  "pages": [
+    {
+      "file": "atlas-0.png",
+      "width": 3988,
+      "height": 2432,
+      "sha256": "f2ec1960e896da29b05227c3080c7142d403c8d77f6838724836d7092bbb7418"
+    }
+  ],
+  "sprites": {
+    "block_high_01": {
+      "page": 0,
+      "x": 1002,
+      "y": 4,
+      "w": 365,
+      "h": 487,
+      "pivotX": 173,
+      "pivotY": 486
+    },
+    "block_high_02": {
+      "page": 0,
+      "x": 875,
+      "y": 1962,
+      "w": 371,
+      "h": 460,
+      "pivotX": 172,
+      "pivotY": 459
+    },
+    "block_high_03": {
+      "page": 0,
+      "x": 3428,
+      "y": 4,
+      "w": 366,
+      "h": 481,
+      "pivotX": 194,
+      "pivotY": 480
+    },
+    "hit_high_01": {
+      "page": 0,
+      "x": 4,
+      "y": 4,
+      "w": 325,
+      "h": 499,
+      "pivotX": 154,
+      "pivotY": 498
+    },
+    "hit_high_02": {
+      "page": 0,
+      "x": 1662,
+      "y": 4,
+      "w": 338,
+      "h": 483,
+      "pivotX": 160,
+      "pivotY": 482
+    },
+    "hit_high_03": {
+      "page": 0,
+      "x": 4,
+      "y": 511,
+      "w": 305,
+      "h": 481,
+      "pivotX": 155,
+      "pivotY": 480
+    },
+    "idle_01": {
+      "page": 0,
+      "x": 2382,
+      "y": 4,
+      "w": 338,
+      "h": 482,
+      "pivotX": 172,
+      "pivotY": 481
+    },
+    "idle_02": {
+      "page": 0,
+      "x": 317,
+      "y": 511,
+      "w": 343,
+      "h": 481,
+      "pivotX": 171,
+      "pivotY": 480
+    },
+    "idle_03": {
+      "page": 0,
+      "x": 2728,
+      "y": 4,
+      "w": 354,
+      "h": 482,
+      "pivotX": 175,
+      "pivotY": 482
+    },
+    "idle_04": {
+      "page": 0,
+      "x": 2837,
+      "y": 1482,
+      "w": 341,
+      "h": 467,
+      "pivotX": 172,
+      "pivotY": 466
+    },
+    "idle_05": {
+      "page": 0,
+      "x": 4,
+      "y": 1962,
+      "w": 349,
+      "h": 464,
+      "pivotX": 170,
+      "pivotY": 463
+    },
+    "idle_06": {
+      "page": 0,
+      "x": 3186,
+      "y": 1482,
+      "w": 343,
+      "h": 467,
+      "pivotX": 172,
+      "pivotY": 466
+    },
+    "imperial_volley_impact_01": {
+      "page": 0,
+      "x": 2787,
+      "y": 1962,
+      "w": 130,
+      "h": 143,
+      "pivotX": 63,
+      "pivotY": 78
+    },
+    "imperial_volley_impact_02": {
+      "page": 0,
+      "x": 2044,
+      "y": 1962,
+      "w": 262,
+      "h": 254,
+      "pivotX": 127,
+      "pivotY": 133
+    },
+    "imperial_volley_impact_03": {
+      "page": 0,
+      "x": 2314,
+      "y": 1962,
+      "w": 249,
+      "h": 228,
+      "pivotX": 124,
+      "pivotY": 111
+    },
+    "imperial_volley_impact_04": {
+      "page": 0,
+      "x": 2571,
+      "y": 1962,
+      "w": 208,
+      "h": 210,
+      "pivotX": 110,
+      "pivotY": 105
+    },
+    "imperial_volley_projectile_01": {
+      "page": 0,
+      "x": 3399,
+      "y": 1962,
+      "w": 226,
+      "h": 128,
+      "pivotX": 166,
+      "pivotY": 67
+    },
+    "imperial_volley_projectile_02": {
+      "page": 0,
+      "x": 2925,
+      "y": 1962,
+      "w": 225,
+      "h": 139,
+      "pivotX": 150,
+      "pivotY": 70
+    },
+    "imperial_volley_projectile_03": {
+      "page": 0,
+      "x": 3158,
+      "y": 1962,
+      "w": 233,
+      "h": 135,
+      "pivotX": 159,
+      "pivotY": 71
+    },
+    "imperial_volley_projectile_04": {
+      "page": 0,
+      "x": 3633,
+      "y": 1962,
+      "w": 225,
+      "h": 124,
+      "pivotX": 158,
+      "pivotY": 63
+    },
+    "special_imperial_volley_cast_01": {
+      "page": 0,
+      "x": 2008,
+      "y": 4,
+      "w": 366,
+      "h": 483,
+      "pivotX": 189,
+      "pivotY": 481
+    },
+    "special_imperial_volley_cast_02": {
+      "page": 0,
+      "x": 337,
+      "y": 4,
+      "w": 298,
+      "h": 494,
+      "pivotX": 195,
+      "pivotY": 493
+    },
+    "special_imperial_volley_cast_03": {
+      "page": 0,
+      "x": 643,
+      "y": 4,
+      "w": 351,
+      "h": 488,
+      "pivotX": 184,
+      "pivotY": 487
+    },
+    "special_imperial_volley_cast_04": {
+      "page": 0,
+      "x": 668,
+      "y": 511,
+      "w": 410,
+      "h": 480,
+      "pivotX": 187,
+      "pivotY": 479
+    },
+    "special_imperial_volley_cast_05": {
+      "page": 0,
+      "x": 1086,
+      "y": 511,
+      "w": 436,
+      "h": 478,
+      "pivotX": 186,
+      "pivotY": 477
+    },
+    "special_imperial_volley_cast_06": {
+      "page": 0,
+      "x": 1530,
+      "y": 511,
+      "w": 446,
+      "h": 478,
+      "pivotX": 195,
+      "pivotY": 477
+    },
+    "special_imperial_volley_cast_07": {
+      "page": 0,
+      "x": 3632,
+      "y": 511,
+      "w": 352,
+      "h": 474,
+      "pivotX": 177,
+      "pivotY": 473
+    },
+    "special_imperial_volley_cast_08": {
+      "page": 0,
+      "x": 2645,
+      "y": 511,
+      "w": 355,
+      "h": 476,
+      "pivotX": 195,
+      "pivotY": 475
+    },
+    "stand_kick_heavy_01": {
+      "page": 0,
+      "x": 3090,
+      "y": 4,
+      "w": 330,
+      "h": 482,
+      "pivotX": 172,
+      "pivotY": 481
+    },
+    "stand_kick_heavy_02": {
+      "page": 0,
+      "x": 1702,
+      "y": 1962,
+      "w": 334,
+      "h": 458,
+      "pivotX": 172,
+      "pivotY": 458
+    },
+    "stand_kick_heavy_03": {
+      "page": 0,
+      "x": 1375,
+      "y": 4,
+      "w": 279,
+      "h": 485,
+      "pivotX": 293,
+      "pivotY": 484
+    },
+    "stand_kick_heavy_04": {
+      "page": 0,
+      "x": 1254,
+      "y": 1962,
+      "w": 440,
+      "h": 460,
+      "pivotX": 314,
+      "pivotY": 459
+    },
+    "stand_kick_heavy_05": {
+      "page": 0,
+      "x": 361,
+      "y": 1962,
+      "w": 506,
+      "h": 462,
+      "pivotX": 284,
+      "pivotY": 461
+    },
+    "stand_kick_heavy_06": {
+      "page": 0,
+      "x": 2508,
+      "y": 1482,
+      "w": 321,
+      "h": 468,
+      "pivotX": 270,
+      "pivotY": 467
+    },
+    "stand_kick_heavy_07": {
+      "page": 0,
+      "x": 1827,
+      "y": 1482,
+      "w": 279,
+      "h": 469,
+      "pivotX": 323,
+      "pivotY": 468
+    },
+    "stand_kick_heavy_08": {
+      "page": 0,
+      "x": 658,
+      "y": 1482,
+      "w": 322,
+      "h": 470,
+      "pivotX": 175,
+      "pivotY": 470
+    },
+    "stand_kick_light_01": {
+      "page": 0,
+      "x": 1037,
+      "y": 1000,
+      "w": 343,
+      "h": 473,
+      "pivotX": 178,
+      "pivotY": 472
+    },
+    "stand_kick_light_02": {
+      "page": 0,
+      "x": 3008,
+      "y": 511,
+      "w": 330,
+      "h": 476,
+      "pivotX": 247,
+      "pivotY": 475
+    },
+    "stand_kick_light_03": {
+      "page": 0,
+      "x": 988,
+      "y": 1482,
+      "w": 461,
+      "h": 470,
+      "pivotX": 282,
+      "pivotY": 469
+    },
+    "stand_kick_light_04": {
+      "page": 0,
+      "x": 2521,
+      "y": 1000,
+      "w": 505,
+      "h": 472,
+      "pivotX": 269,
+      "pivotY": 471
+    },
+    "stand_kick_light_05": {
+      "page": 0,
+      "x": 4,
+      "y": 1000,
+      "w": 288,
+      "h": 474,
+      "pivotX": 287,
+      "pivotY": 473
+    },
+    "stand_kick_light_06": {
+      "page": 0,
+      "x": 1457,
+      "y": 1482,
+      "w": 362,
+      "h": 470,
+      "pivotX": 192,
+      "pivotY": 470
+    },
+    "stand_punch_light_01": {
+      "page": 0,
+      "x": 300,
+      "y": 1000,
+      "w": 343,
+      "h": 474,
+      "pivotX": 173,
+      "pivotY": 473
+    },
+    "stand_punch_light_02": {
+      "page": 0,
+      "x": 651,
+      "y": 1000,
+      "w": 378,
+      "h": 474,
+      "pivotX": 178,
+      "pivotY": 473
+    },
+    "stand_punch_light_03": {
+      "page": 0,
+      "x": 1388,
+      "y": 1000,
+      "w": 447,
+      "h": 473,
+      "pivotX": 185,
+      "pivotY": 472
+    },
+    "stand_punch_light_04": {
+      "page": 0,
+      "x": 3034,
+      "y": 1000,
+      "w": 488,
+      "h": 472,
+      "pivotX": 170,
+      "pivotY": 471
+    },
+    "stand_punch_light_05": {
+      "page": 0,
+      "x": 2114,
+      "y": 1482,
+      "w": 386,
+      "h": 469,
+      "pivotX": 189,
+      "pivotY": 468
+    },
+    "stand_punch_light_06": {
+      "page": 0,
+      "x": 3530,
+      "y": 1000,
+      "w": 360,
+      "h": 472,
+      "pivotX": 174,
+      "pivotY": 471
+    },
+    "walk_forward_01": {
+      "page": 0,
+      "x": 1984,
+      "y": 511,
+      "w": 347,
+      "h": 478,
+      "pivotX": 187,
+      "pivotY": 477
+    },
+    "walk_forward_02": {
+      "page": 0,
+      "x": 2339,
+      "y": 511,
+      "w": 298,
+      "h": 478,
+      "pivotX": 185,
+      "pivotY": 477
+    },
+    "walk_forward_03": {
+      "page": 0,
+      "x": 3346,
+      "y": 511,
+      "w": 278,
+      "h": 476,
+      "pivotX": 165,
+      "pivotY": 475
+    },
+    "walk_forward_04": {
+      "page": 0,
+      "x": 1843,
+      "y": 1000,
+      "w": 333,
+      "h": 473,
+      "pivotX": 194,
+      "pivotY": 472
+    },
+    "walk_forward_05": {
+      "page": 0,
+      "x": 289,
+      "y": 1482,
+      "w": 361,
+      "h": 471,
+      "pivotX": 202,
+      "pivotY": 470
+    },
+    "walk_forward_06": {
+      "page": 0,
+      "x": 2184,
+      "y": 1000,
+      "w": 329,
+      "h": 473,
+      "pivotX": 184,
+      "pivotY": 472
+    },
+    "walk_forward_07": {
+      "page": 0,
+      "x": 4,
+      "y": 1482,
+      "w": 277,
+      "h": 472,
+      "pivotX": 169,
+      "pivotY": 471
+    },
+    "walk_forward_08": {
+      "page": 0,
+      "x": 3537,
+      "y": 1482,
+      "w": 334,
+      "h": 466,
+      "pivotX": 188,
+      "pivotY": 465
+    }
+  }
+}

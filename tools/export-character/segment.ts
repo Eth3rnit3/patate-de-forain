@@ -8,10 +8,29 @@ import { createRaster, crop, type Raster, type Rect } from './raster';
  *   cela tolère une jambe ou un poing qui déborde au-dessus de la pose voisine.
  * - `grid` : grille régulière, pour les effets dont les particules détachées
  *   rendraient la détection de composantes instable.
+ *
+ * Quand deux poses voisines se touchent (pans de manteau, semelles), une
+ * `seam` les sépare : chemin de haut en bas de la rangée, autour de la colonne
+ * `x`, qui traverse le moins de pixels opaques possible. Les composantes ne
+ * franchissent pas ce chemin.
  */
 export type Layout =
-  | { readonly type: 'poses'; readonly rows: number }
+  | { readonly type: 'poses'; readonly rows: number; readonly seams?: readonly Seam[] }
   | { readonly type: 'grid'; readonly rows: number; readonly columns: number };
+
+export interface Seam {
+  /** Rangée, numérotée à partir de 1. */
+  readonly row: number;
+  /** Colonne approximative du contact, en pixels de la planche source. */
+  readonly x: number;
+  /** Écart maximal du chemin autour de `x` (60 par défaut). */
+  readonly radius?: number;
+  /**
+   * Points `[x, y]` de la planche par lesquels le chemin doit passer, pour
+   * trancher un recouvrement (pointe de botte dessinée devant le talon voisin).
+   */
+  readonly through?: ReadonlyArray<readonly [number, number]>;
+}
 
 export interface ExtractedPose {
   /** Pixels de la pose seule, recadrés. */
@@ -28,12 +47,14 @@ const SEED_RATIO = 0.15;
 const ATTACH_DISTANCE = 40;
 /** Pixels semi-transparents conservés jusqu'à cette distance d'un pixel plein de la pose. */
 const SOFT_EDGE_RADIUS = 6;
+/** Écart par défaut d'une couture autour de sa colonne nominale. */
+const SEAM_RADIUS = 60;
 /** En dessous, l'alpha est du bruit de génération : supprimé. */
 export const NOISE_ALPHA = 8;
 
 export function extractPoses(sheet: Raster, layout: Layout, expected: number, label: string): ExtractedPose[] {
   const poses =
-    layout.type === 'grid' ? gridCells(sheet, layout.rows, layout.columns) : posesByComponents(sheet, layout.rows);
+    layout.type === 'grid' ? gridCells(sheet, layout.rows, layout.columns) : posesByComponents(sheet, layout.rows, layout.seams ?? []);
   if (poses.length !== expected) {
     throw new Error(`${label} : ${poses.length} poses trouvées, ${expected} attendues (disposition ${JSON.stringify(layout)}).`);
   }
@@ -61,7 +82,7 @@ interface Component {
   pose: number;
 }
 
-function posesByComponents(sheet: Raster, rows: number): ExtractedPose[] {
+function posesByComponents(sheet: Raster, rows: number, seams: readonly Seam[]): ExtractedPose[] {
   const boundaries = [0];
   for (let row = 1; row < rows; row += 1) boundaries.push(emptiestRowNear(sheet, Math.round((sheet.height * row) / rows)));
   boundaries.push(sheet.height);
@@ -70,7 +91,8 @@ function posesByComponents(sheet: Raster, rows: number): ExtractedPose[] {
     const top = boundaries[row] ?? 0;
     const height = (boundaries[row + 1] ?? sheet.height) - top;
     const band = crop(sheet, { x: 0, y: top, w: sheet.width, h: height });
-    poses.push(...splitBand(band).map((pose) => ({ raster: pose.raster, origin: { x: pose.origin.x, y: pose.origin.y + top } })));
+    const zones = seamZones(band, top, seams.filter((seam) => seam.row === row + 1));
+    poses.push(...splitBand(band, zones).map((pose) => ({ raster: pose.raster, origin: { x: pose.origin.x, y: pose.origin.y + top } })));
   }
   return poses;
 }
@@ -98,7 +120,54 @@ function emptiestRowNear(sheet: Raster, nominal: number): number {
   return best;
 }
 
-function splitBand(band: Raster): ExtractedPose[] {
+/**
+ * Numéro de zone de chaque pixel de la rangée : nombre de coutures à sa gauche.
+ * Chaque couture est le chemin de coût minimal (somme des alphas) du haut au bas
+ * de la rangée, en se décalant d'au plus deux colonnes par ligne.
+ */
+function seamZones(band: Raster, top: number, seams: readonly Seam[]): Uint8Array {
+  const { width, height } = band;
+  const zones = new Uint8Array(width * height);
+  for (const seam of seams) {
+    const radius = seam.radius ?? SEAM_RADIUS;
+    const left = Math.max(0, seam.x - radius);
+    const span = Math.min(width - 1, seam.x + radius) - left + 1;
+    const cost = new Float64Array(span * height);
+    const from = new Int8Array(span * height);
+    const forced = new Map((seam.through ?? []).map(([x, y]) => [y - top, x - left]));
+    for (let y = 0; y < height; y += 1) {
+      for (let i = 0; i < span; i += 1) {
+        if (forced.has(y) && forced.get(y) !== i) {
+          cost[y * span + i] = Number.POSITIVE_INFINITY;
+          continue;
+        }
+        let best = 0;
+        let bestCost = y === 0 ? 0 : Number.POSITIVE_INFINITY;
+        for (let step = -2; y > 0 && step <= 2; step += 1) {
+          const j = i + step;
+          if (j < 0 || j >= span) continue;
+          // Léger coût de déplacement : le chemin reste droit dans le vide.
+          const candidate = (cost[(y - 1) * span + j] ?? 0) + Math.abs(step);
+          if (candidate < bestCost) {
+            best = step;
+            bestCost = candidate;
+          }
+        }
+        cost[y * span + i] = bestCost + (band.data[(y * width + left + i) * 4 + 3] ?? 0);
+        from[y * span + i] = best;
+      }
+    }
+    let i = 0;
+    for (let j = 1; j < span; j += 1) if ((cost[(height - 1) * span + j] ?? 0) < (cost[(height - 1) * span + i] ?? 0)) i = j;
+    for (let y = height - 1; y >= 0; y -= 1) {
+      for (let x = left + i; x < width; x += 1) zones[y * width + x] = (zones[y * width + x] ?? 0) + 1;
+      i += from[y * span + i] ?? 0;
+    }
+  }
+  return zones;
+}
+
+function splitBand(band: Raster, zones: Uint8Array): ExtractedPose[] {
   const { width, height } = band;
   const labels = new Int32Array(width * height).fill(-1);
   const components: Component[] = [];
@@ -129,6 +198,7 @@ function splitBand(band: Raster): ExtractedPose[] {
           if (nx < 0 || ny < 0 || nx >= width || ny >= height) continue;
           const neighbour = ny * width + nx;
           if (labels[neighbour] !== -1 || (band.data[neighbour * 4 + 3] ?? 0) < SOLID_ALPHA) continue;
+          if (zones[neighbour] !== zones[index]) continue;
           labels[neighbour] = id;
           stack.push(neighbour);
         }
@@ -186,6 +256,7 @@ function splitBand(band: Raster): ExtractedPose[] {
           const neighbour = ny * width + nx;
           const alpha = band.data[neighbour * 4 + 3] ?? 0;
           if (owner[neighbour] !== -1 || alpha < NOISE_ALPHA || alpha >= SOLID_ALPHA) continue;
+          if (zones[neighbour] !== zones[index]) continue;
           owner[neighbour] = owner[index] ?? -1;
           next.push(neighbour);
         }

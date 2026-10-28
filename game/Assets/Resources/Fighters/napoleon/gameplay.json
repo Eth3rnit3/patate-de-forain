@@ -1,0 +1,167 @@
+{
+  "stats": { "health": 1000, "walkForwardSpeed": 7, "walkBackSpeed": 5 },
+  "body": {
+    "pushbox": { "x": -70, "y": 0, "w": 140, "h": 410 },
+    "hurtboxes": [
+      { "x": -55, "y": 380, "w": 110, "h": 100 },
+      { "x": -100, "y": 190, "w": 215, "h": 190 },
+      { "x": -145, "y": 0, "w": 290, "h": 190 }
+    ]
+  },
+  "moves": [
+    {
+      "id": "special_imperial_volley",
+      "commands": [
+        { "button": "special" },
+        { "motion": [2, 3, 6], "button": "lightPunch", "window": 15 }
+      ],
+      "priority": 10,
+      "segments": [
+        { "phase": "startup", "duration": 20 },
+        {
+          "phase": "recovery",
+          "duration": 7,
+          "onEnter": [{ "type": "spawnProjectile", "projectile": "imperial_volley", "offset": { "x": 295, "y": 375 } }],
+          "hurtboxes": [
+            { "x": -55, "y": 380, "w": 110, "h": 100 },
+            { "x": -100, "y": 190, "w": 215, "h": 190 },
+            { "x": -145, "y": 0, "w": 290, "h": 190 },
+            { "x": 100, "y": 352, "w": 140, "h": 46 }
+          ]
+        },
+        { "phase": "recovery", "duration": 21 }
+      ]
+    },
+    {
+      "id": "stand_punch_light",
+      "commands": [{ "button": "lightPunch" }],
+      "segments": [
+        { "phase": "startup", "duration": 5 },
+        {
+          "phase": "active",
+          "duration": 2,
+          "hitboxes": [{ "x": 150, "y": 337, "w": 110, "h": 52 }],
+          "hurtboxes": [
+            { "x": -20, "y": 390, "w": 115, "h": 90 },
+            { "x": -90, "y": 190, "w": 200, "h": 200 },
+            { "x": -150, "y": 0, "w": 300, "h": 190 },
+            { "x": 95, "y": 337, "w": 150, "h": 52 }
+          ]
+        },
+        {
+          "phase": "active",
+          "duration": 3,
+          "hitboxes": [{ "x": 180, "y": 335, "w": 136, "h": 55 }],
+          "hurtboxes": [
+            { "x": 5, "y": 390, "w": 115, "h": 90 },
+            { "x": -70, "y": 190, "w": 200, "h": 200 },
+            { "x": -150, "y": 0, "w": 310, "h": 190 },
+            { "x": 120, "y": 335, "w": 180, "h": 55 }
+          ]
+        },
+        { "phase": "recovery", "duration": 10 }
+      ],
+      "hit": {
+        "damage": 40,
+        "hitstun": 14,
+        "blockstun": 10,
+        "hitstop": 6,
+        "pushback": { "hit": 50, "block": 40 },
+        "level": "high",
+        "blockable": true
+      }
+    },
+    {
+      "id": "stand_kick_light",
+      "commands": [{ "button": "lightKick" }],
+      "segments": [
+        { "phase": "startup", "duration": 8 },
+        {
+          "phase": "active",
+          "duration": 3,
+          "hitboxes": [{ "x": 130, "y": 290, "w": 104, "h": 92 }],
+          "hurtboxes": [
+            { "x": -150, "y": 390, "w": 110, "h": 90 },
+            { "x": -210, "y": 190, "w": 210, "h": 200 },
+            { "x": -180, "y": 0, "w": 150, "h": 190 },
+            { "x": 0, "y": 270, "w": 210, "h": 112 }
+          ]
+        },
+        {
+          "phase": "recovery",
+          "duration": 5,
+          "hurtboxes": [
+            { "x": -175, "y": 390, "w": 110, "h": 90 },
+            { "x": -220, "y": 190, "w": 220, "h": 200 },
+            { "x": -190, "y": 0, "w": 150, "h": 190 }
+          ]
+        },
+        { "phase": "recovery", "duration": 8 }
+      ],
+      "hit": {
+        "damage": 60,
+        "hitstun": 16,
+        "blockstun": 12,
+        "hitstop": 8,
+        "pushback": { "hit": 60, "block": 50 },
+        "level": "mid",
+        "blockable": true
+      }
+    },
+    {
+      "id": "stand_kick_heavy",
+      "commands": [{ "button": "heavyKick" }],
+      "segments": [
+        { "phase": "startup", "duration": 16 },
+        {
+          "phase": "active",
+          "duration": 5,
+          "hitboxes": [{ "x": 120, "y": 365, "w": 101, "h": 63 }],
+          "hurtboxes": [
+            { "x": -255, "y": 375, "w": 115, "h": 100 },
+            { "x": -250, "y": 200, "w": 250, "h": 175 },
+            { "x": -175, "y": 0, "w": 135, "h": 200 },
+            { "x": 0, "y": 340, "w": 200, "h": 88 }
+          ]
+        },
+        {
+          "phase": "recovery",
+          "duration": 5,
+          "hurtboxes": [
+            { "x": -235, "y": 380, "w": 120, "h": 100 },
+            { "x": -240, "y": 180, "w": 290, "h": 200 },
+            { "x": -165, "y": 0, "w": 115, "h": 180 }
+          ]
+        },
+        { "phase": "recovery", "duration": 14 }
+      ],
+      "hit": {
+        "damage": 110,
+        "hitstun": 20,
+        "blockstun": 16,
+        "hitstop": 12,
+        "pushback": { "hit": 90, "block": 70 },
+        "level": "high",
+        "blockable": true
+      }
+    }
+  ],
+  "projectiles": [
+    {
+      "id": "imperial_volley",
+      "speed": 11,
+      "lifetime": 180,
+      "hitbox": { "x": -38, "y": -36, "w": 80, "h": 80 },
+      "maxActive": 1,
+      "hit": {
+        "damage": 90,
+        "hitstun": 18,
+        "blockstun": 14,
+        "hitstop": 8,
+        "pushback": { "hit": 70, "block": 60 },
+        "level": "mid",
+        "blockable": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "format": "patate-fighter",
+  "formatVersion": 1,
+  "id": "napoleon",
+  "name": "Napoléon",
+  "version": "0.1.0",
+  "description": "Napoléon réinterprété en combattant arcade : compact, appuis stables, sabre au fourreau. Pack HD de validation v0.1.",
+  "credits": ["Direction artistique et illustrations : équipe Patate de Forain"]
+}

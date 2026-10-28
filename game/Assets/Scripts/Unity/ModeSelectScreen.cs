@@ -23,8 +23,8 @@ namespace Patate.UnityAdapters
             this.flow = flow;
         }
 
-        /// <summary>Niveau envoyé à l'IA : <c>PlayerSource.Cpu(1)</c> facile à <c>Cpu(3)</c> difficile.</summary>
-        static PlayerSource Cpu => PlayerSource.Cpu(level + 1);
+        /// <summary>Niveau envoyé à l'IA : <c>PlayerSource.Cpu(0)</c> facile à <c>Cpu(2)</c> difficile.</summary>
+        static PlayerSource Cpu => PlayerSource.Cpu(level);
 
         public void Enter()
         {

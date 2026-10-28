@@ -52,7 +52,7 @@ namespace Patate.UnityAdapters
                 if (keepPlayers && previous.Mode == mode && previous.Players[slot].Kind != PlayerSourceKind.Cpu && previous.Players[slot].Kind != PlayerSourceKind.Remote)
                     Slots[slot].Source = previous.Players[slot];
             }
-            if (mode == MatchMode.Solo) Slots[1].Source = cpu ?? PlayerSource.Cpu(2);
+            if (mode == MatchMode.Solo) Slots[1].Source = cpu ?? PlayerSource.Cpu(1);
         }
 
         public int SlotOf(PlayerSource device)

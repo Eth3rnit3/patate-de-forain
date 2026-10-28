@@ -8,7 +8,7 @@ namespace Patate.Tests
     public class CharacterSelectionTests
     {
         static readonly string[] Roster = { "napoleon", "saint-louis" };
-        static readonly PlayerSource Left = PlayerSource.Keyboard(0), Right = PlayerSource.Keyboard(1), Pad = PlayerSource.Gamepad(0);
+        static readonly PlayerSource Left = PlayerSource.Keyboard(0), Right = PlayerSource.Keyboard(1), Pad = PlayerSource.Gamepad(17);
 
         static CharacterSelection Versus(params string[] stages) =>
             new CharacterSelection(MatchMode.Versus, Roster, stages.Length > 0 ? stages : new[] { "training" }, MatchSetup.Default());
@@ -81,7 +81,7 @@ namespace Patate.Tests
         [Test]
         public void SoloLeJoueurChoisitAussiPourLOrdinateur()
         {
-            var cpu = PlayerSource.Cpu(3);
+            var cpu = PlayerSource.Cpu(2);
             var selection = new CharacterSelection(MatchMode.Solo, Roster, new[] { "training" }, MatchSetup.Default(), cpu);
             Assert.IsTrue(selection.Slots[1].IsCpu);
             Assert.AreEqual(0, selection.Join(Pad));

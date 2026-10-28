@@ -159,7 +159,8 @@ namespace Patate.UnityAdapters
                     lines.Add($"Clavier gauche : {MenuInput.ConfirmName(PlayerSource.Keyboard(0))}");
                     lines.Add($"Clavier droit : {MenuInput.ConfirmName(PlayerSource.Keyboard(1))}");
                 }
-                lines.Add(Gamepad.all.Count == 0 ? "Manette : bouton A (aucune branchée)" : "Manette : bouton A");
+                // Dans le navigateur, une manette ne se signale qu'après un premier appui : le suivant la fait rejoindre.
+                lines.Add(Gamepad.all.Count == 0 ? "Manette : bouton A (deux fois au premier branchement)" : "Manette : bouton A");
                 Ui.Text(new Rect(inner.x, inner.y + 380, inner.width, 200), string.Join("\n", lines), Ui.Style(26, fontStyle: FontStyle.Normal, wrap: true), Ui.Cream, 0);
                 return;
             }

@@ -22,7 +22,8 @@ namespace Patate.UnityAdapters
     /// <summary>
     /// Commandes des menus, au clavier et à la manette. Un appareil est
     /// désigné par un <see cref="PlayerSource"/> : moitié du clavier
-    /// (0 gauche, 1 droite) ou manette (indice dans <c>Gamepad.all</c>).
+    /// (0 gauche, 1 droite) ou manette (son <c>deviceId</c>, stable tant
+    /// qu'elle reste branchée, comme dans <see cref="InputSources"/>).
     /// Le stick répète la direction quand on le maintient ; la croix et les
     /// touches donnent un appui par pression.
     /// </summary>
@@ -65,7 +66,9 @@ namespace Patate.UnityAdapters
             switch (device.Kind)
             {
                 case PlayerSourceKind.Keyboard: return Keys(device.Index == 0 ? LeftHalf : RightHalf);
-                case PlayerSourceKind.Gamepad: return device.Index < Gamepad.all.Count ? Pad(Gamepad.all[device.Index]) : MenuCommand.None;
+                case PlayerSourceKind.Gamepad:
+                    var pad = PadOf(device);
+                    return pad != null ? Pad(pad) : MenuCommand.None;
                 default: return MenuCommand.None;
             }
         }
@@ -78,7 +81,22 @@ namespace Patate.UnityAdapters
                 yield return PlayerSource.Keyboard(0);
                 yield return PlayerSource.Keyboard(1);
             }
-            for (int i = 0; i < Gamepad.all.Count; i++) yield return PlayerSource.Gamepad(i);
+            foreach (var pad in Gamepad.all) yield return PlayerSource.Gamepad(pad.deviceId);
+        }
+
+        static Gamepad PadOf(PlayerSource device)
+        {
+            foreach (var pad in Gamepad.all)
+                if (pad.deviceId == device.Index) return pad;
+            return null;
+        }
+
+        /// <summary>Rang de la manette parmi celles branchées (1, 2…), pour l'afficher ; 0 si elle est absente.</summary>
+        static int PadNumber(PlayerSource device)
+        {
+            for (int i = 0; i < Gamepad.all.Count; i++)
+                if (Gamepad.all[i].deviceId == device.Index) return i + 1;
+            return 0;
         }
 
         /// <summary>Touche ou bouton de validation d'un appareil, pour l'afficher.</summary>
@@ -98,7 +116,7 @@ namespace Patate.UnityAdapters
         public static string DeviceName(PlayerSource device) => device.Kind switch
         {
             PlayerSourceKind.Keyboard => device.Index == 0 ? "Clavier gauche" : "Clavier droit",
-            PlayerSourceKind.Gamepad => $"Manette {device.Index + 1}",
+            PlayerSourceKind.Gamepad => PadNumber(device) > 0 ? $"Manette {PadNumber(device)}" : "Manette",
             PlayerSourceKind.Cpu => "Ordinateur",
             _ => "En ligne",
         };

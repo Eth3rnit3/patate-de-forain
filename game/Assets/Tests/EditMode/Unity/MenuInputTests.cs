@@ -25,9 +25,7 @@ namespace Patate.Tests
             pad = InputSystem.AddDevice<Gamepad>("Manette de test");
             keyboard = InputSystem.AddDevice<Keyboard>("Clavier de test");
             keyboard.MakeCurrent();
-            int index = 0;
-            while (Gamepad.all[index] != pad) index++;
-            device = PlayerSource.Gamepad(index);
+            device = PlayerSource.Gamepad(pad.deviceId);
             InputSystem.Update();
         }
 

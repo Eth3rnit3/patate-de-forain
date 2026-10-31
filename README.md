@@ -82,7 +82,7 @@ En mode solo, l'adversaire est joué par l'ordinateur, en trois niveaux (facile,
 
 ## L'interface
 
-Dessinée en IMGUI, comme le reste de l'affichage et comme Action Legends : rien à régler dans la scène, compatible WebGL, et la navigation clavier et manette passe par une seule couche (`MenuInput`). Le style reprend le logo et la fête foraine : fonds peints (champ de foire pour les menus, baraque de lutteurs pour la sélection, podium pour le résultat), enseignes à ampoules, textes détourés de bleu marine, annonces de manche et emblème « VS » peints dans le lettrage du logo, cadres dorés du HUD.
+Dessinée en IMGUI, comme le reste de l'affichage et comme Action Legends : rien à régler dans la scène, compatible WebGL, et la navigation clavier et manette passe par une seule couche (`MenuInput`). Le style reprend le logo et la fête foraine : fonds peints (champ de foire pour les menus, baraque de lutteurs pour la sélection, podium pour le résultat), enseignes à ampoules, textes détourés de bleu marine, annonces de manche et emblème « VS » peints dans le lettrage du logo, cadres dorés du HUD. Les titres, noms, boutons et le chronomètre sont en **Bangers** (police d'affichage penchée, licence OFL, `game/Assets/Resources/UI/fonts/` avec sa licence) ; les textes d'aide gardent la police par défaut, plus lisible en petit.
 
 ![Écran titre](docs/captures/interface/titre.jpg)
 
@@ -109,7 +109,7 @@ Dessinée en IMGUI, comme le reste de l'affichage et comme Action Legends : rien
 
 ![Chargement](docs/captures/interface/chargement.jpg)
 
-Captures prises dans la version WebGL, pilotée au clavier, sauf l'étincelle (éditeur, combat scripté par `AgentScripts/VerifyEffects.cs`).
+Captures prises dans la version WebGL, pilotée au clavier, sauf l'étincelle (éditeur, combat scripté par `AgentScripts/VerifyEffects.cs`). L'étincelle, le K.O. et le chargement datent d'avant la police Bangers.
 
 Code : `Ui.cs` (palette et éléments graphiques), `MenuInput.cs` (commandes des menus, appareils, `InputSupport`), `TitleScreen`, `ModeSelectScreen`, `CharacterSelectScreen` (règles testées dans `CharacterSelection`), `ResultScreen`, `Hud`, `SharedEffects` (étincelles). Images : `game/Assets/Resources/UI/` (fonds, logo, « VS », mots d'annonce dans `words/`, cadres du HUD dans `hud/`) et `game/Assets/Resources/Effects/`, générées avec Codex CLI à partir du logo et du portrait de Saint Louis ; une image absente est remplacée par le dessin d'origine ou un texte. Sources, prompts et commandes d'export : [assets/ui/README.md](assets/ui/README.md).
 

@@ -24,7 +24,8 @@ namespace Patate.UnityAdapters
         /// <summary>Couleur de chaque joueur : J1 rouge, J2 bleu ciel.</summary>
         public static readonly Color[] PlayerColors = { new Color32(0xff, 0x4a, 0x2e, 0xff), new Color32(0x3d, 0xb4, 0xff, 0xff) };
 
-        static Font font;
+        static Font font, display;
+        static bool displayLoaded;
         static Texture2D circle, gradient;
         static readonly Dictionary<string, Texture2D> images = new Dictionary<string, Texture2D>();
         static readonly Dictionary<(int, FontStyle, TextAnchor, bool), GUIStyle> styles = new Dictionary<(int, FontStyle, TextAnchor, bool), GUIStyle>();
@@ -45,12 +46,37 @@ namespace Patate.UnityAdapters
 
         public static Font Font => font ??= Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
 
+        /// <summary>
+        /// Police d'affichage des textes en gras (titres, noms, boutons, chronomètre) :
+        /// Bangers, sous licence OFL (Resources/UI/fonts). Null si elle n'est pas livrée :
+        /// le gras retombe sur la police par défaut.
+        /// </summary>
+        public static Font Display
+        {
+            get
+            {
+                if (!displayLoaded) { display = Resources.Load<Font>("UI/fonts/Bangers-Regular"); displayLoaded = true; }
+                return display;
+            }
+        }
+
+        /// <summary>Bangers est plus étroite que la police par défaut : agrandie d'autant pour garder la même présence.</summary>
+        const float DisplayScale = 1.15f;
+
         public static GUIStyle Style(int size, TextAnchor align = TextAnchor.MiddleCenter, FontStyle fontStyle = FontStyle.Bold, bool wrap = false)
         {
             var key = (size, fontStyle, align, wrap);
             if (!styles.TryGetValue(key, out var style))
             {
-                style = new GUIStyle { font = Font, fontSize = size, fontStyle = fontStyle, alignment = align, wordWrap = wrap, richText = true, clipping = TextClipping.Overflow };
+                // La police d'affichage est déjà grasse : pas de gras simulé par-dessus.
+                bool display = fontStyle == FontStyle.Bold && Display != null;
+                style = new GUIStyle
+                {
+                    font = display ? Display : Font,
+                    fontSize = display ? Mathf.RoundToInt(size * DisplayScale) : size,
+                    fontStyle = display ? FontStyle.Normal : fontStyle,
+                    alignment = align, wordWrap = wrap, richText = true, clipping = TextClipping.Overflow,
+                };
                 styles[key] = style;
             }
             return style;

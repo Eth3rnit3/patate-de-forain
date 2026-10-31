@@ -25,12 +25,25 @@ Sources graphiques créées avec l'outil intégré ImageGen. Direction validée 
 - `prompt-impact-hd-v02.md` : prompt de révision de l'impact.
 - [Spécification des coups et réglages initiaux](moveset-prototype-v01.md).
 
+## Extension : postures et KO
+
+Générées avec Codex CLI le 31 octobre 2026 (`tools/codex-image/generate.py assets/characters/saint-louis prompts-hd-extension-v02.json <n>`), avec la référence maîtresse et la planche de garde comme images de référence. Sources brutes, non retouchées :
+
+- `source/saint_louis_crouch_hd_v01.png` (3 poses), `source/saint_louis_block_low_hd_v01.png` (3), `source/saint_louis_hit_crouch_hd_v01.png` (3) ;
+- `source/saint_louis_crouch_punch_hd_v01.png` et `source/saint_louis_crouch_kick_hd_v01.png` (6 poses chacune, 2 rangées) ;
+- `source/saint_louis_jump_hd_v01.png` (6 poses : préparation, montée, sommet, descente, réception) ;
+- `source/saint_louis_jump_punch_hd_v01.png` et `source/saint_louis_jump_kick_hd_v01.png` (4 poses chacune) ;
+- `source/saint_louis_ko_hd_v01.png` (6 poses) : chute puis allongé, habits déchirés et taches de sang, sans gore ;
+- `prompts-hd-extension-v02.json` : prompts exacts.
+
+Ces planches n'ont pas de pose de garde : l'export les met à l'échelle sur la hauteur d'une pose comparable (`matchHeight` dans `tools/export-character/configs/`).
+
 ## Statut
 
 Ce dossier contient des **sources de travail**. Les planches ne sont pas encore des animations validées dans un moteur : le nombre de poses, leur alignement, le cycle, les détails du costume et la transparence doivent être vérifiés. Contrôler particulièrement la continuité des mains, fleurs de lys, couronne et épée. Les variations de poses ne garantissent pas à elles seules une boucle fluide.
 
 Toute planche opaque doit être détourée avant intégration, même si la transparence a été demandée au générateur. Les premiers fichiers sans suffixe `_hd_` sont des essais pixel art conservés pour historique.
 
-Il n'y a pas encore de sprites découpés, d'atlas, de durées par image, de collisions, de sons ou de données de combat. Conserver ces sources intactes et exporter les sprites nettoyés dans un dossier distinct.
+Les sprites découpés sont dans `export/` (outil `tools/export-character`), l'atlas, les durées et les collisions dans `game/Assets/Resources/Fighters/saint-louis/`. Conserver ces sources intactes.
 
 Le standard proposé et la suite du catalogue figurent dans `../../../docs/character-standard-v01.md`.

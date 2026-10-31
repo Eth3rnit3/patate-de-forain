@@ -114,7 +114,11 @@ Augmenter `version` à chaque changement de gameplay publié. L'empreinte SHA-25
       { "x": -50, "y": 380, "w": 100, "h": 100 },
       { "x": -90, "y": 190, "w": 180, "h": 190 },
       { "x": -140, "y": 0, "w": 280, "h": 190 }
-    ]
+    ],
+    "crouch": { "pushbox": { "x": -70, "y": 0, "w": 140, "h": 280 },
+                "hurtboxes": [{ "x": -100, "y": 0, "w": 200, "h": 290 }] },
+    "air": { "pushbox": { "x": -60, "y": 110, "w": 120, "h": 280 },
+             "hurtboxes": [{ "x": -90, "y": 70, "w": 180, "h": 280 }] }
   },
   "moves": [
     {
@@ -136,7 +140,19 @@ Augmenter `version` à chaque changement de gameplay publié. L'empreinte SHA-25
         { "phase": "recovery", "duration": 10 }
       ],
       "hit": { "damage": 40, "hitstun": 14, "blockstun": 10, "hitstop": 6,
-               "pushback": { "hit": 50, "block": 40 }, "level": "high", "blockable": true }
+               "pushback": { "hit": 50, "block": 40 }, "level": "mid", "blockable": true }
+    },
+    {
+      "id": "jump_kick",
+      "stance": "air",
+      "commands": [{ "button": "lightKick" }],
+      "segments": [
+        { "phase": "startup", "duration": 6 },
+        { "phase": "active", "duration": 8, "hitboxes": [{ "x": 130, "y": 120, "w": 220, "h": 130 }] },
+        { "phase": "recovery", "duration": 6 }
+      ],
+      "hit": { "damage": 75, "hitstun": 16, "blockstun": 12, "hitstop": 7,
+               "pushback": { "hit": 40, "block": 30 }, "level": "high", "blockable": true }
     }
   ],
   "projectiles": [
@@ -149,6 +165,10 @@ Augmenter `version` à chaque changement de gameplay publié. L'empreinte SHA-25
 
 | Champ | Sens |
 |---|---|
+| `body.crouch` / `body.air` | Corps accroupi et en l'air (facultatifs : sinon celui de la garde). En l'air, `y` part du pivot, donc des pieds |
+| `stats.jump` | Facultatif : `velocity` (40), `gravity` (2), `forwardSpeed` (9), `backSpeed` (8), `preJumpTicks` (4), `landingTicks` (4). Hauteur ≈ v²/2g |
+| `stance` | `stand` (par défaut), `crouch` (bas tenu) ou `air` (pendant un saut, un coup par saut) |
+| `hit.level` | `high` : gardé debout seulement, passe au-dessus d'un adversaire accroupi s'il vise haut ; `mid` : gardé debout ou accroupi ; `low` : gardé accroupi seulement |
 | `commands[].button` | `lightPunch`, `mediumPunch`, `heavyPunch`, `lightKick`, `mediumKick`, `heavyKick`, `special`. Le clavier actuel donne `lightPunch`, `lightKick`, `heavyKick` et `special` |
 | `commands[].direction` | Direction tenue, en notation pavé numérique (6 = avant, 4 = arrière, 2 = bas) |
 | `commands[].motion` | Séquence de directions, ex. `[2, 3, 6]`, dans `window` ticks |
@@ -183,7 +203,10 @@ Augmenter `version` à chaque changement de gameplay publié. L'empreinte SHA-25
     "guard": { "animation": "block_high", "playback": "hold", "frame": 0 },
     "hitstun": { "animation": "hit_high", "playback": "stretch" },
     "blockstun": { "animation": "block_high", "playback": "stretch" },
-    "ko": { "animation": "hit_high", "playback": "hold", "frame": 1 }
+    "ko": { "animation": "ko", "playback": "once" },
+    "crouch": { "animation": "crouch", "playback": "once" },
+    "crouchGuard": { "animation": "block_low", "playback": "hold", "frame": 0 },
+    "jump": { "animation": "jump_air", "playback": "once" }
   },
   "moves": { "stand_punch_light": { "animation": "stand_punch_light" }, "cannon_shot": { "animation": "cannon_shot_cast" } },
   "projectiles": { "cannon_ball": { "animation": "cannon_ball", "impact": "cannon_ball_impact" } },
@@ -202,6 +225,17 @@ Les modes de lecture (`playback`) :
 | `reverseLoop` | Boucle lue à l'envers |
 | `stretch` | Étirée sur la durée de l'étourdissement ou du blocage |
 | `hold` | Image fixe, choisie par `frame` à partir de 0 |
+
+Les sept premiers états sont obligatoires. Les états de posture sont facultatifs ; un état absent se rabat sur un voisin :
+
+| État | Quand | À défaut |
+|---|---|---|
+| `crouch` | accroupi | `idle` |
+| `crouchGuard` | garde accroupie, en attente | `crouch` |
+| `crouchHitstun` / `crouchBlockstun` | touché ou gardé accroupi | `hitstun` / `blockstun` |
+| `preJump` / `land` | préparation du saut, réception | `crouch` |
+| `jump` | en l'air | `idle` |
+| `airHitstun` | touché en l'air, jusqu'au sol | `hitstun` |
 
 Les sons sont facultatifs. Ils s'ajoutent sans code (voir l'[architecture](architecture.md)).
 

@@ -38,11 +38,13 @@ Ordre de résolution d'un tick, emplacement 0 avant 1 :
 
 ### Ce que le domaine sait faire
 
-- **Actions** : repos, marche avant et arrière, garde de proximité, coup, étourdissement, blocage, KO.
+- **Actions** : repos, marche avant et arrière, accroupi, préparation du saut, saut, réception, garde de proximité, coup, étourdissement, blocage, KO.
+- **Postures** : debout, accroupi, en l'air. Chacune a son corps (pushbox et hurtboxes ; `body.crouch` et `body.air`, sinon celui de la garde). Le saut suit une trajectoire entière fixée au décollage (`Y += VelocityY`, puis la gravité retire `Gravity` à chaque tick ; vitesse horizontale constante, orientation figée). Un seul coup par saut ; la réception coupe un coup en cours. Deux combattants dont les pushboxes ne se recouvrent pas en hauteur se croisent : c'est ainsi qu'on saute par-dessus. Un coup au corps frappe dans le sens de l'attaquant vers la cible, ce qui gère les attaques dans le dos.
+- **Coups selon la posture** : chaque coup déclare `stance` (`stand`, `crouch`, `air`). Au sol, bas tenu choisit les coups accroupis ; en l'air, seuls les coups sautés sont essayés.
 - **Coups** : une suite de segments (préparation, active, récupération), chacun avec sa durée en ticks, ses hitboxes, ses hurtboxes de remplacement, son avancée et ses actions d'entrée. Un coup touche une seule fois, sans annulation.
 - **Commandes** : appui sur un bouton, éventuellement avec une direction, ou séquence directionnelle (quart de cercle) dans une fenêtre de ticks. Les coups sont essayés par priorité.
-- **Contact** : dégâts, dégâts en garde (0 pour l'instant), étourdissement, blocage, gel d'impact, recul réparti sur 8 ticks et reporté sur l'attaquant si la cible est coincée au bord. Niveau haut, moyen ou bas, et blocable ou non.
-- **Garde** : tenir la direction opposée à la source dans un état disponible. Face à une menace proche, le combattant garde sur place au lieu de reculer.
+- **Contact** : dégâts, dégâts en garde (0 pour l'instant), étourdissement, blocage, gel d'impact, recul réparti sur 8 ticks et reporté sur l'attaquant si la cible est coincée au bord. Niveau haut, moyen ou bas, et blocable ou non. Touché en l'air, le combattant perd sa vitesse horizontale et reste étourdi jusqu'à la réception.
+- **Garde** : tenir la direction opposée à la source dans un état disponible. Debout, elle arrête les coups hauts et moyens ; accroupi (bas-arrière), les coups bas et moyens. Aucune garde en l'air. Face à une menace proche, le combattant garde sur place au lieu de reculer.
 - **Projectiles** : émission unique à l'entrée d'un segment, à un point relatif au pivot. Limite d'instances par lanceur, durée de vie, sortie d'arène, annulation entre projectiles adverses.
 
 ## Les entrées : clavier, manette, ordinateur
@@ -66,6 +68,7 @@ En WebGL, l'Input System lit l'API Gamepad du navigateur (disposition standard).
 - **Coups** : pour chaque coup, la commande la plus simple (appui direct de préférence, sinon le mouvement est exécuté tick par tick), le premier tick actif, et s'il lance un projectile (`SpawnProjectileAction`).
 - **Portée** : un coup est « à portée » si l'une de ses hitboxes actives, placée depuis la position actuelle (avancée des segments comprise), recouvre une hurtbox adverse. Ce sont les mêmes fonctions (`Geometry`, `Hitboxes`) que la résolution des contacts.
 - **Perception** : l'action adverse est vue avec le retard du niveau (temps de réaction). Chaque menace (coup proche, lancer en préparation, projectile qui approche) donne lieu à **un** tirage : garder ou non. La garde (tenir arrière) n'est prise que face à une menace réelle, pour ne pas reculer sans raison.
+- **Postures** : les coups accroupis sont lancés bas tenu ; face à un coup bas, la garde se prend accroupi. L'IA ne saute pas et ignore les coups sautés.
 - **Choix** : punir une récupération adverse, attaquer à portée (le coup le plus rapide ou un autre), lancer un projectile quand aucun projectile adverse ne toucherait pendant la préparation, sinon avancer, attendre ou reculer.
 - **Respect des règles d'entrée** : un bouton n'est appuyé que si le combattant peut agir et n'est pas gelé, puis relâché au tick suivant (les commandes se déclenchent à l'appui).
 
@@ -77,7 +80,7 @@ En WebGL, l'Input System lit l'API Gamepad du navigateur (disposition standard).
 
 Le hasard est un xorshift à graine, identique sur toutes les plateformes : même graine et mêmes entrées adverses donnent la même partie, et **recommencer** rejoue la même suite. `InputSources` tire une graine différente à chaque combat ; les tests fixent la leur. Le journal des entrées (`InputLog`) suffit à rejouer une manche contre l'ordinateur.
 
-Limites : sans saut ni accroupissement dans le moteur, l'IA (comme un joueur) n'a pas de réponse à un adversaire qui ne fait que lancer des projectiles à distance : elle garde mais n'avance pas. Elle n'enchaîne pas de combos et ne lit pas les commandes adverses.
+Limites : comme elle ne saute pas, l'IA n'a pas de réponse à un adversaire qui ne fait que lancer des projectiles à distance : elle garde mais n'avance pas. Elle n'enchaîne pas de combos et ne lit pas les commandes adverses.
 
 ## Le rendu observe
 

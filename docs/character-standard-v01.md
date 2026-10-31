@@ -38,6 +38,19 @@ Premier personnage : Saint Louis (Louis IX), réinterprétation arcade originale
 | Spécial : projectile | 4 images | boucle de déplacement séparée |
 | Spécial : impact | 4 images | effet de contact séparé |
 
+Postures (prompts `prompts-hd-extension-v02.json` de chaque personnage) :
+
+| Animation / asset | Cible | Usage |
+|---|---:|---|
+| `crouch` | 3 images | descente et tenue accroupie |
+| `block_low` | 3 images | garde accroupie |
+| `hit_crouch` | 3 images | réaction accroupie |
+| `crouch_punch` | 6 images | poing accroupi |
+| `crouch_kick` | 6 images | balayette |
+| `jump` | 6 images | préparation, montée, sommet, descente, réception |
+| `jump_punch` / `jump_kick` | 4 images chacun | coups sautés |
+| `ko` | 6 images | chute, puis allongé ; habits déchirés et taches de sang, sans gore |
+
 Le nombre et l'ordre effectifs des poses doivent être contrôlés sur chaque source. Une planche illustrative n'est pas un atlas prêt à découper.
 
 Les effets des coups spéciaux sont exportés séparément du personnage : point d'émission relatif au pivot, vitesse et collision du projectile définies dans le moteur, déclenchement unique sur une pose précise, impact joué une fois au contact. La taille de la collision ne doit pas inclure le halo lumineux.

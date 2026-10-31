@@ -33,3 +33,16 @@ Les onze sorties comprennent 56 poses de combat et d'effets, plus un portrait, e
 Les planches sont des sources, pas des animations déjà jouables. Les retouches, le découpage, l'alignement, les collisions, les sons et les essais dans le moteur restent à réaliser. Les ressources sont créées avec ImageGen intégré.
 
 Suivre le [standard commun](../../../docs/character-standard-v01.md). Vérifier notamment la stabilité du bicorne, les pans de la redingote et la cohérence du fourreau entre les poses. La taille relative aux autres combattants se règle lors de l'intégration, sans modifier les proportions à chaque image.
+
+## Extension : postures et KO
+
+Générées avec Codex CLI le 31 octobre 2026 (`tools/codex-image/generate.py assets/characters/napoleon prompts-hd-extension-v02.json <n>`), avec la référence maîtresse et la planche de garde comme images de référence. Sources brutes, non retouchées :
+
+- `source/napoleon_crouch_hd_v01.png` (3 poses), `source/napoleon_block_low_hd_v01.png` (3), `source/napoleon_hit_crouch_hd_v01.png` (3) ;
+- `source/napoleon_crouch_punch_hd_v01.png` et `source/napoleon_crouch_kick_hd_v01.png` (6 poses chacune, 2 rangées) ;
+- `source/napoleon_jump_hd_v01.png` (6 poses : préparation, montée, sommet, descente, réception) ;
+- `source/napoleon_jump_punch_hd_v01.png` et `source/napoleon_jump_kick_hd_v01.png` (4 poses chacune) ;
+- `source/napoleon_ko_hd_v01.png` (6 poses) : chute puis allongé, habits déchirés et taches de sang, sans gore ;
+- `prompts-hd-extension-v02.json` : prompts exacts.
+
+Ces planches n'ont pas de pose de garde : l'export les met à l'échelle sur la hauteur d'une pose comparable (`matchHeight` dans `tools/export-character/configs/`).

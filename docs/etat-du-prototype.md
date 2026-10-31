@@ -5,15 +5,22 @@
 Deux combattants jouables, **Saint Louis** et **Napoléon**, dans Unity 6000.4.7f1 (scène `Assets/Scenes/Combat.unity`), au clavier ou à la manette, avec le parcours complet : titre, choix du mode (versus local, solo contre l'ordinateur, en ligne), sélection des personnages et du décor, combat, résultat.
 
 - **Déplacements** : marche avant et arrière, orientation automatique vers l'adversaire, collision corporelle (pousser l'adversaire en avançant), limites de l'arène, écart maximal entre combattants.
+- **Saut et accroupissement** :
+  - haut (Z, ↑, stick haut) : saut vertical ; haut-avant et haut-arrière : sauts en avant et en arrière. Courte préparation (4 ticks), trajectoire fixe une fois en l'air (420 unités de haut, 41 ticks en l'air), réception de 4 ticks. On peut sauter par-dessus l'adversaire, qu'on frappe alors dans le dos ;
+  - bas (S, ↓, stick bas) : accroupi, sans avancer ni reculer.
 - **Coups** :
   - poing ;
   - pied rapide ;
   - pied puissant ;
+  - accroupi : poing (coup moyen) et balayette au pied rapide ou puissant (coup bas) ;
+  - en l'air : poing sauté et pied sauté (coups hauts), un seul par saut ;
   - Poing de Saint Louis : touche dédiée ou quart de cercle avant + poing. Il projette une fleur de lys émise au poing à l'entrée de la 5ᵉ pose, à raison d'un seul projectile à la fois, qui produit un impact doré au contact ;
   - Salve impériale de Napoléon : mêmes commandes. Napoléon pointe l'adversaire et un boulet spectral part du doigt à l'entrée de la 5ᵉ pose, à hauteur de poitrine, un seul à la fois, avec un impact bleu au contact.
 - **Réactions** :
   - dégâts, étourdissement, gel d'impact, recul (reporté sur l'attaquant si la cible est coincée), puis retour en garde ;
-  - garde en tenant arrière, avec garde sur place face à une attaque ou un projectile proche ;
+  - garde en tenant arrière, avec garde sur place face à une attaque ou un projectile proche. Debout, elle arrête les coups hauts et moyens ; accroupi (bas-arrière), les coups bas et moyens. Pas de garde en l'air ;
+  - touché en l'air, le combattant retombe et reste étourdi jusqu'à la réception ;
+  - KO : chute au sol en six poses, habits déchirés et taches de sang (sans gore) ;
   - deux projectiles adverses s'annulent ; deux coups simultanés s'échangent.
 - **Manche** : introduction, chronomètre de 99 secondes, KO ou temps écoulé, annonce du vainqueur, puis **Entrée** (ou **Start**) vers l'écran de résultat ; **F5** recommence la manche.
 - **Menus** : écran titre avec le logo, choix du mode (Versus local, Solo contre l'ordinateur avec trois niveaux, En ligne), sélection des personnages (appuyer pour rejoindre au clavier ou à la manette, portraits, choix du décor quand il y en a plusieurs), résultat (revanche, changer de personnage, retour au menu). Navigation au clavier et à la manette.
@@ -29,7 +36,7 @@ Deux combattants jouables, **Saint Louis** et **Napoléon**, dans Unity 6000.4.7
 
 ## Ce qui a été vérifié, et comment
 
-- **115 tests EditMode, tous verts** : 115/115 au dernier lancement (le test du relais, `[Explicit]`, lancé à part avec le relais local), en mode batch (`unity test --mode EditMode .`). Ils couvrent :
+- **124 tests EditMode, tous verts** : 124/124 au dernier lancement (le test du relais, `[Explicit]`, lancé à part avec le relais local), en mode batch (`unity test --mode EditMode .`). Ils couvrent :
   - **chronologie** : les phases tombent aux ticks exacts, l'appui sur un bouton déclenche le coup mais pas son maintien, quart de cercle selon l'orientation ;
   - **dégâts** : un seul impact par coup, étourdissement plus gel, recul exact, échange de coups simultanés ;
   - **garde** : tenir arrière, garde de proximité, pas de garde en pleine attaque, attaque non blocable ;
@@ -37,6 +44,7 @@ Deux combattants jouables, **Saint Louis** et **Napoléon**, dans Unity 6000.4.7
   - **projectiles** : émission unique (y compris avec un gel forcé au tick d'émission), une instance par lanceur, comptée par lanceur en miroir, contact, garde, annulation, expiration ;
   - **déterminisme** : mêmes entrées, même empreinte ; sauvegarde, restauration puis reprise identiques à l'octet près ; l'état d'entrée n'est jamais modifié ;
   - **indépendance des deux combattants** ;
+  - **saut et accroupissement** : hauteur et durée du saut, distance d'un saut avant, pas de marche en l'air ni accroupi, coup accroupi au bouton bas tenu, coup haut qui passe au-dessus d'un adversaire accroupi, coup bas gardé seulement accroupi, coup sauté gardé debout mais pas accroupi, un coup par saut puis réception, pas de garde en l'air, sauvegarde et restauration en plein saut ;
   - **manche** : KO, temps écoulé, entrées ignorées pendant l'introduction et après le KO ;
   - **validation des paquets** : les vrais paquets de Saint Louis et de Napoléon sont acceptés ; 15 paquets volontairement cassés sont refusés, chacun avec un message localisé ;
   - **présentation** : la pose de frappe est affichée pendant les ticks actifs, le projectile apparaît à la 5ᵉ pose, les réactions sont étirées sur leur durée (pour les deux combattants) ;
@@ -45,7 +53,7 @@ Deux combattants jouables, **Saint Louis** et **Napoléon**, dans Unity 6000.4.7
   - **session** : combat miroir réel joué jusqu'au KO sans rendu, replay par le journal d'entrées, nouvelle manche, horloge à pas fixe à 144 Hz ;
   - **clavier** : correspondances des deux joueurs, vérifiées sur un clavier virtuel ;
   - **manette** : directions (stick, croix), boutons de face, manette débranchée, « appuyer pour rejoindre », sur une manette virtuelle de l'Input System ;
-  - **adversaire de l'ordinateur** : il gagne par KO contre un adversaire immobile à chaque niveau, avec Saint Louis et avec le combattant de synthèse ; il garde parfois des projectiles ; le niveau difficile garde et frappe davantage que le facile ; même graine, même partie, y compris après « recommencer ».
+  - **adversaire de l'ordinateur** : il lance ses coups accroupis bas tenu, garde accroupi face à un coup bas ; il gagne par KO contre un adversaire immobile à chaque niveau, avec Saint Louis et avec le combattant de synthèse ; il garde parfois des projectiles ; le niveau difficile garde et frappe davantage que le facile ; même graine, même partie, y compris après « recommencer ».
   - **sélection des personnages** : rejoindre, déplacer et verrouiller, revenir en arrière, étape du décor, Solo (le joueur choisit pour l'ordinateur), joueurs gardés en changeant de personnage, réglages produits ;
   - **menus à la manette** : stick (un appui, puis attente avant répétition, seuil, direction dominante) et liste des appareils, sur une manette virtuelle. Les boutons et la croix (appuis « cette image ») ne se testent pas en EditMode sans le cadre de test de l'Input System : non vérifiés.
 - **Les tests détectent bien les régressions** : en cassant volontairement « un seul impact par coup » et la garde, 12 tests échouent.
@@ -54,7 +62,8 @@ Deux combattants jouables, **Saint Louis** et **Napoléon**, dans Unity 6000.4.7
   - pied puissant qui touche au tick 146 (110 dégâts, gel de 12 ticks) ;
   - fleur de lys émise puis bloquée au tick 225 (0 dégât, impact affiché) ;
   - KO au tick 1136 et fin de manche au tick 1286.
-- **Export** : 56 poses découpées par combattant, 1 page d'atlas chacun. Les deux exports ont été relus sur leurs aperçus (fond clair et sombre, superpositions) ; les sources sont intactes.
+- **Postures, en mode Play** (`AgentScripts/VerifyStances.cs`, Saint Louis contre Saint Louis puis Napoléon contre Saint Louis, boîtes de débogage affichées) : accroupi des deux côtés, poing accroupi qui touche un adversaire accroupi (35 dégâts), balayette gardée accroupi, saut vertical, pied sauté et poing sauté qui touchent la tête d'un adversaire debout, KO jusqu'à la pose allongée. Les hitboxes suivent le poing et la botte dessinés. Le KO de Saint Louis flottait au-dessus du sol : corrigé à l'export. Le ressenti du saut (hauteur, durée) n'a pas été jugé par un joueur.
+- **Export** : 97 poses découpées par combattant (56 avant les postures), 2 pages d'atlas chacun. Les deux exports ont été relus sur leurs aperçus (fond clair et sombre, superpositions) ; les sources sont intactes.
   - Napoléon : bicorne, pans de la redingote et fourreau stables d'une pose à l'autre, pieds sur la ligne de sol, pivot commun, aucun recentrage automatique (le pied d'appui reste planté pendant les coups de pied, le buste part en arrière comme dessiné). Garde ramenée à 480 unités contre 500 pour Saint Louis : il paraît plus trapu, conformément à son identité.
   - Dans la réaction de Napoléon, les poses 2 et 3 se touchent (pans de manteau, et pointe de botte dessinée devant le talon voisin). L'outil les sépare désormais par une **couture** (`layout.seams`) ; réexporter Saint Louis avec l'outil modifié redonne des fichiers identiques à l'octet près.
 
@@ -79,6 +88,7 @@ Deux combattants jouables, **Saint Louis** et **Napoléon**, dans Unity 6000.4.7
 - **Interface, en WebGL au clavier** (événements clavier simulés dans la page, Chromium) : logo et progression pendant le chargement ; titre → modes (Solo refusé tant que l'ordinateur n'est pas branché, En ligne → salon provisoire → titre) → sélection (deux joueurs rejoignent avec F et Entrée, verrouillent, annulent avec G, aucun joueur placé par l'appui qui ouvre l'écran) → combat (annonces, jauges, étiquettes « J1 · Clavier gauche ») → K.O. → victoire → résultat → changer de personnage (joueurs gardés) et retour au menu. Page ajustée à une fenêtre 16:9 et à une fenêtre plus haute que large. Revanche non rejouée en WebGL (même appel que l'ancien écran provisoire). Manettes : navigation non essayée sur une vraie manette (seul le stick l'est, sur une manette virtuelle).
 
 - **Habillage (31 octobre), en WebGL au clavier simulé** (environ 23 Mo à télécharger) : vignettes et passage d'un décor à l'autre à la sélection (quatre décors), emblème « VS », HUD encadré, annonce « Combat ! », bandeau de victoire, écran de résultat, étiquettes lisibles. À Austerlitz, les deux combattants poussés contre chaque mur : aucun bord de décor visible. Étincelles vérifiées dans l'éditeur par un combat scripté (`AgentScripts/VerifyEffects.cs`) : touche à Austerlitz, garde à la Sainte-Chapelle. 114 tests verts, 1 ignoré (relais). Non vérifié : les murs de la Sainte-Chapelle (même géométrie qu'Austerlitz).
+- **Postures, en WebGL au clavier simulé** (environ 27,5 Mo à télécharger, 19,4 Mo de données) : sélection, puis en combat J1 accroupi (↓ tenu) pendant que J2 saute en avant (Z + Q) ; saut sous le HUD, aucune erreur dans la console. Non vérifié : manette réelle, Safari et Firefox.
 - **Police Bangers, en WebGL au clavier simulé** : titre, modes, sélection (accents de « Napoléon », « Prêt ! »), VS, HUD, victoire, résultat et salon en ligne lus à l'écran ; aucune erreur dans la console ; 114 tests verts.
 - **Relais en ligne déployé** (Cloudflare Workers) : les essais de conformité passent contre le relais déployé, et deux onglets Chrome sans interface jouent deux manches à travers lui (ticks 1189 et 1523, même empreinte des deux côtés, 129 à 206 rollbacks, aucune désynchronisation).
 
@@ -106,15 +116,15 @@ Le transport de l'éditeur et du PC (`ClientWebSocket`) a échangé avec le rela
 - **Solo et manettes en attente** : les menus sont prêts, mais l'adversaire ordinateur et la lecture des manettes en combat restent à brancher dans `InputSources` (session en cours). D'ici là, Solo est affiché « Bientôt » et une manette qui veut rejoindre est refusée avec un message.
 - **Pas d'animation dédiée** :
   - recul : marche avant lue à l'envers ;
-  - KO : 2ᵉ pose de réaction tenue ;
   - garde de proximité : 1ʳᵉ pose de blocage tenue.
-- **Absents** : saut, accroupissement, garde basse, coups bas, chopes, annulations, étourdissement cumulé (dizzy), compteur de combo.
-- **Un seul recul** : pas de recul « K.O. » ni de chute.
+- **Absents** : chopes, annulations, étourdissement cumulé (dizzy), compteur de combo.
+- **Un seul recul** : pas de recul « K.O. » ; la chute du KO se joue sur place.
+- **Saut** : une seule hauteur et une seule vitesse pour les deux combattants (`stats.jump` permet de les régler par personnage). Pas de super saut, de saut court ni de coup spécial en l'air. Pas de réception dédiée après un coup reçu en l'air : la pose de touché haut est tenue jusqu'au sol.
 - **Alignement de l'export** : il cale le pied arrière (ou le buste pour la marche) mais ne conserve pas les déplacements dessinés dans les planches. Les échelles par planche gardent quelques pour cent d'écart.
 - **Animations de garde et de marche jouées telles quelles** : six poses de garde quasi identiques, cycle de marche non retravaillé (voir les contrôles de l'équipe artistique).
 - **Aucun son** : les signaux sont branchés, mais sans fichier.
 - **Clavier** : un seul échantillon par image d'affichage, donc un appui plus court qu'une image peut être manqué. Certains claviers ne détectent pas toutes les combinaisons de touches simultanées (ghosting). Même échantillonnage par image pour la manette.
-- **Adversaire de l'ordinateur** : sans saut ni accroupissement, il n'a pas de réponse à un adversaire qui ne fait que lancer des projectiles de loin (il garde sans avancer). Pas de combos.
+- **Adversaire de l'ordinateur** : il s'accroupit pour ses coups bas et sa garde basse, mais ne saute jamais et n'utilise pas les coups sautés ; il n'a donc pas de réponse à un adversaire qui ne fait que lancer des projectiles de loin (il garde sans avancer). Pas de combos.
 - **Pause** : le jeu se met en pause quand la fenêtre perd le focus.
 - **Jeu en ligne** : pas de reconnexion après une coupure ; un onglet caché met l'adversaire en attente ; relais déployé ouvert à toutes les pages (`ORIGINES` vide) tant que le jeu n'a pas d'adresse publique ; offre gratuite de Cloudflare, environ 250 manches par jour.
 - **Pas encore faits** : import de paquets et signature (voir l'[architecture](architecture.md)).
@@ -124,7 +134,6 @@ Le transport de l'éditeur et du PC (`ClientWebSocket`) a échangé avec le rela
 Classés par effet sur le jeu.
 
 1. **Saint Louis** :
-   - KO (chute au sol, 4 à 6 poses) ;
    - pose de victoire ;
    - marche arrière (8 poses) ;
    - impact de blocage (réaction du personnage ; l'étincelle de garde est faite).
@@ -147,8 +156,8 @@ Classés par effet sur le jeu.
 
    OGG ou WAV. Un son propre à un coup se déclare par exemple sous `moveStart:stand_kick_heavy`.
 5. **Interface** : la police Bangers (OFL, Google Fonts) remplace la police par défaut pour le gras ; une police dessinée pour le jeu, plus proche du pinceau du logo, reste possible (`Ui.Display`). Les fonds, cadres du HUD, « VS », mots d'annonce et étincelles ont été générés avec Codex CLI ([assets/ui](../assets/ui/README.md)) et peuvent être remplacés dans `game/Assets/Resources/UI/` et `Effects/` sans toucher au code.
-6. **Pour aller vers six boutons** : poing moyen et fort, pied moyen, puis les coups accroupis et sautés si on les ajoute.
-7. **Napoléon** : les mêmes besoins que Saint Louis (KO, victoire, marche arrière, impact de blocage), plus :
+6. **Pour aller vers six boutons** : poing moyen et fort, pied moyen, avec leurs versions accroupies et sautées.
+7. **Napoléon** : les mêmes besoins que Saint Louis (victoire, marche arrière, impact de blocage), plus :
    - réaction haute : écarter les poses 2 et 3. La pointe de botte de la pose 2 masque le talon de la pose 3, auquel il manque donc un petit morceau ;
    - garde : six poses presque identiques, à stabiliser comme celles de Saint Louis.
 8. **Combattant suivant** : suivre [Ajouter un combattant](ajouter-un-combattant.md). Laisser de l'espace entre les poses évite les coutures.

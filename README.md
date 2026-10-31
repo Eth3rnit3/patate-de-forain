@@ -32,7 +32,7 @@ python3 -m http.server 8765 --directory game/WebBuild
 
 puis ouvrir <http://localhost:8765> et **cliquer dans le jeu** pour lui donner le clavier. Ouvrir `index.html` directement depuis le disque ne fonctionne pas.
 
-Poids téléchargé : environ **23 Mo** (code 7,9 Mo, données 15,3 Mo : atlas de Saint Louis et de Napoléon, trois décors, images de l'interface et des étincelles).
+Poids téléchargé : environ **27,5 Mo** (code 7,9 Mo, données 19,4 Mo : atlas de Saint Louis et de Napoléon avec les postures et le KO, trois décors, images de l'interface et des étincelles).
 
 La page vient du gabarit `game/Assets/WebGLTemplates/PatateDeForain/` (choisi par `WebBuilder`) : le logo et une barre de progression pendant le chargement, puis le jeu en 16:9 ajusté à la taille de la fenêtre, un bouton plein écran et le rappel des commandes. L'écran « Made with Unity » est désactivé.
 
@@ -43,8 +43,10 @@ Les touches sont des **positions physiques** (Input System). Les noms ci-dessous
 | Action | Joueur 1 | Joueur 2 |
 |---|---|---|
 | Avancer / reculer | **Q** / **D** | **←** / **→** |
-| Bas (pour le quart de cercle) | **S** | **↓** |
-| Garder | tenir la direction opposée à l'adversaire | idem |
+| Sauter (haut-avant, haut-arrière : saut en avant, en arrière) | **Z** | **↑** |
+| S'accroupir (et bas du quart de cercle) | **S** | **↓** |
+| Garder | tenir la direction opposée à l'adversaire ; bas-arrière contre les coups bas | idem |
+| Coups accroupis / sautés | poing ou pied en tenant bas / pendant un saut (un coup par saut) | idem |
 | Poing | **F** | **K** ou pavé **1** |
 | Pied rapide | **G** | **L** ou pavé **2** |
 | Pied puissant | **H** | **M** ou pavé **3** |
@@ -66,7 +68,8 @@ Manettes Xbox, PlayStation ou toute manette reconnue comme manette standard, y c
 | Action | Bouton (Xbox / PlayStation) |
 |---|---|
 | Déplacements, bas | stick gauche ou croix |
-| Garder | tenir la direction opposée à l'adversaire |
+| Sauter, s'accroupir | haut, bas (stick gauche ou croix) |
+| Garder | tenir la direction opposée à l'adversaire ; bas-arrière contre les coups bas |
 | Poing | **X** / **Carré** |
 | Pied rapide | **A** / **Croix** |
 | Pied puissant | **B** / **Rond** |
@@ -117,7 +120,7 @@ Code : `Ui.cs` (palette et éléments graphiques), `MenuInput.cs` (commandes des
 
 ## Vérifier
 
-- **Tests (115)** : dans Unity, *Window › General › Test Runner › EditMode › Run All*. Ou en ligne de commande, éditeur ouvert, depuis `game/` : `unity command test run --mode editor`.
+- **Tests (124)** : dans Unity, *Window › General › Test Runner › EditMode › Run All*. Ou en ligne de commande, éditeur ouvert, depuis `game/` : `unity command test run --mode editor`.
 - **Paquets de combattants** : menu *Patate de Forain › Valider les combattants*.
 - **Scénario en jeu scripté** : `AgentScripts/VerifyMatch.cs` (mode d'emploi en tête de fichier).
 

@@ -1,4 +1,4 @@
-# État du prototype — 28 octobre 2026
+# État du prototype — 31 octobre 2026
 
 ## Ce qui fonctionne en jeu
 
@@ -17,7 +17,9 @@ Deux combattants jouables, **Saint Louis** et **Napoléon**, dans Unity 6000.4.7
   - deux projectiles adverses s'annulent ; deux coups simultanés s'échangent.
 - **Manche** : introduction, chronomètre de 99 secondes, KO ou temps écoulé, annonce du vainqueur, puis **Entrée** (ou **Start**) vers l'écran de résultat ; **F5** recommence la manche.
 - **Menus** : écran titre avec le logo, choix du mode (Versus local, Solo contre l'ordinateur avec trois niveaux, En ligne), sélection des personnages (appuyer pour rejoindre au clavier ou à la manette, portraits, choix du décor quand il y en a plusieurs), résultat (revanche, changer de personnage, retour au menu). Navigation au clavier et à la manette.
-- **Interface de combat** : portraits, jauges de vie avec traînée des dégâts, chronomètre, noms et appareil de chaque joueur, annonces de manche peintes, pause, aide des commandes (**F2**), changement de combattant (**F3**/**F4**).
+- **Décors** : fête foraine, Sainte-Chapelle et Austerlitz, chacun en trois calques peints (ciel, plan moyen, sol) avec parallaxe, plus l'arène d'entraînement ; vignette de chaque décor à la sélection.
+- **Habillage** : fonds peints de la sélection et du résultat, emblème « VS » quand les deux joueurs sont prêts, étiquettes lisibles sur fond bleu marine, étincelles peintes sur les coups au corps (touche et garde, taille selon les dégâts).
+- **Interface de combat** : portraits et jauges de vie dans des cadres dorés peints, traînée des dégâts, médaillon du chronomètre, noms et appareil de chaque joueur, annonces de manche peintes, pause, aide des commandes (**F2**), changement de combattant (**F3**/**F4**).
 - **Navigateur** : gabarit WebGL au logo du jeu pendant le chargement, jeu ajusté à la fenêtre.
 - **Débogage (F1)** :
   - boîtes de la simulation : pushbox, hurtboxes, hitboxes actives et consommées, projectiles ;
@@ -76,6 +78,9 @@ Deux combattants jouables, **Saint Louis** et **Napoléon**, dans Unity 6000.4.7
 
 - **Interface, en WebGL au clavier** (événements clavier simulés dans la page, Chromium) : logo et progression pendant le chargement ; titre → modes (Solo refusé tant que l'ordinateur n'est pas branché, En ligne → salon provisoire → titre) → sélection (deux joueurs rejoignent avec F et Entrée, verrouillent, annulent avec G, aucun joueur placé par l'appui qui ouvre l'écran) → combat (annonces, jauges, étiquettes « J1 · Clavier gauche ») → K.O. → victoire → résultat → changer de personnage (joueurs gardés) et retour au menu. Page ajustée à une fenêtre 16:9 et à une fenêtre plus haute que large. Revanche non rejouée en WebGL (même appel que l'ancien écran provisoire). Manettes : navigation non essayée sur une vraie manette (seul le stick l'est, sur une manette virtuelle).
 
+- **Habillage (31 octobre), en WebGL au clavier simulé** (environ 23 Mo à télécharger) : vignettes et passage d'un décor à l'autre à la sélection (quatre décors), emblème « VS », HUD encadré, annonce « Combat ! », bandeau de victoire, écran de résultat, étiquettes lisibles. À Austerlitz, les deux combattants poussés contre chaque mur : aucun bord de décor visible. Étincelles vérifiées dans l'éditeur par un combat scripté (`AgentScripts/VerifyEffects.cs`) : touche à Austerlitz, garde à la Sainte-Chapelle. 114 tests verts, 1 ignoré (relais). Non vérifié : les murs de la Sainte-Chapelle (même géométrie qu'Austerlitz).
+- **Relais en ligne déployé** (Cloudflare Workers) : les essais de conformité passent contre le relais déployé, et deux onglets Chrome sans interface jouent deux manches à travers lui (ticks 1189 et 1523, même empreinte des deux côtés, 129 à 206 rollbacks, aucune désynchronisation).
+
 **Pas vérifié par moi** : une vraie partie au clavier, à deux humains, avec la sensation de jeu. C'est le prochain essai à faire. Il n'y a pas eu d'export autonome (PC, Mac), ni d'essai WebGL sous Safari ou Firefox.
 
 - **Jeu en ligne** : relais local (`server/relay`), build WebGL servi en statique, deux onglets d'un même Chrome sans interface, chacun en robot (`?robot`), relais réglé à 60 ms de latence par message. Deux manches complètes, revanche comprise, finies par KO au même tick des deux côtés, avec la même empreinte d'état ; environ 200 rollbacks par joueur et par manche, 45 à 49 empreintes comparées en cours de manche, aucune désynchronisation (`npm run essai:onglets`). Le relais Cloudflare est **déployé** (`wss://patate-relais.eth3rnit3.workers.dev`, 31 octobre 2026) : il passe le scénario de salon (`npm run verifier`), et le même essai à deux onglets à travers lui (`RELAIS=wss://… npm run essai:onglets`, aucun relais local lancé) a joué deux manches, revanche comprise, finies au même tick des deux côtés avec la même empreinte (ticks 1189 et 1523), 129 à 206 rollbacks par joueur et par manche, aucune désynchronisation. Les tests EditMode du protocole (10) font jouer deux machines simulées avec latence et gigue. Deux onglets d'une même fenêtre, l'un caché, jouent aussi, mais au rythme de l'onglet caché que le navigateur ralentit à 1 ou 2 images par seconde.
@@ -121,10 +126,9 @@ Classés par effet sur le jeu.
    - KO (chute au sol, 4 à 6 poses) ;
    - pose de victoire ;
    - marche arrière (8 poses) ;
-   - impact de blocage ;
-   - étincelle d'impact pour les coups au corps (aujourd'hui seul le projectile a un effet).
+   - impact de blocage (réaction du personnage ; l'étincelle de garde est faite).
 2. **Stabilisation** de la boucle de garde et du cycle de marche : appuis fixes, détails constants (fleurs de lys, couronne, épée).
-3. **Décors**. Le premier, la fête foraine, est en jeu et sert par défaut ; sa musique manque (champ `music` de `stage.json`). Pour les suivants, suivre [son dossier](../assets/stages/fete-foraine/README.md). Repères (`Resources/Stages/<id>/`) :
+3. **Décors**. Trois sont en jeu (fête foraine par défaut, Sainte-Chapelle, Austerlitz) ; leur musique manque (champ `music` de `stage.json`). Pour les suivants, suivre [le dossier de la fête foraine](../assets/stages/fete-foraine/README.md) ou celui de la [Sainte-Chapelle](../assets/stages/sainte-chapelle/README.md), générée avec `tools/codex-image/generate.py`. Repères (`Resources/Stages/<id>/`) :
    - 1 unité = 1 px à l'échelle 100 ; le champ `scale` d'un calque l'agrandit à l'affichage ;
    - zone visible de 1920 × 1080 ;
    - sol à 130 px du bas ;
@@ -141,7 +145,7 @@ Classés par effet sur le jeu.
    - musique du décor.
 
    OGG ou WAV. Un son propre à un coup se déclare par exemple sous `moveStart:stand_kick_heavy`.
-5. **Interface** : une police au style du logo (aujourd'hui la police par défaut, détourée) ; le fond de menu et les mots d'annonce ont été générés avec Codex CLI et peuvent être remplacés dans `game/Assets/Resources/UI/` sans toucher au code.
+5. **Interface** : une police au style du logo (aujourd'hui la police par défaut, détourée ; Codex ne produit pas de police). Les fonds, cadres du HUD, « VS », mots d'annonce et étincelles ont été générés avec Codex CLI ([assets/ui](../assets/ui/README.md)) et peuvent être remplacés dans `game/Assets/Resources/UI/` et `Effects/` sans toucher au code.
 6. **Pour aller vers six boutons** : poing moyen et fort, pied moyen, puis les coups accroupis et sautés si on les ajoute.
 7. **Napoléon** : les mêmes besoins que Saint Louis (KO, victoire, marche arrière, impact de blocage), plus :
    - réaction haute : écarter les poses 2 et 3. La pointe de botte de la pose 2 masque le talon de la pose 3, auquel il manque donc un petit morceau ;

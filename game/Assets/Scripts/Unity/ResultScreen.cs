@@ -48,7 +48,7 @@ namespace Patate.UnityAdapters
         {
             var previous = Ui.Begin();
             float time = Time.unscaledTime, width = Ui.Width;
-            Ui.Background(0.55f);
+            Ui.Background(0.4f, "resultat-fond");
             int winner = Final.Round.Winner;
             bool draw = winner == RoundState.Draw || winner < 0;
 
@@ -67,7 +67,7 @@ namespace Patate.UnityAdapters
                 Ui.Texture(rect, visuals.Portrait, mirror: slot == 1, alpha: won ? enter : 0.45f * enter);
                 string who = Describe(slot);
                 Ui.Text(new Rect(rect.x - 40, rect.yMax + 4, rect.width + 80, 50), $"{visuals.Package.Name.ToUpperInvariant()}", Ui.Style(won ? 44 : 32), won ? Ui.Cream : Ui.Muted, 3, enter);
-                Ui.Text(new Rect(rect.x - 40, rect.yMax + 52, rect.width + 80, 34), who, Ui.Style(24, fontStyle: FontStyle.Normal), Ui.PlayerColors[slot], 2, enter);
+                if (enter > 0.5f) Ui.Tag(new Rect(rect.x - 40, rect.yMax + 54, rect.width + 80, 34), who, TextAnchor.MiddleCenter, Ui.PlayerColors[slot]);
             }
 
             Ui.Word(draw ? "egalite" : "victoire", draw ? "ÉGALITÉ" : "VICTOIRE !", new Vector2(width / 2, 140), 210, age);

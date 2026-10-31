@@ -32,12 +32,16 @@ namespace Patate.UnityAdapters
         float shake;
         int shakeTicks;
 
+        /// <summary>Effet d'un combattant (animation de son paquet) ou effet commun (<see cref="SharedEffects"/>).</summary>
         sealed class Effect
         {
             public SpriteRenderer Renderer;
             public FighterVisuals Owner;
             public AnimationBinding Binding;
+            public SharedEffects.Animation Shared;
             public int Tick;
+
+            public int Duration => Shared?.Duration ?? Owner.Package.Presentation.Animations[Binding.Animation].TotalDuration;
         }
 
         public MatchView(Camera camera, MatchRules rules, FighterVisuals first, FighterVisuals second, StageView stage)
@@ -65,6 +69,22 @@ namespace Patate.UnityAdapters
             foreach (var e in events)
             {
                 if (e.Type == MatchEventType.Hit) Shake(Mathf.Clamp(e.Damage / 12f, 2f, 10f), e.Damage >= 80 ? 10 : 6);
+                // Coups au corps : étincelle commune au point de contact (les projectiles ont leur propre impact).
+                if ((e.Type == MatchEventType.Hit || e.Type == MatchEventType.Block) && e.ProjectileId == null)
+                {
+                    var spark = e.Type == MatchEventType.Hit ? SharedEffects.Hit : SharedEffects.Block;
+                    if (spark != null)
+                    {
+                        var renderer = Rent("Étincelle");
+                        renderer.transform.localPosition = new Vector3(e.X * Scale, e.Y * Scale, 0);
+                        // Plus grosse pour un coup lourd ; tournée vers la cible.
+                        float size = e.Type == MatchEventType.Hit ? Mathf.Lerp(0.8f, 1.3f, Mathf.InverseLerp(30, 110, e.Damage)) : 1f;
+                        renderer.transform.localScale = new Vector3(e.Facing * size, size, 1);
+                        renderer.sortingOrder = 30;
+                        renderer.sprite = spark.Frames[0];
+                        effects.Add(new Effect { Renderer = renderer, Shared = spark });
+                    }
+                }
                 if (e.Type == MatchEventType.ProjectileEnd && e.Reason != ProjectileEndReason.Expired && e.Reason != ProjectileEndReason.OutOfArena)
                 {
                     var owner = visuals[e.Slot];
@@ -81,7 +101,7 @@ namespace Patate.UnityAdapters
             {
                 var effect = effects[i];
                 effect.Tick++;
-                if (effect.Tick >= effect.Owner.Package.Presentation.Animations[effect.Binding.Animation].TotalDuration)
+                if (effect.Tick >= effect.Duration)
                 {
                     Return(effect.Renderer);
                     effects.RemoveAt(i);
@@ -131,6 +151,11 @@ namespace Patate.UnityAdapters
 
             foreach (var effect in effects)
             {
+                if (effect.Shared != null)
+                {
+                    effect.Renderer.sprite = effect.Shared.At(effect.Tick);
+                    continue;
+                }
                 var pick = FramePicker.Resolve(effect.Binding, effect.Owner.Package.Presentation, effect.Tick);
                 effect.Renderer.sprite = effect.Owner.Sprite(pick.Sprite);
             }

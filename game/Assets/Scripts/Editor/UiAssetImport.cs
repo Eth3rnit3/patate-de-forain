@@ -4,7 +4,8 @@ using UnityEngine;
 namespace Patate.EditorTools
 {
     /// <summary>
-    /// Réglages d'import des images de l'interface (Resources/UI) : taille
+    /// Réglages d'import des images de l'interface (Resources/UI) et des
+    /// effets communs (Resources/Effects) : taille
     /// native jusqu'à 2048, pas de mipmaps (affichées à l'écran à leur taille
     /// ou presque), filtrage linéaire, compression de qualité.
     /// </summary>
@@ -12,7 +13,7 @@ namespace Patate.EditorTools
     {
         void OnPreprocessTexture()
         {
-            if (!assetPath.StartsWith("Assets/Resources/UI/")) return;
+            if (!assetPath.StartsWith("Assets/Resources/UI/") && !assetPath.StartsWith("Assets/Resources/Effects/")) return;
             var importer = (TextureImporter)assetImporter;
             importer.textureType = TextureImporterType.Default;
             importer.npotScale = TextureImporterNPOTScale.None;

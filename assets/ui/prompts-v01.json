@@ -1,0 +1,84 @@
+[
+  {
+    "asset": "jauge_cadre",
+    "source": "source/jauge_cadre_v01.png",
+    "images": [
+      "logo.png",
+      "game/Assets/Resources/UI/menu-background.jpg"
+    ],
+    "prompt": "Use case: game UI asset.\nAsset type: production-ready HD 2D fighting-game HUD element on a TRUE TRANSPARENT background.\nInput images: Image 1 is the game logo \"Patate de Forain\" (flaming yellow-orange-red brush lettering with a thick navy outline); Image 2 is the game's menu background (a French travelling funfair at night). Match their palette (navy ink, warm yellow, orange, red, cream) and their clean hand-drawn HD rendering: fluid inked contours, flat cel-shaded shadows, discreet gradients.\nPrimary request: ONE horizontal life-gauge frame for the left player, in the style of a vintage French funfair sign: a long rectangular frame with a dark navy enamel border edged with polished brass, small round warm light bulbs set regularly along the top and bottom edges, decorative brass corner caps, and on the RIGHT end (towards the centre of the screen) a small pointed brass finial. Inside the frame, one single long empty rectangular window with straight edges that covers about 85% of the frame length: this window must be FULLY TRANSPARENT (alpha 0), nothing drawn inside it, because the game draws the gauge there.\nLayout: the frame alone, seen perfectly from the front, horizontal, centred, very elongated (about 7:1), filling the width of the image with a small transparent margin; everything outside the frame is fully transparent.\nConstraints: no characters, no people, no animals, no readable text, letters, numbers or logos unless asked, no brand names, no watermark, no checkerboard drawn in. Not pixel art, not 3D, not photorealistic.",
+    "codexInstructions": "Instructions for you (Codex): generate this image with your image generation tool, at the widest landscape size it supports, with a true transparent background. Save the PNG exactly at <source> (create nothing else, modify no other file). Do not post-process the image in any way (no crop, no resize, no mirror, no threshold, no colour change). Then print the pixel dimensions and the alpha value of the four corners and of the centre pixel. If the background came out opaque or there is unwanted text, regenerate once."
+  },
+  {
+    "asset": "portrait_cadre",
+    "source": "source/portrait_cadre_v01.png",
+    "images": [
+      "logo.png",
+      "game/Assets/Resources/UI/menu-background.jpg"
+    ],
+    "prompt": "Use case: game UI asset.\nAsset type: production-ready HD 2D fighting-game HUD element on a TRUE TRANSPARENT background.\nInput images: Image 1 is the game logo \"Patate de Forain\" (flaming yellow-orange-red brush lettering with a thick navy outline); Image 2 is the game's menu background (a French travelling funfair at night). Match their palette (navy ink, warm yellow, orange, red, cream) and their clean hand-drawn HD rendering: fluid inked contours, flat cel-shaded shadows, discreet gradients.\nPrimary request: ONE square portrait frame for a fighter's face in the HUD, in the style of a vintage French funfair sign: thick dark navy enamel border edged with polished brass, a ring of small round warm light bulbs all around, four decorative brass corner ornaments with tiny red and cream striped pennants. In the middle, one single empty square window with straight edges, about 72% of the frame width: it must be FULLY TRANSPARENT (alpha 0), nothing drawn inside, because the game draws the portrait there.\nLayout: the frame alone, seen perfectly from the front, centred, square, with a small transparent margin; everything outside the frame is fully transparent.\nConstraints: no characters, no people, no animals, no readable text, letters, numbers or logos unless asked, no brand names, no watermark, no checkerboard drawn in. Not pixel art, not 3D, not photorealistic.",
+    "codexInstructions": "Instructions for you (Codex): generate this image with your image generation tool, in a square format, with a true transparent background. Save the PNG exactly at <source> (create nothing else, modify no other file). Do not post-process the image in any way (no crop, no resize, no mirror, no threshold, no colour change). Then print the pixel dimensions and the alpha value of the four corners and of the centre pixel. If the background came out opaque or there is unwanted text, regenerate once."
+  },
+  {
+    "asset": "chrono_medaillon",
+    "source": "source/chrono_medaillon_v01.png",
+    "images": [
+      "logo.png",
+      "game/Assets/Resources/UI/menu-background.jpg"
+    ],
+    "prompt": "Use case: game UI asset.\nAsset type: production-ready HD 2D fighting-game HUD element on a TRUE TRANSPARENT background.\nInput images: Image 1 is the game logo \"Patate de Forain\" (flaming yellow-orange-red brush lettering with a thick navy outline); Image 2 is the game's menu background (a French travelling funfair at night). Match their palette (navy ink, warm yellow, orange, red, cream) and their clean hand-drawn HD rendering: fluid inked contours, flat cel-shaded shadows, discreet gradients.\nPrimary request: ONE round medallion for the round timer, like the crest at the top of a carousel: a wide ring of polished brass with a circle of small round warm light bulbs, a scalloped red and cream striped canopy edge around it, two small curled brass ornaments on the sides, a short red ribbon at the bottom. The centre is a plain flat disk of very dark navy (opaque, no texture, no digits), about 62% of the medallion diameter, where the game will write the seconds.\nLayout: the medallion alone, seen perfectly from the front, centred, square image, small transparent margin; everything outside the medallion is fully transparent.\nConstraints: no characters, no people, no animals, no readable text, letters, numbers or logos unless asked, no brand names, no watermark, no checkerboard drawn in. Not pixel art, not 3D, not photorealistic.",
+    "codexInstructions": "Instructions for you (Codex): generate this image with your image generation tool, in a square format, with a true transparent background. Save the PNG exactly at <source> (create nothing else, modify no other file). Do not post-process the image in any way (no crop, no resize, no mirror, no threshold, no colour change). Then print the pixel dimensions and the alpha value of the four corners and of the centre pixel. If the background came out opaque or there is unwanted text, regenerate once."
+  },
+  {
+    "asset": "vs",
+    "source": "source/vs_v01.png",
+    "images": [
+      "logo.png",
+      "game/Assets/Resources/UI/menu-background.jpg"
+    ],
+    "prompt": "Use case: game UI asset.\nAsset type: production-ready HD 2D fighting-game title graphic on a TRUE TRANSPARENT background.\nInput images: Image 1 is the game logo \"Patate de Forain\" (flaming yellow-orange-red brush lettering with a thick navy outline); Image 2 is the game's menu background (a French travelling funfair at night). Match their palette (navy ink, warm yellow, orange, red, cream) and their clean hand-drawn HD rendering: fluid inked contours, flat cel-shaded shadows, discreet gradients.\nPrimary request: the two capital letters \"VS\" (exactly these two letters, nothing else), drawn in exactly the same lettering style as the logo of Image 1: slanted bold brush letters filled with a flaming gradient from yellow to orange and red, thick navy outline, a second thin cream outline, speed streaks and a few small sparks around them.\nLayout: the two letters alone, centred, filling about 80% of a square image; everything around them fully transparent.\nConstraints: no other text or letters, no background shape, no watermark, no checkerboard drawn in. Not 3D, not photorealistic.",
+    "codexInstructions": "Instructions for you (Codex): generate this image with your image generation tool, in a square format, with a true transparent background. Save the PNG exactly at <source> (create nothing else, modify no other file). Do not post-process the image in any way (no crop, no resize, no mirror, no threshold, no colour change). Then print the pixel dimensions and the alpha value of the four corners and of the centre pixel. If the background came out opaque or there is unwanted text, regenerate once."
+  },
+  {
+    "asset": "selection_fond",
+    "source": "source/selection_fond_v01.png",
+    "images": [
+      "logo.png",
+      "game/Assets/Resources/UI/menu-background.jpg",
+      "assets/characters/saint-louis/source/saint_louis_reference_hd_v01.png"
+    ],
+    "prompt": "Use case: stylized-concept.\nAsset type: production-ready HD 2D fighting-game menu background, fully opaque, 16:9.\nInput images: Image 1 is the game logo \"Patate de Forain\" (flaming yellow-orange-red brush lettering with a thick navy outline); Image 2 is the game's menu background (a French travelling funfair at night). Match their palette (navy ink, warm yellow, orange, red, cream) and their clean hand-drawn HD rendering: fluid inked contours, flat cel-shaded shadows, discreet gradients. Image 3 is a character of the game: match its line art.\nPrimary request: the inside of a traditional French funfair wrestling booth (\"baraque de lutteurs\") at night, seen from the audience: a raised wooden stage across the bottom third, heavy red velvet curtains with gold fringes pulled to both sides, two warm spotlight beams crossing above the stage, garlands of small bulbs and red-cream bunting along the top, a painted canvas backdrop with big stars and a faded painted circus pattern (no letters). Empty: no wrestlers, no audience.\nLayout: landscape 16:9. The centre of the image, where the game draws large panels and portraits, stays calm and slightly darker: no bright spot or strong detail between 25% and 75% of the width and between 20% and 85% of the height.\nConstraints: no characters, no people, no animals, no readable text, letters, numbers or logos unless asked, no brand names, no watermark, no checkerboard drawn in. Not pixel art, not 3D, not photorealistic.",
+    "codexInstructions": "Instructions for you (Codex): generate this image with your image generation tool, at the widest landscape size it supports. Save the PNG exactly at <source> (create nothing else, modify no other file). Do not post-process the image in any way (no crop, no resize, no mirror, no colour change). Then print the pixel dimensions. If it contains unwanted text, regenerate once."
+  },
+  {
+    "asset": "resultat_fond",
+    "source": "source/resultat_fond_v01.png",
+    "images": [
+      "logo.png",
+      "game/Assets/Resources/UI/menu-background.jpg",
+      "assets/characters/saint-louis/source/saint_louis_reference_hd_v01.png"
+    ],
+    "prompt": "Use case: stylized-concept.\nAsset type: production-ready HD 2D fighting-game menu background, fully opaque, 16:9.\nInput images: Image 1 is the game logo \"Patate de Forain\" (flaming yellow-orange-red brush lettering with a thick navy outline); Image 2 is the game's menu background (a French travelling funfair at night). Match their palette (navy ink, warm yellow, orange, red, cream) and their clean hand-drawn HD rendering: fluid inked contours, flat cel-shaded shadows, discreet gradients. Image 3 is a character of the game: match its line art.\nPrimary request: the winner's moment in the same French funfair at night: an empty wooden podium-stage with a little round platform in the centre, a single bright spotlight from above falling on the empty platform, red velvet curtains on both sides, fireworks bursting in the night sky above the fairground in yellow, orange and red, falling confetti and streamers in the foreground. Empty: no people.\nLayout: landscape 16:9. Keep the area between 20% and 80% of the width and between 15% and 70% of the height free of strong details (the game draws the winner's portrait and text there).\nConstraints: no characters, no people, no animals, no readable text, letters, numbers or logos unless asked, no brand names, no watermark, no checkerboard drawn in. Not pixel art, not 3D, not photorealistic.",
+    "codexInstructions": "Instructions for you (Codex): generate this image with your image generation tool, at the widest landscape size it supports. Save the PNG exactly at <source> (create nothing else, modify no other file). Do not post-process the image in any way (no crop, no resize, no mirror, no colour change). Then print the pixel dimensions. If it contains unwanted text, regenerate once."
+  },
+  {
+    "asset": "etincelle_coup",
+    "source": "source/etincelle_coup_v01.png",
+    "images": [
+      "logo.png",
+      "game/Assets/Resources/UI/menu-background.jpg"
+    ],
+    "prompt": "Use case: game visual effect sprite sheet.\nAsset type: production-ready HD 2D fighting-game hit spark, on a TRUE TRANSPARENT background.\nInput images: Image 1 is the game logo \"Patate de Forain\" (flaming yellow-orange-red brush lettering with a thick navy outline); Image 2 is the game's menu background (a French travelling funfair at night). Match their palette (navy ink, warm yellow, orange, red, cream) and their clean hand-drawn HD rendering: fluid inked contours, flat cel-shaded shadows, discreet gradients.\nPrimary request: a sprite sheet of 4 frames, laid out as a 2 x 2 grid of equal square cells (frame 1 top-left, 2 top-right, 3 bottom-left, 4 bottom-right), of a punch/kick impact spark seen from the side: 1 a small intense white-yellow flash with a star-shaped burst; 2 the biggest burst, sharp yellow and orange spikes radiating mostly to the right, a few round sparks, navy ink outline; 3 the burst breaking apart into curved orange streaks and sparks; 4 a few fading small sparks and a thin smoke ring. Each frame centred in its cell, with a clear transparent gap between cells; nothing crosses a cell border.\nLayout: square image, 2 x 2 grid, everything around the sparks fully transparent.\nConstraints: no characters, no people, no animals, no readable text, letters, numbers or logos unless asked, no brand names, no watermark, no checkerboard drawn in. Not pixel art, not 3D, not photorealistic.",
+    "codexInstructions": "Instructions for you (Codex): generate this image with your image generation tool, in a square format, with a true transparent background. Save the PNG exactly at <source> (create nothing else, modify no other file). Do not post-process the image in any way (no crop, no resize, no mirror, no threshold, no colour change). Then print the pixel dimensions and the alpha value of the four corners and of the centre pixel. If the background came out opaque or there is unwanted text, regenerate once."
+  },
+  {
+    "asset": "etincelle_garde",
+    "source": "source/etincelle_garde_v01.png",
+    "images": [
+      "logo.png",
+      "game/Assets/Resources/UI/menu-background.jpg"
+    ],
+    "prompt": "Use case: game visual effect sprite sheet.\nAsset type: production-ready HD 2D fighting-game block spark, on a TRUE TRANSPARENT background.\nInput images: Image 1 is the game logo \"Patate de Forain\" (flaming yellow-orange-red brush lettering with a thick navy outline); Image 2 is the game's menu background (a French travelling funfair at night). Match their palette (navy ink, warm yellow, orange, red, cream) and their clean hand-drawn HD rendering: fluid inked contours, flat cel-shaded shadows, discreet gradients.\nPrimary request: a sprite sheet of 4 frames, laid out as a 2 x 2 grid of equal square cells (frame 1 top-left, 2 top-right, 3 bottom-left, 4 bottom-right), of a blocked attack seen from the side: a vertical curved arc of pale cyan and white light (like a deflection shield), with small white sparks bouncing away to the left; 1 a thin bright arc; 2 the widest arc with a white flash; 3 the arc fading into short cyan streaks; 4 only a few small fading sparks. Each frame centred in its cell, with a clear transparent gap between cells; nothing crosses a cell border.\nLayout: square image, 2 x 2 grid, everything around the effect fully transparent.\nConstraints: no characters, no people, no animals, no readable text, letters, numbers or logos unless asked, no brand names, no watermark, no checkerboard drawn in. Not pixel art, not 3D, not photorealistic.",
+    "codexInstructions": "Instructions for you (Codex): generate this image with your image generation tool, in a square format, with a true transparent background. Save the PNG exactly at <source> (create nothing else, modify no other file). Do not post-process the image in any way (no crop, no resize, no mirror, no threshold, no colour change). Then print the pixel dimensions and the alpha value of the four corners and of the centre pixel. If the background came out opaque or there is unwanted text, regenerate once."
+  }
+]

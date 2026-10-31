@@ -17,6 +17,15 @@ namespace Patate.UnityAdapters
     public sealed class Hud
     {
         const float Top = 34, BarHeight = 46, PortraitSize = 150;
+
+        // Cadres peints (Resources/UI/hud, voir assets/ui) : fenêtre transparente
+        // où le jeu dessine, en fraction de l'image. Sans image, cadres dessinés.
+        /// <summary>Jauge du joueur 1 (pointe vers le centre à droite) ; miroir pour le joueur 2.</summary>
+        static readonly Rect GaugeWindow = Rect.MinMaxRect(0.111f, 0.3225f, 0.8738f, 0.6825f);
+        static readonly Rect PortraitWindow = Rect.MinMaxRect(0.1874f, 0.2257f, 0.8126f, 0.7759f);
+        /// <summary>Disque du chronomètre : centre et rayon, en fraction de l'image.</summary>
+        static readonly Vector3 TimerDisc = new Vector3(0.4992f, 0.563f, 0.2584f);
+        const float FramedPortrait = 210, FramedGauge = 680, TimerSize = 270;
         /// <summary>Délai avant que la traînée rattrape la jauge, et sa vitesse (fraction de jauge par seconde).</summary>
         const float TrailDelay = 0.45f, TrailSpeed = 0.7f;
 
@@ -65,6 +74,7 @@ namespace Patate.UnityAdapters
             else if (state.Round.Phase == RoundPhase.Over && EndPrompt != null)
             {
                 float blink = 0.6f + 0.4f * Mathf.Sin(time * 4);
+                Ui.Fill(new Rect(0, 694, width, 62), new Color(Ui.Navy.r, Ui.Navy.g, Ui.Navy.b, 0.7f));
                 Ui.Text(new Rect(0, 700, width, 50), EndPrompt, Ui.Style(34), Ui.Cream, 3, blink);
             }
 
@@ -96,6 +106,13 @@ namespace Patate.UnityAdapters
 
         void DrawFighter(int slot, FighterVisuals visuals, float width, float time)
         {
+            var gaugeFrame = Ui.Image("hud/jauge-cadre");
+            var portraitFrame = Ui.Image("hud/portrait-cadre");
+            if (gaugeFrame != null && portraitFrame != null)
+            {
+                DrawFramedFighter(slot, visuals, width, gaugeFrame, portraitFrame);
+                return;
+            }
             bool left = slot == 0;
             var color = Ui.PlayerColors[slot];
             float barWidth = Mathf.Max(200, width / 2 - 110 - 30 - PortraitSize - 24);
@@ -130,15 +147,69 @@ namespace Patate.UnityAdapters
             var nameRect = new Rect(x, Top + BarHeight + 12, barWidth, 46);
             var align = left ? TextAnchor.MiddleLeft : TextAnchor.MiddleRight;
             Ui.Text(nameRect, visuals.Package.Name.ToUpperInvariant(), Ui.Style(36, align), Ui.Cream, 3);
-            Ui.Text(new Rect(x, nameRect.yMax, barWidth, 30), tags[slot], Ui.Style(22, align, FontStyle.Normal), color, 2);
+            Ui.Tag(new Rect(x, nameRect.yMax + 2, barWidth, 32), tags[slot], align, color);
+        }
+
+        /// <summary>Portrait et jauge dans leurs cadres peints ; la jauge s'élargit avec l'écran.</summary>
+        void DrawFramedFighter(int slot, FighterVisuals visuals, float width, Texture2D gaugeFrame, Texture2D portraitFrame)
+        {
+            bool left = slot == 0;
+            var color = Ui.PlayerColors[slot];
+            float time = Time.unscaledTime;
+
+            // Portrait : dessiné dans la fenêtre du cadre, sur un fond à la couleur du joueur.
+            var frame = new Rect(left ? 14 : width - 14 - FramedPortrait, 6, FramedPortrait, FramedPortrait);
+            var window = Inside(frame, PortraitWindow, false);
+            Ui.Gradient(window, Color.Lerp(color, Ui.Navy, 0.35f), Ui.Navy);
+            Ui.Texture(window, visuals.Portrait, mirror: !left);
+            Ui.Texture(frame, portraitFrame);
+
+            // Jauge : du portrait jusqu'au chronomètre, à la proportion de l'image.
+            float gaugeWidth = Mathf.Clamp(width / 2 - TimerSize * 0.36f - FramedPortrait - 10, 420, FramedGauge * 1.4f);
+            float gaugeHeight = gaugeWidth * gaugeFrame.height / gaugeFrame.width;
+            var gaugeRect = new Rect(left ? frame.xMax - 6 : frame.x + 6 - gaugeWidth, 30, gaugeWidth, gaugeHeight);
+            var bar = Inside(gaugeRect, GaugeWindow, !left);
+            Ui.Fill(bar, new Color(0.22f, 0.03f, 0.05f));
+            Rect Part(float ratio) => new Rect(left ? bar.xMax - bar.width * ratio : bar.x, bar.y, bar.width * ratio, bar.height);
+            Ui.Fill(Part(trail[slot]), new Color(1f, 0.93f, 0.8f));
+            float health = shown[slot];
+            bool danger = health < 0.25f;
+            var top = danger ? Color.Lerp(Ui.Red, Ui.Orange, 0.5f + 0.5f * Mathf.Sin(time * 10)) : Color.Lerp(Ui.Orange, Ui.Yellow, health);
+            Ui.Gradient(Part(health), top, danger ? new Color(0.6f, 0.05f, 0.05f) : Ui.Orange);
+            Ui.Fill(new Rect(bar.x, bar.y + 4, bar.width, 5), new Color(1, 1, 1, 0.18f)); // reflet
+            Ui.Texture(gaugeRect, gaugeFrame, mirror: !left);
+
+            // Nom et origine des commandes sous la jauge, alignés sur sa fenêtre.
+            var align = left ? TextAnchor.MiddleLeft : TextAnchor.MiddleRight;
+            var nameRect = new Rect(bar.x, gaugeRect.yMax - 6, bar.width, 46);
+            Ui.Text(nameRect, visuals.Package.Name.ToUpperInvariant(), Ui.Style(36, align), Ui.Cream, 3);
+            Ui.Tag(new Rect(bar.x, nameRect.yMax + 2, bar.width, 32), tags[slot], align, color);
+        }
+
+        /// <summary>Fenêtre d'un cadre peint, en fraction de l'image, placée dans <paramref name="frame"/> (en miroir si besoin).</summary>
+        static Rect Inside(Rect frame, Rect fraction, bool mirror)
+        {
+            float x0 = mirror ? 1 - fraction.xMax : fraction.xMin;
+            return new Rect(frame.x + frame.width * x0, frame.y + frame.height * fraction.yMin, frame.width * fraction.width, frame.height * fraction.height);
         }
 
         static void DrawTimer(MatchState state, float width, float time)
         {
             int seconds = (state.Round.Timer + 59) / 60;
             bool hurry = seconds <= 10 && state.Round.Phase == RoundPhase.Fight;
-            var center = new Vector2(width / 2, Top + 50);
             float pulse = hurry ? 1 + 0.06f * Mathf.Sin(time * 12) : 1;
+            var medallion = Ui.Image("hud/chrono");
+            if (medallion != null)
+            {
+                float size = TimerSize * pulse;
+                var rect = new Rect(width / 2 - size * TimerDisc.x, 4 - (size - TimerSize) / 2, size, size);
+                Ui.Texture(rect, medallion);
+                var disc = new Vector2(rect.x + size * TimerDisc.x, rect.y + size * TimerDisc.y);
+                if (hurry) Ui.Disc(disc, size * TimerDisc.z, new Color(Ui.Red.r, Ui.Red.g, Ui.Red.b, 0.35f + 0.2f * Mathf.Sin(time * 12)));
+                Ui.Text(new Rect(disc.x - 80, disc.y - 50, 160, 100), seconds.ToString("00"), Ui.Style(Mathf.RoundToInt(74 * pulse)), hurry ? Ui.Yellow : Ui.Cream, 4);
+                return;
+            }
+            var center = new Vector2(width / 2, Top + 50);
             Ui.Disc(center + new Vector2(4, 6), 80, new Color(0, 0, 0, 0.45f));
             Ui.Disc(center, 82 * pulse, Ui.Navy);
             Ui.Disc(center, 74 * pulse, hurry ? Ui.Red : Ui.Yellow);

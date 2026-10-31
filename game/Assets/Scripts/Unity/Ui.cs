@@ -141,11 +141,11 @@ namespace Patate.UnityAdapters
 
         // ------------------------------------------------------------ éléments
 
-        /// <summary>Fond des menus : la fête foraine peinte, ou un dégradé nocturne si l'image manque.</summary>
-        public static void Background(float dim = 0.35f)
+        /// <summary>Fond des menus : une image peinte de Resources/UI (la fête foraine par défaut), ou un dégradé nocturne si elle manque.</summary>
+        public static void Background(float dim = 0.35f, string name = "menu-background")
         {
             var screen = new Rect(0, 0, Width, ReferenceHeight);
-            var image = Image("menu-background");
+            var image = Image(name) ?? Image("menu-background");
             if (image != null) GUI.DrawTexture(screen, image, ScaleMode.ScaleAndCrop);
             else Gradient(screen, new Color32(0x1c, 0x2a, 0x63, 0xff), new Color32(0x07, 0x0b, 0x1f, 0xff));
             if (dim > 0) Fill(screen, new Color(0.02f, 0.03f, 0.1f, dim));
@@ -226,6 +226,21 @@ namespace Patate.UnityAdapters
                 var style = Style(Mathf.RoundToInt(height * 0.62f));
                 Text(new Rect(center.x - 1200, center.y - height / 2, 2400, height), fallback, style, Yellow, 6, alpha);
             }
+        }
+
+        /// <summary>
+        /// Petite étiquette (joueur et appareil) : texte coloré sur une pastille
+        /// bleu marine, lisible sur n'importe quel décor.
+        /// </summary>
+        public static void Tag(Rect rect, string text, TextAnchor align, Color color, int size = 22)
+        {
+            var style = Style(size, align, FontStyle.Bold);
+            float width = style.CalcSize(new GUIContent(text)).x + 24;
+            float x = align == TextAnchor.MiddleRight ? rect.xMax - width : align == TextAnchor.MiddleLeft ? rect.x : rect.center.x - width / 2;
+            var pill = new Rect(x, rect.y + 2, width, rect.height - 4);
+            Fill(pill, new Color(Navy.r, Navy.g, Navy.b, 0.78f));
+            Fill(new Rect(pill.x, pill.yMax - 3, pill.width, 3), color);
+            Text(new Rect(pill.x + 12, rect.y, width - 24, rect.height), text, style, Color.Lerp(color, Color.white, 0.35f), 0);
         }
 
         /// <summary>Bandeau d'aide en bas d'écran.</summary>

@@ -85,7 +85,7 @@ Limites : sans saut ni accroupissement dans le moteur, l'IA (comme un joueur) n'
 
 Les collisions viennent des données (`gameplay.json`), pas des pixels. L'affichage de débogage (**F1**) dessine exactement les boîtes que la simulation teste, à partir des mêmes fonctions (`Hitboxes`).
 
-Les effets visuels (impacts, tremblement de caméra) et les sons réagissent aux **événements** (`MatchEvent`) et vivent hors de l'état. Un futur rollback n'a donc pas à les rejouer.
+Les effets visuels (impacts, tremblement de caméra) et les sons réagissent aux **événements** (`MatchEvent`) et vivent hors de l'état. Un futur rollback n'a donc pas à les rejouer. Les étincelles des coups au corps sont communes à tous les combattants : `SharedEffects` charge les images de `Resources/Effects/<nom>/1…N.png` et `MatchView` en pose une au point d'impact de chaque événement de touche ou de garde sans projectile.
 
 ## Points d'extension
 

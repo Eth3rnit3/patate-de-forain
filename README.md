@@ -32,7 +32,7 @@ python3 -m http.server 8765 --directory game/WebBuild
 
 puis ouvrir <http://localhost:8765> et **cliquer dans le jeu** pour lui donner le clavier. Ouvrir `index.html` directement depuis le disque ne fonctionne pas.
 
-Poids téléchargé : environ **19 Mo** (code 7,6 Mo, données 10,5 Mo : atlas de Saint Louis et de Napoléon, décor de la fête foraine, images de l'interface).
+Poids téléchargé : environ **23 Mo** (code 7,9 Mo, données 15,3 Mo : atlas de Saint Louis et de Napoléon, trois décors, images de l'interface et des étincelles).
 
 La page vient du gabarit `game/Assets/WebGLTemplates/PatateDeForain/` (choisi par `WebBuilder`) : le logo et une barre de progression pendant le chargement, puis le jeu en 16:9 ajusté à la taille de la fenêtre, un bouton plein écran et le rappel des commandes. L'écran « Made with Unity » est désactivé.
 
@@ -82,7 +82,7 @@ En mode solo, l'adversaire est joué par l'ordinateur, en trois niveaux (facile,
 
 ## L'interface
 
-Dessinée en IMGUI, comme le reste de l'affichage et comme Action Legends : rien à régler dans la scène, compatible WebGL, et la navigation clavier et manette passe par une seule couche (`MenuInput`). Le style reprend le logo et la fête foraine : fond peint du champ de foire, enseignes à ampoules, textes détourés de bleu marine, annonces de manche peintes dans le lettrage du logo.
+Dessinée en IMGUI, comme le reste de l'affichage et comme Action Legends : rien à régler dans la scène, compatible WebGL, et la navigation clavier et manette passe par une seule couche (`MenuInput`). Le style reprend le logo et la fête foraine : fonds peints (champ de foire pour les menus, baraque de lutteurs pour la sélection, podium pour le résultat), enseignes à ampoules, textes détourés de bleu marine, annonces de manche et emblème « VS » peints dans le lettrage du logo, cadres dorés du HUD.
 
 ![Écran titre](docs/captures/interface/titre.jpg)
 
@@ -90,25 +90,30 @@ Dessinée en IMGUI, comme le reste de l'affichage et comme Action Legends : rien
 |---|---|
 | **Titre** | n'importe quelle touche, un clic ou un bouton de manette |
 | **Mode** | haut / bas pour choisir, gauche / droite pour le niveau de l'ordinateur, **Entrée**, **Espace** ou **A** pour valider, **Échap** ou **B** pour revenir |
-| **Sélection** | chaque joueur **rejoint** en appuyant sur la validation de son appareil : moitié gauche du clavier **F** ou **Espace**, moitié droite **K** ou **Entrée**, manette **A**. Il déplace ensuite son curseur avec ses propres directions (**ZQSD**, flèches, croix ou stick), valide, et revient en arrière avec **G**, **L** ou **B** (déverrouiller, puis quitter la place). **Échap** revient aux modes. Le décor se choisit après les combattants s'il y en a plusieurs |
+| **Sélection** | chaque joueur **rejoint** en appuyant sur la validation de son appareil : moitié gauche du clavier **F** ou **Espace**, moitié droite **K** ou **Entrée**, manette **A**. Il déplace ensuite son curseur avec ses propres directions (**ZQSD**, flèches, croix ou stick), valide, et revient en arrière avec **G**, **L** ou **B** (déverrouiller, puis quitter la place). **Échap** revient aux modes. Le décor se choisit ensuite, avec sa vignette (gauche / droite) |
 | **Résultat** | revanche (mêmes réglages), changer de personnage (mêmes joueurs), retour au menu |
 
 - **Solo** : le joueur choisit son combattant puis celui de l'ordinateur ; niveaux facile, normal, difficile (`PlayerSource.Cpu(0)` à `Cpu(2)`). Tant que l'adversaire ordinateur n'est pas branché dans `InputSources`, le mode est affiché « Bientôt » et ne se valide pas.
 - **Manettes** : elles pilotent déjà tous les menus. Pour rejoindre un combat, il faut que `InputSources` sache les créer ; d'ici là, l'écran de sélection l'indique quand une manette essaie de rejoindre.
 - **En ligne** ouvre le salon : choisir son combattant, créer un salon ou taper le code d'un salon existant, puis se déclarer prêt. Clavier, manette ou souris.
-- **HUD** : portraits, jauges de vie avec traînée des dégâts récents (clignotantes sous 25 %), médaillon du chronomètre (rouge sous 10 secondes), noms et appareil de chaque joueur, annonces « Manche 1 », « Prêts ? », « Combat ! », « K.O. ! », « Temps écoulé ! », « Victoire ! », « Égalité », pause et aide (**F2**).
+- **Décors** : la fête foraine, la Sainte-Chapelle (Saint Louis) et Austerlitz (Napoléon), chacun en trois calques peints avec parallaxe, plus l'arène d'entraînement.
+- **HUD** : portraits et jauges de vie dans des cadres dorés peints, traînée des dégâts récents (clignotante sous 25 %), médaillon du chronomètre (rouge sous 10 secondes), étincelles peintes sur les coups au corps qui touchent ou sont gardés, noms et appareil de chaque joueur, annonces « Manche 1 », « Prêts ? », « Combat ! », « K.O. ! », « Temps écoulé ! », « Victoire ! », « Égalité », pause et aide (**F2**).
 
-| Mode | Sélection | Combat | Résultat |
+| Mode | Sélection | Face-à-face | Résultat |
 |---|---|---|---|
-| ![Mode](docs/captures/interface/modes.jpg) | ![Sélection](docs/captures/interface/selection.jpg) | ![Combat](docs/captures/interface/combat.jpg) | ![Résultat](docs/captures/interface/resultat.jpg) |
+| ![Mode](docs/captures/interface/modes.jpg) | ![Sélection](docs/captures/interface/selection.jpg) | ![VS](docs/captures/interface/versus.jpg) | ![Résultat](docs/captures/interface/resultat.jpg) |
 
-| Chargement dans le navigateur | Annonce de manche | K.O. |
-|---|---|---|
-| ![Chargement](docs/captures/interface/chargement.jpg) | ![Manche 1](docs/captures/interface/annonce.jpg) | ![K.O.](docs/captures/interface/ko.jpg) |
+| Annonce de manche | Combat | Étincelle de coup | K.O. |
+|---|---|---|---|
+| ![Manche 1](docs/captures/interface/annonce.jpg) | ![Combat](docs/captures/interface/combat.jpg) | ![Étincelle](docs/captures/interface/etincelle.jpg) | ![K.O.](docs/captures/interface/ko.jpg) |
 
-Captures prises dans la version WebGL, pilotée au clavier.
+![Chargement](docs/captures/interface/chargement.jpg)
 
-Code : `Ui.cs` (palette et éléments graphiques), `MenuInput.cs` (commandes des menus, appareils, `InputSupport`), `TitleScreen`, `ModeSelectScreen`, `CharacterSelectScreen` (règles testées dans `CharacterSelection`), `ResultScreen`, `Hud`. Images : `game/Assets/Resources/UI/` (fond, logo, mots d'annonce dans `words/`), générées avec Codex CLI à partir du logo et du portrait de Saint Louis ; une image absente est remplacée par un texte.
+Captures prises dans la version WebGL, pilotée au clavier, sauf l'étincelle (éditeur, combat scripté par `AgentScripts/VerifyEffects.cs`).
+
+Code : `Ui.cs` (palette et éléments graphiques), `MenuInput.cs` (commandes des menus, appareils, `InputSupport`), `TitleScreen`, `ModeSelectScreen`, `CharacterSelectScreen` (règles testées dans `CharacterSelection`), `ResultScreen`, `Hud`, `SharedEffects` (étincelles). Images : `game/Assets/Resources/UI/` (fonds, logo, « VS », mots d'annonce dans `words/`, cadres du HUD dans `hud/`) et `game/Assets/Resources/Effects/`, générées avec Codex CLI à partir du logo et du portrait de Saint Louis ; une image absente est remplacée par le dessin d'origine ou un texte. Sources, prompts et commandes d'export : [assets/ui/README.md](assets/ui/README.md).
+
+**Générer une image avec Codex CLI** : chaque dossier d'assets a un `prompts-v01.json` ; `python3 tools/codex-image/generate.py <dossier> prompts-v01.json <n>` relance l'entrée n avec ses images de référence (modèle `gpt-5.6-sol` par défaut, `CODEX_MODEL` pour en changer).
 
 ## Vérifier
 

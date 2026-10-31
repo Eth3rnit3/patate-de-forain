@@ -1,0 +1,12 @@
+{
+  "formatVersion": 1,
+  "id": "austerlitz",
+  "name": "Austerlitz",
+  "backgroundColor": "#425994",
+  "groundColor": "#272125",
+  "layers": [
+    { "image": "ciel.png", "parallax": 20, "scale": 125, "y": 0, "order": -90 },
+    { "image": "sol.png", "parallax": 100, "scale": 148, "y": -150, "order": -45 },
+    { "image": "plan-moyen.png", "parallax": 70, "scale": 134, "y": 40, "order": -40 }
+  ]
+}

@@ -22,12 +22,12 @@ Aucun agrandissement : les calques gardent la résolution du générateur et le 
 
 ```bash
 magick source/fete_foraine_ciel_v01.png -crop 1820x864+0+0 +repage -alpha off -strip PNG24:export/ciel.png
-magick source/fete_foraine_baraques_v01.png -crop 1972x628+1+128 +repage -channel A -fx 'u<0.02?0:u' +channel -modulate 78,70,100 \( +clone -alpha off -fill '#3a2a5c' -colorize 100 \) -compose blend -define compose:args=12 -composite -compose over -strip PNG32:export/baraques.png
+magick source/fete_foraine_baraques_v01.png -crop 1972x628+1+128 +repage -channel A -fx 'u<0.02?0:u' +channel -modulate 78,70,100 \( +clone -fill '#3a2a5c' -colorize 100 \) -compose blend -define compose:args=12 -composite -compose over -strip PNG32:export/baraques.png
 magick source/fete_foraine_sol_v01.png -crop 2172x352+0+372 +repage -resize 2172x176! -modulate 88,85,100 -alpha off -strip PNG24:export/sol.png
 ```
 
 - **Ciel** : une colonne retirée pour la largeur, opaque (DXT1).
-- **Baraques** : marge transparente du haut retirée, alpha quasi nul ramené à 0, puis assombries (78 %), désaturées (70 %) et teintées de violet du soir (12 %) pour les repousser derrière les combattants.
+- **Baraques** : marge transparente du haut retirée, alpha quasi nul ramené à 0, puis assombries (78 %), désaturées (70 %) et teintées de violet du soir (12 %) pour les repousser derrière les combattants. La teinte garde l'alpha de l'image : jusqu'au 31 octobre 2026, la commande rendait opaque la copie teintée, ce qui posait un voile violet à 12 % sur tout le ciel au-dessus des baraques.
 - **Sol** : la moitié basse de la source (pavés proches), tassée de moitié en hauteur pour un angle rasant, légèrement assombrie.
 
 ## Statut

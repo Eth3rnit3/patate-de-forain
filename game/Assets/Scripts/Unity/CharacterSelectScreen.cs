@@ -107,7 +107,7 @@ namespace Patate.UnityAdapters
         {
             var previous = Ui.Begin();
             float time = Time.unscaledTime, width = Ui.Width;
-            Ui.Background(0.6f);
+            Ui.Background(0.45f, "selection-fond");
             string title = selection.Mode == MatchMode.Solo ? "CHOISISSEZ VOTRE COMBATTANT" : "CHOISISSEZ VOS COMBATTANTS";
             Ui.Text(new Rect(0, 26, width, 70), title, Ui.Style(54), Ui.Yellow, 4);
 
@@ -122,15 +122,15 @@ namespace Patate.UnityAdapters
             DrawPlayer(0, new Rect(30, 120, panelWidth, 760), time);
             DrawPlayer(1, new Rect(width - 30 - panelWidth, 120, panelWidth, 760), time);
             DrawGrid(new Rect(30 + panelWidth + 30, 150, width - 2 * (60 + panelWidth), 500), time);
-            DrawStage(new Rect(width / 2 - 360, 690, 720, 110), time);
+            DrawStage(new Rect(width / 2 - 380, 670, 760, 190), time);
 
             if (notice != null && noticeAge < 4)
             {
                 float alpha = Mathf.Clamp01((4 - noticeAge) / 0.5f);
-                Ui.Fill(new Rect(width / 2 - 620, 820, 1240, 56), new Color(0.5f, 0.06f, 0.04f, 0.85f * alpha));
-                Ui.Text(new Rect(width / 2 - 620, 820, 1240, 56), notice, Ui.Style(26), Ui.Cream, 2, alpha);
+                Ui.Fill(new Rect(width / 2 - 620, 900, 1240, 56), new Color(0.5f, 0.06f, 0.04f, 0.85f * alpha));
+                Ui.Text(new Rect(width / 2 - 620, 900, 1240, 56), notice, Ui.Style(26), Ui.Cream, 2, alpha);
             }
-            if (selection.Phase == SelectionPhase.Done) Ui.Word("combat", "COMBAT !", new Vector2(width / 2, 470), 260, doneAge);
+            if (selection.Phase == SelectionPhase.Done) DrawVersus(width);
 
             string pad = MenuInput.Devices().Any(d => d.Kind == PlayerSourceKind.Gamepad) ? "      Manette : A valider, B retour" : "";
             Ui.Hint($"Clavier gauche : {Keys(Key.W, Key.A, Key.S, Key.D)} + {MenuInput.KeyName(Key.F)} valider, {MenuInput.KeyName(Key.G)} retour" +
@@ -221,9 +221,39 @@ namespace Patate.UnityAdapters
             string id = selection.Stages[selection.StageCursor];
             string name = stageNames.TryGetValue(id, out var n) ? n : id;
             bool several = selection.Stages.Count > 1;
-            Ui.Text(new Rect(rect.x, rect.y + 14, rect.width, 32), several ? "DÉCOR" : "DÉCOR (un seul pour l'instant)", Ui.Style(24, fontStyle: FontStyle.Normal), Ui.Muted, 0);
-            Ui.Text(new Rect(rect.x, rect.y + 46, rect.width, 50), several ? $"<   {name}   >" : name, Ui.Style(38), choosing ? Ui.Yellow : Ui.Cream, 3);
+
+            // Vignette : le calque du fond du décor, recadré en 16:9.
+            var thumb = new Rect(rect.x + 22, rect.y + 22, (rect.height - 44) * 16f / 9f, rect.height - 44);
+            Ui.Fill(thumb, Ui.Navy);
+            var image = Stages.Thumbnail(id);
+            if (image != null)
+            {
+                float aspect = (float)image.width / image.height, target = thumb.width / thumb.height;
+                var uv = aspect > target ? new Rect((1 - target / aspect) / 2, 0, target / aspect, 1) : new Rect(0, 0, 1, aspect / target);
+                GUI.DrawTextureWithTexCoords(thumb, image, uv);
+            }
+            Ui.Frame(thumb, choosing ? Ui.Yellow : new Color(1, 1, 1, 0.35f), 3);
+
+            var text = new Rect(thumb.xMax + 10, rect.y, rect.xMax - thumb.xMax - 20, rect.height);
+            Ui.Text(new Rect(text.x, text.y + 30, text.width, 32), "DÉCOR", Ui.Style(24, fontStyle: FontStyle.Normal), Ui.Muted, 0);
+            Ui.Text(new Rect(text.x, text.y + 66, text.width, 56), name, Ui.Style(name.Length > 16 ? 32 : 38, wrap: true), choosing ? Ui.Yellow : Ui.Cream, 3);
+            if (several) Ui.Text(new Rect(text.x, text.y + 126, text.width, 34), $"<   {selection.StageCursor + 1} / {selection.Stages.Count}   >", Ui.Style(26), choosing ? Ui.Yellow : Ui.Muted, 2);
             if (choosing) Ui.Text(new Rect(rect.x, rect.yMax + 4, rect.width, 32), "Gauche / Droite pour choisir, valider pour combattre", Ui.Style(22, fontStyle: FontStyle.Normal), Ui.Cream, 0);
+        }
+
+        /// <summary>Tout le monde est prêt : l'emblème « VS » s'abat entre les deux combattants.</summary>
+        void DrawVersus(float width)
+        {
+            Ui.Fill(new Rect(0, 0, width, Ui.ReferenceHeight), new Color(0.02f, 0.03f, 0.1f, Mathf.Clamp01(doneAge / 0.2f) * 0.35f));
+            var vs = Ui.Image("vs");
+            if (vs == null)
+            {
+                Ui.Word("combat", "COMBAT !", new Vector2(width / 2, 470), 260, doneAge);
+                return;
+            }
+            float pop = doneAge < 0.15f ? Mathf.Lerp(2.2f, 0.9f, doneAge / 0.15f) : doneAge < 0.25f ? Mathf.Lerp(0.9f, 1f, (doneAge - 0.15f) / 0.1f) : 1f;
+            float size = 420 * pop;
+            Ui.Texture(new Rect(width / 2 - size / 2, 400 - size / 2, size, size), vs, alpha: Mathf.Clamp01(doneAge / 0.08f));
         }
 
         public void Exit() { }
@@ -243,6 +273,18 @@ namespace Patate.UnityAdapters
                 if (stage?.Id != null) result[stage.Id] = stage.Name ?? stage.Id;
             }
             return result;
+        }
+
+        static readonly Dictionary<string, Texture2D> thumbnails = new Dictionary<string, Texture2D>();
+
+        /// <summary>Image du calque le plus lointain du décor (null pour un décor sans image).</summary>
+        public static Texture2D Thumbnail(string id)
+        {
+            if (thumbnails.TryGetValue(id, out var texture)) return texture;
+            var stage = StageDefinition.Read(Resources.Load<TextAsset>($"Stages/{id}/stage")?.text, "stage.json", new ValidationReport());
+            var far = stage?.Layers.OrderBy(l => l.Order).FirstOrDefault();
+            if (far != null) texture = Resources.Load<Texture2D>($"Stages/{id}/{far.Image.Substring(0, far.Image.LastIndexOf('.'))}");
+            return thumbnails[id] = texture;
         }
     }
 }

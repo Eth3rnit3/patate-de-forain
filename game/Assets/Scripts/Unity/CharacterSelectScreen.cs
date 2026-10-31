@@ -65,20 +65,28 @@ namespace Patate.UnityAdapters
             var keyboard = Keyboard.current;
             if (keyboard != null && keyboard.escapeKey.wasPressedThisFrame)
             {
-                flow.Go(new ModeSelectScreen(flow));
+                flow.Go(flow.Players());
                 return;
             }
             if (fighters.Count == 0) return;
 
             bool[] wasLocked = selection.Slots.Select(s => s.Locked).ToArray();
+            bool[] wasHuman = selection.Slots.Select(s => s.Joined && !s.IsCpu).ToArray();
             foreach (var device in MenuInput.Devices())
             {
                 var command = MenuInput.Of(device);
                 if (command == MenuCommand.None) continue;
                 if (selection.SlotOf(device) >= 0) selection.Command(device, command);
                 else if ((command & MenuCommand.Confirm) != 0) TryJoin(device);
-                else if ((command & MenuCommand.Back) != 0 && selection.Slots.All(s => !s.Joined || s.IsCpu)) flow.Go(new ModeSelectScreen(flow));
+                else if ((command & MenuCommand.Back) != 0 && selection.Slots.All(s => !s.Joined || s.IsCpu)) flow.Go(flow.Players());
                 if (flow.Current != this) return;
+                // Un joueur qui quitte sa place revient au choix des appareils.
+                for (int slot = 0; slot < 2; slot++)
+                    if (wasHuman[slot] && !selection.Slots[slot].Joined)
+                    {
+                        flow.Go(flow.Players());
+                        return;
+                    }
             }
             for (int slot = 0; slot < 2; slot++)
                 if (selection.Slots[slot].Locked && !wasLocked[slot]) lockAge[slot] = 0;

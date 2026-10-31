@@ -58,6 +58,7 @@ namespace Patate.UnityAdapters
         }
 
         public IGameScreen Title() => new TitleScreen(this);
+        public IGameScreen Players() => new PlayersScreen(this);
         public IGameScreen CharacterSelect() => new CharacterSelectScreen(this);
         public IGameScreen Fight() => new FightScreen(this, Setup.Copy());
         public IGameScreen Result(MatchState final) => new ResultScreen(this, final);

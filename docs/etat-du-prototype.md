@@ -23,7 +23,7 @@ Deux combattants jouables, **Saint Louis** et **Napoléon**, dans Unity 6000.4.7
   - KO : chute au sol en six poses, habits déchirés et taches de sang (sans gore) ;
   - deux projectiles adverses s'annulent ; deux coups simultanés s'échangent.
 - **Manche** : introduction, chronomètre de 99 secondes, KO ou temps écoulé, annonce du vainqueur, puis **Entrée** (ou **Start**) vers l'écran de résultat ; **F5** recommence la manche.
-- **Menus** : écran titre avec le logo, choix du mode (Versus local, Solo contre l'ordinateur avec trois niveaux, En ligne), sélection des personnages (appuyer pour rejoindre au clavier ou à la manette, portraits, choix du décor quand il y en a plusieurs), résultat (revanche, changer de personnage, retour au menu). Navigation au clavier et à la manette.
+- **Menus** : écran titre avec le logo, choix du mode (Versus local, Solo contre l'ordinateur avec trois niveaux, En ligne), choix de l'appareil de chaque joueur (« Qui joue ? » : clavier gauche, clavier droit, manette 1, 2…), sélection des personnages (joueurs déjà placés ; un appareil libre peut encore rejoindre en appuyant, portraits, choix du décor quand il y en a plusieurs), résultat (revanche, changer de personnage, retour au menu). Navigation au clavier et à la manette.
 - **Décors** : fête foraine, Sainte-Chapelle et Austerlitz, chacun en trois calques peints (ciel, plan moyen, sol) avec parallaxe, plus l'arène d'entraînement ; vignette de chaque décor à la sélection.
 - **Habillage** : fonds peints de la sélection et du résultat, emblème « VS » quand les deux joueurs sont prêts, étiquettes lisibles sur fond bleu marine, police d'affichage Bangers (OFL) pour les titres, noms, boutons et le chronomètre, étincelles peintes sur les coups au corps (touche et garde, taille selon les dégâts).
 - **Interface de combat** : portraits et jauges de vie dans des cadres dorés peints, traînée des dégâts, médaillon du chronomètre, noms et appareil de chaque joueur, annonces de manche peintes, pause, aide des commandes (**F2**), changement de combattant (**F3**/**F4**).
@@ -36,7 +36,7 @@ Deux combattants jouables, **Saint Louis** et **Napoléon**, dans Unity 6000.4.7
 
 ## Ce qui a été vérifié, et comment
 
-- **124 tests EditMode, tous verts** : 124/124 au dernier lancement (le test du relais, `[Explicit]`, lancé à part avec le relais local), en mode batch (`unity test --mode EditMode .`). Ils couvrent :
+- **131 tests EditMode, tous verts** : 131/131 au dernier lancement (le test du relais, `[Explicit]`, lancé à part avec le relais local), en mode batch (`unity test --mode EditMode .`). Ils couvrent :
   - **chronologie** : les phases tombent aux ticks exacts, l'appui sur un bouton déclenche le coup mais pas son maintien, quart de cercle selon l'orientation ;
   - **dégâts** : un seul impact par coup, étourdissement plus gel, recul exact, échange de coups simultanés ;
   - **garde** : tenir arrière, garde de proximité, pas de garde en pleine attaque, attaque non blocable ;
@@ -54,6 +54,7 @@ Deux combattants jouables, **Saint Louis** et **Napoléon**, dans Unity 6000.4.7
   - **clavier** : correspondances des deux joueurs, vérifiées sur un clavier virtuel ;
   - **manette** : directions (stick, croix), boutons de face, manette débranchée, « appuyer pour rejoindre », sur une manette virtuelle de l'Input System ;
   - **adversaire de l'ordinateur** : il lance ses coups accroupis bas tenu, garde accroupi face à un coup bas ; il gagne par KO contre un adversaire immobile à chaque niveau, avec Saint Louis et avec le combattant de synthèse ; il garde parfois des projectiles ; le niveau difficile garde et frappe davantage que le facile ; même graine, même partie, y compris après « recommencer ».
+  - **choix des appareils** : un appareil par joueur, appareils précédents repris s'ils sont branchés, échange quand on prend celui de l'autre, Solo et en ligne à un seul joueur, l'ordinateur gardé, manette débranchée qui bloque la suite ;
   - **sélection des personnages** : rejoindre, déplacer et verrouiller, revenir en arrière, étape du décor, Solo (le joueur choisit pour l'ordinateur), joueurs gardés en changeant de personnage, réglages produits ;
   - **menus à la manette** : stick (un appui, puis attente avant répétition, seuil, direction dominante) et liste des appareils, sur une manette virtuelle. Les boutons et la croix (appuis « cette image ») ne se testent pas en EditMode sans le cadre de test de l'Input System : non vérifiés.
 - **Les tests détectent bien les régressions** : en cassant volontairement « un seul impact par coup » et la garde, 12 tests échouent.
@@ -88,6 +89,7 @@ Deux combattants jouables, **Saint Louis** et **Napoléon**, dans Unity 6000.4.7
 - **Interface, en WebGL au clavier** (événements clavier simulés dans la page, Chromium) : logo et progression pendant le chargement ; titre → modes (Solo refusé tant que l'ordinateur n'est pas branché, En ligne → salon provisoire → titre) → sélection (deux joueurs rejoignent avec F et Entrée, verrouillent, annulent avec G, aucun joueur placé par l'appui qui ouvre l'écran) → combat (annonces, jauges, étiquettes « J1 · Clavier gauche ») → K.O. → victoire → résultat → changer de personnage (joueurs gardés) et retour au menu. Page ajustée à une fenêtre 16:9 et à une fenêtre plus haute que large. Revanche non rejouée en WebGL (même appel que l'ancien écran provisoire). Manettes : navigation non essayée sur une vraie manette (seul le stick l'est, sur une manette virtuelle).
 
 - **Habillage (31 octobre), en WebGL au clavier simulé** (environ 23 Mo à télécharger) : vignettes et passage d'un décor à l'autre à la sélection (quatre décors), emblème « VS », HUD encadré, annonce « Combat ! », bandeau de victoire, écran de résultat, étiquettes lisibles. À Austerlitz, les deux combattants poussés contre chaque mur : aucun bord de décor visible. Étincelles vérifiées dans l'éditeur par un combat scripté (`AgentScripts/VerifyEffects.cs`) : touche à Austerlitz, garde à la Sainte-Chapelle. 114 tests verts, 1 ignoré (relais). Non vérifié : les murs de la Sainte-Chapelle (même géométrie qu'Austerlitz).
+- **Choix des appareils, en WebGL avec une manette simulée** (une manette Xbox standard injectée dans `navigator.getGamepads`, reconnue par Unity : « Gamepad added ») : titre et mode validés au bouton A, « Qui joue ? » où « Manette 1 » apparaît, J1 passe sur la manette (croix gauche), J2 garde le clavier droit ; sélection avec les deux joueurs déjà placés, Napoléon choisi à la manette ; en combat, J1 avance et saute à la croix. Aucune erreur dans la console. Non vérifié : une vraie manette, deux manettes en même temps.
 - **Postures, en WebGL au clavier simulé** (environ 27,5 Mo à télécharger, 19,4 Mo de données) : sélection, puis en combat J1 accroupi (↓ tenu) pendant que J2 saute en avant (Z + Q) ; saut sous le HUD, aucune erreur dans la console. Non vérifié : manette réelle, Safari et Firefox.
 - **Police Bangers, en WebGL au clavier simulé** : titre, modes, sélection (accents de « Napoléon », « Prêt ! »), VS, HUD, victoire, résultat et salon en ligne lus à l'écran ; aucune erreur dans la console ; 114 tests verts.
 - **Relais en ligne déployé** (Cloudflare Workers) : les essais de conformité passent contre le relais déployé, et deux onglets Chrome sans interface jouent deux manches à travers lui (ticks 1189 et 1523, même empreinte des deux côtés, 129 à 206 rollbacks, aucune désynchronisation).
@@ -113,7 +115,6 @@ Le transport de l'éditeur et du PC (`ClientWebSocket`) a échangé avec le rela
 
 - **Une seule manche** : pas de match en deux manches gagnantes.
 - **Pas de retour au menu pendant un combat** : la pause (**Échap**) n'a pas encore de menu ; il faut finir la manche.
-- **Solo et manettes en attente** : les menus sont prêts, mais l'adversaire ordinateur et la lecture des manettes en combat restent à brancher dans `InputSources` (session en cours). D'ici là, Solo est affiché « Bientôt » et une manette qui veut rejoindre est refusée avec un message.
 - **Pas d'animation dédiée** :
   - recul : marche avant lue à l'envers ;
   - garde de proximité : 1ʳᵉ pose de blocage tenue.

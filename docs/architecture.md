@@ -59,6 +59,8 @@ Le combat ne connaît que des `Buttons` par tick (`IInputProvider`). `FightScree
 
 En WebGL, l'Input System lit l'API Gamepad du navigateur (disposition standard). Le navigateur ne signale une manette qu'après un premier appui sur l'un de ses boutons.
 
+**Choix des appareils** : après le mode, `PlayersScreen` (« Qui joue ? ») fait choisir à chaque joueur humain son appareil parmi `MenuInput.Devices()`. Les règles sont dans `PlayerAssignment` (sans Unity, testées) : appareils précédents repris s'ils sont branchés, jamais deux joueurs sur le même appareil (prendre celui de l'autre les échange), un seul joueur en Solo et en ligne, pas de suite tant qu'un appareil choisi est débranché. Les appareils vont dans `MatchSetup.Players`, puis la sélection des personnages part avec ces joueurs déjà placés (le salon en ligne lit `Players[0]`).
+
 **Sélection des joueurs** : `InputSources.Connected()` liste les sources branchées (deux moitiés du clavier, chaque manette) ; `InputSources.JustPressed()` donne celles qui viennent d'appuyer sur un bouton d'attaque (ou Start, ou une gâchette haute) pendant l'image, pour « appuyer pour rejoindre » ; `InputSources.Describe` donne leur nom. Ces fonctions sont sans état : l'écran retient qui a rejoint.
 
 ### L'adversaire de l'ordinateur

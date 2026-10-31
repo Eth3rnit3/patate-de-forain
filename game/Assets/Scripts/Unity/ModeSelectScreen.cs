@@ -5,8 +5,8 @@ namespace Patate.UnityAdapters
 {
     /// <summary>
     /// Choix du mode : Versus local, Solo contre l'ordinateur (avec son
-    /// niveau), En ligne. Remplit <see cref="GameFlow.Setup"/> puis passe à la
-    /// sélection des personnages, ou au salon pour le jeu en ligne.
+    /// niveau), En ligne. Remplit <see cref="GameFlow.Setup"/> puis passe au
+    /// choix des appareils (<see cref="PlayersScreen"/>).
     /// </summary>
     public sealed class ModeSelectScreen : IGameScreen
     {
@@ -54,16 +54,16 @@ namespace Patate.UnityAdapters
             {
                 case 0:
                     flow.Setup.Mode = MatchMode.Versus;
-                    flow.Go(flow.CharacterSelect());
+                    flow.Go(flow.Players());
                     break;
                 case 1:
                     flow.Setup.Mode = MatchMode.Solo;
                     flow.Setup.Players[1] = Cpu;
-                    flow.Go(flow.CharacterSelect());
+                    flow.Go(flow.Players());
                     break;
                 default:
                     flow.Setup.Mode = MatchMode.Online;
-                    flow.Go(flow.Lobby());
+                    flow.Go(flow.Players());
                     break;
             }
         }

@@ -239,7 +239,25 @@
         "animation": "hit_high",
         "frame": 2
       },
-      "anchor": "rearFoot"
+      "anchor": "rearFoot",
+      "nudge": {
+        "3": [
+          0,
+          14
+        ],
+        "4": [
+          0,
+          14
+        ],
+        "5": [
+          0,
+          20
+        ],
+        "6": [
+          0,
+          20
+        ]
+      }
     },
     {
       "name": "royal_lily_projectile",

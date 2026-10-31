@@ -118,7 +118,7 @@ Code : `Ui.cs` (palette et éléments graphiques), `MenuInput.cs` (commandes des
 
 ## Jouer en ligne
 
-Deux joueurs, chacun sur sa machine (navigateur ou PC), dans un salon désigné par un code. Il faut un relais : en local, `cd server/relay && npm install && npm start`. L'un crée le salon, l'autre entre son code. On y accède par le menu (**En ligne**), ou directement par un lien `?salon=CODE` (`-salon CODE` sur PC). Lancement, paramètres, essais et déploiement sur Cloudflare : [server/relay/README.md](server/relay/README.md).
+Deux joueurs, chacun sur sa machine (navigateur ou PC), dans un salon désigné par un code. Le relais est déployé sur Cloudflare (`wss://patate-relais.eth3rnit3.workers.dev`) : c'est celui du jeu publié. L'éditeur et une page servie depuis `localhost` utilisent le relais local (`cd server/relay && npm install && npm start`), sauf avec `?relais=wss://…`. L'un crée le salon, l'autre entre son code. On y accède par le menu (**En ligne**), ou directement par un lien `?salon=CODE` (`-salon CODE` sur PC). Lancement, paramètres, essais et déploiement sur Cloudflare : [server/relay/README.md](server/relay/README.md).
 
 ## Intégrer des visuels
 

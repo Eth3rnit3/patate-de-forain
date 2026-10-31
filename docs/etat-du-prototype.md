@@ -78,11 +78,11 @@ Deux combattants jouables, **Saint Louis** et **Napoléon**, dans Unity 6000.4.7
 
 **Pas vérifié par moi** : une vraie partie au clavier, à deux humains, avec la sensation de jeu. C'est le prochain essai à faire. Il n'y a pas eu d'export autonome (PC, Mac), ni d'essai WebGL sous Safari ou Firefox.
 
-- **Jeu en ligne** : relais local (`server/relay`), build WebGL servi en statique, deux onglets d'un même Chrome sans interface, chacun en robot (`?robot`), relais réglé à 60 ms de latence par message. Deux manches complètes, revanche comprise, finies par KO au même tick des deux côtés, avec la même empreinte d'état ; environ 200 rollbacks par joueur et par manche, 45 à 49 empreintes comparées en cours de manche, aucune désynchronisation (`npm run essai:onglets`). Le relais Cloudflare a passé le même scénario de salon que le relais local, exécuté localement par `wrangler dev` ; il n'est pas déployé. Les tests EditMode du protocole (10) font jouer deux machines simulées avec latence et gigue. Deux onglets d'une même fenêtre, l'un caché, jouent aussi, mais au rythme de l'onglet caché que le navigateur ralentit à 1 ou 2 images par seconde.
+- **Jeu en ligne** : relais local (`server/relay`), build WebGL servi en statique, deux onglets d'un même Chrome sans interface, chacun en robot (`?robot`), relais réglé à 60 ms de latence par message. Deux manches complètes, revanche comprise, finies par KO au même tick des deux côtés, avec la même empreinte d'état ; environ 200 rollbacks par joueur et par manche, 45 à 49 empreintes comparées en cours de manche, aucune désynchronisation (`npm run essai:onglets`). Le relais Cloudflare est **déployé** (`wss://patate-relais.eth3rnit3.workers.dev`, 31 octobre 2026) : il passe le scénario de salon (`npm run verifier`), et le même essai à deux onglets à travers lui (`RELAIS=wss://… npm run essai:onglets`, aucun relais local lancé) a joué deux manches, revanche comprise, finies au même tick des deux côtés avec la même empreinte (ticks 1189 et 1523), 129 à 206 rollbacks par joueur et par manche, aucune désynchronisation. Les tests EditMode du protocole (10) font jouer deux machines simulées avec latence et gigue. Deux onglets d'une même fenêtre, l'un caché, jouent aussi, mais au rythme de l'onglet caché que le navigateur ralentit à 1 ou 2 images par seconde.
 
 Le transport de l'éditeur et du PC (`ClientWebSocket`) a échangé avec le relais local dans un test explicite (`OnlineRelayTests`, à lancer par son nom, relais démarré).
 
-**Pas vérifié en ligne** : une partie entre deux humains, sur deux machines, à travers Internet ; le relais déployé ; un combat complet depuis l'éditeur ou un export PC.
+**Pas vérifié en ligne** : une partie entre deux humains, sur deux machines distantes ; un combat complet depuis l'éditeur ou un export PC.
 
 ## Hypothèses à régler en jouant
 
@@ -110,7 +110,7 @@ Le transport de l'éditeur et du PC (`ClientWebSocket`) a échangé avec le rela
 - **Clavier** : un seul échantillon par image d'affichage, donc un appui plus court qu'une image peut être manqué. Certains claviers ne détectent pas toutes les combinaisons de touches simultanées (ghosting). Même échantillonnage par image pour la manette.
 - **Adversaire de l'ordinateur** : sans saut ni accroupissement, il n'a pas de réponse à un adversaire qui ne fait que lancer des projectiles de loin (il garde sans avancer). Pas de combos.
 - **Pause** : le jeu se met en pause quand la fenêtre perd le focus.
-- **Jeu en ligne** : pas de reconnexion après une coupure ; un onglet caché met l'adversaire en attente ; relais pas encore déployé.
+- **Jeu en ligne** : pas de reconnexion après une coupure ; un onglet caché met l'adversaire en attente ; relais déployé ouvert à toutes les pages (`ORIGINES` vide) tant que le jeu n'a pas d'adresse publique ; offre gratuite de Cloudflare, environ 250 manches par jour.
 - **Pas encore faits** : import de paquets et signature (voir l'[architecture](architecture.md)).
 
 ## Besoins artistiques à nous transmettre

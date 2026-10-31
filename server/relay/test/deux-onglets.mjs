@@ -5,12 +5,15 @@
 // identiques.
 //   npm run essai:onglets -- http://localhost:8000/ [dossier des captures, sinon le dossier temporaire]
 // Chrome : variable CHROME, sinon l'emplacement habituel sous macOS.
+// Relais : variable RELAIS (ex. wss://patate-relais.eth3rnit3.workers.dev), sinon
+// celui que choisit le jeu (local pour une page servie depuis localhost).
 import os from 'node:os';
 import {chromium} from 'playwright-core';
 
 const base = process.argv[2] || 'http://localhost:8799/';
 const out = process.argv[3] || os.tmpdir();
 const code = 'TAB' + Math.floor(Math.random() * 1e5);
+const relay = process.env.RELAIS ? `&relais=${encodeURIComponent(process.env.RELAIS)}` : '';
 const browser = await chromium.launch({
   executablePath: process.env.CHROME || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
   headless: true,
@@ -30,13 +33,13 @@ function watch(page, name) {
 }
 const a = await context.newPage();
 watch(a, 'A');
-await a.goto(`${base}?salon=${code}&creer&robot`);
+await a.goto(`${base}?salon=${code}&creer&robot${relay}`);
 const start = Date.now();
 while (!reports.A.some(t => t.includes('créer')) && Date.now() - start < 60000) await a.waitForTimeout(500);
 await a.waitForTimeout(1500);
 const b = await context.newPage();
 watch(b, 'B');
-await b.goto(`${base}?salon=${code}&robot`);
+await b.goto(`${base}?salon=${code}&robot${relay}`);
 
 const fps = page => page.evaluate(() => new Promise(r => { let n = 0; const t0 = performance.now(); const f = () => { n++; performance.now() - t0 < 1000 ? requestAnimationFrame(f) : r(n); }; requestAnimationFrame(f); }));
 const finished = (k, round) => reports[k].find(t => new RegExp(`manche ${round} : (finie|désynchronisation)`).test(t));

@@ -31,7 +31,7 @@ npm install
 npm start
 ```
 
-Il écoute sur `ws://localhost:8787` (variable `PORT` pour changer). C'est le relais par défaut de l'éditeur Unity et d'une version WebGL servie depuis `localhost`.
+Il écoute sur `ws://localhost:8787` (variable `PORT` pour changer). C'est le relais par défaut de l'éditeur Unity et d'une version WebGL servie depuis `localhost`. Partout ailleurs, le jeu utilise le relais déployé (voir plus bas).
 
 ### Deux joueurs sur une même machine
 
@@ -61,13 +61,16 @@ npm test                                   # règles du salon et scénario compl
 npm run verifier -- ws://localhost:8787    # même scénario contre un relais en marche, local ou déployé
 npm run dev:cloudflare                     # version Cloudflare exécutée localement (workerd), sans compte, sur le port 8787
 npm run essai:onglets -- http://localhost:8000/   # deux onglets de Chrome jouent deux manches en robots, revanche comprise
+RELAIS=wss://patate-relais.eth3rnit3.workers.dev npm run essai:onglets -- http://localhost:8000/   # idem, à travers le relais déployé
 ```
 
 `essai:onglets` pilote Google Chrome sans interface (variable `CHROME` pour un autre emplacement) contre le build WebGL servi et le relais lancé. Il réussit si les deux onglets finissent chaque manche sur la même empreinte, sans désynchronisation. Résultat au 28 octobre 2026, relais local à 60 ms : deux manches finies par KO (ticks 1481 et 1376), environ 200 rollbacks par joueur et par manche, 49 et 45 empreintes comparées, mêmes empreintes finales.
 
 ## Déployer sur Cloudflare (offre gratuite)
 
-Rien n'est déployé pour l'instant. Il faut un compte Cloudflare (gratuit, sans carte bancaire pour l'offre Workers Free).
+**Déployé le 31 octobre 2026** : `wss://patate-relais.eth3rnit3.workers.dev` (compte Cloudflare d'eth3rnit3, offre Workers Free). C'est `OnlineSettings.DeployedRelay`. `ORIGINES` est encore vide, donc toute page peut s'en servir : à restreindre dès que le jeu aura une adresse publique (GitHub Pages ou autre), puis redéployer.
+
+Pour redéployer après une modification, `npm run deploy` (Wrangler doit être connecté au compte : `npx wrangler whoami`). Pour un premier déploiement sur un autre compte, il faut un compte Cloudflare (gratuit, sans carte bancaire pour l'offre Workers Free).
 
 1. `cd server/relay && npm install`
 2. `npx wrangler login` : ouvre le navigateur pour autoriser Wrangler sur le compte.
@@ -75,6 +78,7 @@ Rien n'est déployé pour l'instant. Il faut un compte Cloudflare (gratuit, sans
 4. `npm run deploy` : affiche l'adresse, du genre `https://patate-relais.<sous-domaine>.workers.dev`.
 5. Vérifier : `npm run verifier -- wss://patate-relais.<sous-domaine>.workers.dev`
 6. Inscrire `wss://patate-relais.<sous-domaine>.workers.dev` dans `OnlineSettings.DeployedRelay` (`game/Assets/Scripts/Unity/OnlineRelay.cs`) et reconstruire le jeu. En attendant, `?relais=wss://…` dans l'adresse de la page suffit.
+7. Essayer une vraie partie à travers lui : `RELAIS=wss://… npm run essai:onglets -- http://localhost:8000/`.
 
 Le Worker oriente chaque connexion vers le Durable Object de son salon (un par code, à stockage SQLite, seul type disponible dans l'offre gratuite). L'API d'hibernation évite de payer la durée d'un salon où personne ne parle.
 

@@ -45,10 +45,10 @@ namespace Patate.UnityAdapters
     public static class OnlineSettings
     {
         /// <summary>
-        /// Relais déployé, à renseigner après son déploiement (server/relay/README.md),
-        /// ex. « wss://patate-relais.compte.workers.dev ». Vide : relais local.
+        /// Relais déployé sur Cloudflare Workers (server/relay/README.md).
+        /// Vide : relais local partout.
         /// </summary>
-        public const string DeployedRelay = "";
+        public const string DeployedRelay = "wss://patate-relais.eth3rnit3.workers.dev";
         public const string LocalRelay = "ws://localhost:8787";
         const string RelayPreference = "patate.online.relay";
 

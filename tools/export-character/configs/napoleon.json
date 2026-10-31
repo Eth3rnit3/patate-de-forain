@@ -131,6 +131,137 @@
       "anchor": "rearFoot"
     },
     {
+      "name": "crouch",
+      "file": "napoleon_crouch_hd_v01.png",
+      "layout": {
+        "type": "poses",
+        "rows": 1
+      },
+      "frames": 3,
+      "referenceFrame": 1,
+      "anchor": "rearFoot"
+    },
+    {
+      "name": "block_low",
+      "file": "napoleon_block_low_hd_v01.png",
+      "layout": {
+        "type": "poses",
+        "rows": 1
+      },
+      "frames": 3,
+      "referenceFrame": 1,
+      "matchHeight": {
+        "animation": "crouch",
+        "frame": 3
+      },
+      "anchor": "rearFoot"
+    },
+    {
+      "name": "crouch_punch",
+      "file": "napoleon_crouch_punch_hd_v01.png",
+      "layout": {
+        "type": "poses",
+        "rows": 2
+      },
+      "frames": 6,
+      "referenceFrame": 1,
+      "matchHeight": {
+        "animation": "crouch",
+        "frame": 3
+      },
+      "anchor": "rearFoot"
+    },
+    {
+      "name": "crouch_kick",
+      "file": "napoleon_crouch_kick_hd_v01.png",
+      "layout": {
+        "type": "poses",
+        "rows": 2
+      },
+      "frames": 6,
+      "referenceFrame": 1,
+      "matchHeight": {
+        "animation": "crouch",
+        "frame": 3
+      },
+      "anchor": "rearFoot"
+    },
+    {
+      "name": "hit_crouch",
+      "file": "napoleon_hit_crouch_hd_v01.png",
+      "layout": {
+        "type": "poses",
+        "rows": 1
+      },
+      "frames": 3,
+      "referenceFrame": 3,
+      "matchHeight": {
+        "animation": "crouch",
+        "frame": 3
+      },
+      "anchor": "rearFoot"
+    },
+    {
+      "name": "jump",
+      "file": "napoleon_jump_hd_v01.png",
+      "layout": {
+        "type": "poses",
+        "rows": 2
+      },
+      "frames": 6,
+      "referenceFrame": 6,
+      "matchHeight": {
+        "animation": "crouch",
+        "frame": 2
+      },
+      "anchor": "torso"
+    },
+    {
+      "name": "jump_punch",
+      "file": "napoleon_jump_punch_hd_v01.png",
+      "layout": {
+        "type": "poses",
+        "rows": 1
+      },
+      "frames": 4,
+      "referenceFrame": 1,
+      "matchHeight": {
+        "animation": "jump",
+        "frame": 4
+      },
+      "anchor": "torso"
+    },
+    {
+      "name": "jump_kick",
+      "file": "napoleon_jump_kick_hd_v01.png",
+      "layout": {
+        "type": "poses",
+        "rows": 1
+      },
+      "frames": 4,
+      "referenceFrame": 1,
+      "matchHeight": {
+        "animation": "jump",
+        "frame": 4
+      },
+      "anchor": "torso"
+    },
+    {
+      "name": "ko",
+      "file": "napoleon_ko_hd_v01.png",
+      "layout": {
+        "type": "poses",
+        "rows": 2
+      },
+      "frames": 6,
+      "referenceFrame": 1,
+      "matchHeight": {
+        "animation": "hit_high",
+        "frame": 2
+      },
+      "anchor": "rearFoot"
+    },
+    {
       "name": "imperial_volley_projectile",
       "file": "napoleon_special_imperial_volley_projectile_hd_v01.png",
       "layout": {

@@ -139,7 +139,8 @@ namespace Patate.Application
                         }
                     if (startup < 0 && (segment.Definition.Phase == Phase.Active || ranged)) startup = segment.Start;
                 }
-                if (simplest == null || (move.Definition.Hit == null && !ranged)) continue;
+                // Les coups sautés ne partent qu'en l'air : l'IA reste au sol.
+                if (simplest == null || (move.Definition.Hit == null && !ranged) || move.Definition.Stance == MoveStance.Air) continue;
                 result.Add(new MoveInfo { Move = move, Command = simplest, Ranged = ranged, Startup = Math.Max(0, startup), Reach = reach });
             }
             return result;
@@ -178,8 +179,9 @@ namespace Patate.Application
             }
             // Tenir arrière sans menace réelle ferait reculer : la garde n'est prise
             // que face à un coup ou un projectile proche, ou juste avant une émission.
-            if (key >= 0 && guarding && (FighterBehavior.IsThreatened(me, context, state) || ThrowImminent(perceivedOpponent))) return back;
-            if (me.Action.Kind == ActionKind.Blockstun) return back;
+            var guard = back | (ThreatensLow(perceivedOpponent, context) ? Buttons.Down : Buttons.None);
+            if (key >= 0 && guarding && (FighterBehavior.IsThreatened(me, context, state) || ThrowImminent(perceivedOpponent))) return guard;
+            if (me.Action.Kind == ActionKind.Blockstun) return guard;
             if (!free) return Buttons.None;
 
             // Punition : l'adversaire finit un coup, frapper avant qu'il ne récupère.
@@ -258,6 +260,14 @@ namespace Patate.Application
             return thrown != null && thrown.Ranged && now >= thrown.Startup - 2 && now <= thrown.Startup + 1;
         }
 
+        /// <summary>Coup adverse vu en cours qui frappe bas : la garde se prend accroupi.</summary>
+        static bool ThreatensLow(FighterState perceivedOpponent, SimulationContext context)
+        {
+            if (perceivedOpponent.Action.Kind != ActionKind.Move) return false;
+            var move = context.Of(perceivedOpponent).Move(perceivedOpponent.Action.MoveId);
+            return move?.Definition.Hit != null && move.Definition.Hit.Level == HitLevel.Low;
+        }
+
         /// <summary>Coups au corps dont une hitbox active toucherait la cible depuis les positions actuelles.</summary>
         static List<MoveInfo> Reaching(List<MoveInfo> candidates, FighterState attacker, CompiledFighter attackerDefinition,
             FighterState target, CompiledFighter targetDefinition, int facing, int slack)
@@ -324,6 +334,8 @@ namespace Patate.Application
             var command = info.Command;
             for (int index = 0; index < command.Motion.Count - 1; index++) plan.Enqueue(DirectionButtons(command.Motion[index], facing));
             var last = command.Motion.Count > 0 ? command.Motion[command.Motion.Count - 1] : command.Direction;
+            // Un coup accroupi sans direction imposée se lance bas tenu.
+            if (last == 0 && info.Move.Definition.Stance == MoveStance.Crouch) last = 2;
             plan.Enqueue(DirectionButtons(last, facing) | command.Button);
             plan.Enqueue(Buttons.None);
             intent = Buttons.None;

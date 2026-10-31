@@ -4,10 +4,10 @@ Généré par `npm run assets:export -- tools/export-character/configs/saint-lou
 
 ## Résultat
 
-- 56 poses. Cellules personnage 1024 × 768, pivot (512, 704) au sol entre les pieds ; cellules d'effet 1024 × 768, pivot au centre de l'effet (512, 384).
+- 97 poses. Cellules personnage 1024 × 768, pivot (512, 704) au sol entre les pieds ; cellules d'effet 1024 × 768, pivot au centre de l'effet (512, 384).
 - Hauteur de garde ramenée à 500 px (= unités monde du jeu).
 - Images individuelles : `assets/characters/saint-louis/export/frames/saint_louis_<animation>_<NN>.png` (NN = numéro de pose, à partir de 01).
-- Atlas du jeu : `atlas-0.png` 4048 × 2680 dans `game/Assets/Resources/Fighters/saint-louis`.
+- Atlas du jeu : `atlas-0.png` 4056 × 3856, `atlas-1.png` 3872 × 476 dans `game/Assets/Resources/Fighters/saint-louis`.
 - Aperçus : `assets/characters/saint-louis/export/previews` (planche sur fonds sombre et clair avec pivot et sol, superposition des poses).
 
 ## Traitements appliqués
@@ -63,6 +63,51 @@ Généré par `npm run assets:export -- tools/export-character/configs/saint-lou
 
 - Source : `saint_louis_block_high_hd_v01.png` (1536 × 1024, sha256 `568a58299f204ada…`)
 - Découpage : {"type":"poses","rows":1} → 3 poses ; échelle 0.5995 ; repère `rearFoot`
+
+### crouch
+
+- Source : `saint_louis_crouch_hd_v01.png` (2172 × 724, sha256 `587b27ed4ed89789…`)
+- Découpage : {"type":"poses","rows":1} → 3 poses ; échelle 0.7194 ; repère `rearFoot`
+
+### block_low
+
+- Source : `saint_louis_block_low_hd_v01.png` (2172 × 724, sha256 `b90c95ac6f3c0e28…`)
+- Découpage : {"type":"poses","rows":1} → 3 poses ; échelle 0.5789 ; repère `rearFoot`
+
+### crouch_punch
+
+- Source : `saint_louis_crouch_punch_hd_v01.png` (1536 × 1024, sha256 `2eda0b0b8926abf7…`)
+- Découpage : {"type":"poses","rows":2} → 6 poses ; échelle 0.8188 ; repère `rearFoot`
+
+### crouch_kick
+
+- Source : `saint_louis_crouch_kick_hd_v01.png` (1536 × 1024, sha256 `3fdd5c51b51aa0b3…`)
+- Découpage : {"type":"poses","rows":2} → 6 poses ; échelle 0.8188 ; repère `rearFoot`
+
+### hit_crouch
+
+- Source : `saint_louis_hit_crouch_hd_v01.png` (1981 × 793, sha256 `1aafbabe60cdf2f5…`)
+- Découpage : {"type":"poses","rows":1} → 3 poses ; échelle 0.5600 ; repère `rearFoot`
+
+### jump
+
+- Source : `saint_louis_jump_hd_v01.png` (1536 × 1024, sha256 `dbf373ea468095dc…`)
+- Découpage : {"type":"poses","rows":2} → 6 poses ; échelle 1.1308 ; repère `torso`
+
+### jump_punch
+
+- Source : `saint_louis_jump_punch_hd_v01.png` (2172 × 724, sha256 `8ad7897ad8b3c91b…`)
+- Découpage : {"type":"poses","rows":1} → 4 poses ; échelle 0.6409 ; repère `torso`
+
+### jump_kick
+
+- Source : `saint_louis_jump_kick_hd_v01.png` (2172 × 724, sha256 `972b0c5052c1131e…`)
+- Découpage : {"type":"poses","rows":1} → 4 poses ; échelle 0.7301 ; repère `torso`
+
+### ko
+
+- Source : `saint_louis_ko_hd_v01.png` (1536 × 1024, sha256 `c373f9ae6c3daa71…`)
+- Découpage : {"type":"poses","rows":2} → 6 poses ; échelle 1.0094 ; repère `rearFoot`
 
 ### royal_lily_projectile
 
@@ -121,6 +166,47 @@ Généré par `npm run assets:export -- tools/export-character/configs/saint-lou
   - `block_high_01` : pose source à (15, 64), 522 × 843 px → 312 × 503 px pleins ; décalage dans la cellule (368, 200)
   - `block_high_02` : pose source à (542, 115), 502 × 791 px → 300 × 472 px pleins ; décalage dans la cellule (367, 231)
   - `block_high_03` : pose source à (1054, 71), 482 × 836 px → 289 × 499 px pleins ; décalage dans la cellule (368, 204)
+  - `crouch_01` : pose source à (179, 12), 556 × 696 px → 398 × 500 px pleins ; décalage dans la cellule (312, 203)
+  - `crouch_02` : pose source à (825, 115), 545 × 593 px → 391 × 425 px pleins ; décalage dans la cellule (312, 278)
+  - `crouch_03` : pose source à (1510, 254), 483 × 454 px → 345 × 326 px pleins ; décalage dans la cellule (312, 377)
+  - `block_low_01` : pose source à (134, 112), 545 × 565 px → 314 × 326 px pleins ; décalage dans la cellule (344, 378)
+  - `block_low_02` : pose source à (814, 110), 543 × 567 px → 313 × 328 px pleins ; décalage dans la cellule (345, 376)
+  - `block_low_03` : pose source à (1493, 118), 548 × 559 px → 317 × 323 px pleins ; décalage dans la cellule (344, 380)
+  - `crouch_punch_01` : pose source à (40, 96), 398 × 400 px → 326 × 326 px pleins ; décalage dans la cellule (349, 377)
+  - `crouch_punch_02` : pose source à (570, 115), 404 × 381 px → 330 × 310 px pleins ; décalage dans la cellule (349, 393)
+  - `crouch_punch_03` : pose source à (1069, 108), 450 × 388 px → 366 × 316 px pleins ; décalage dans la cellule (348, 387)
+  - `crouch_punch_04` : pose source à (37, 589), 515 × 382 px → 420 × 311 px pleins ; décalage dans la cellule (347, 393)
+  - `crouch_punch_05` : pose source à (591, 591), 420 × 381 px → 344 × 309 px pleins ; décalage dans la cellule (349, 394)
+  - `crouch_punch_06` : pose source à (1104, 586), 409 × 384 px → 333 × 312 px pleins ; décalage dans la cellule (348, 391)
+  - `crouch_kick_01` : pose source à (54, 83), 376 × 401 px → 306 × 326 px pleins ; décalage dans la cellule (351, 377)
+  - `crouch_kick_02` : pose source à (553, 149), 384 × 335 px → 311 × 272 px pleins ; décalage dans la cellule (362, 431)
+  - `crouch_kick_03` : pose source à (1049, 160), 484 × 323 px → 394 × 263 px pleins ; décalage dans la cellule (349, 441)
+  - `crouch_kick_04` : pose source à (17, 612), 567 × 340 px → 462 × 276 px pleins ; décalage dans la cellule (347, 427)
+  - `crouch_kick_05` : pose source à (600, 603), 377 × 349 px → 307 × 284 px pleins ; décalage dans la cellule (346, 419)
+  - `crouch_kick_06` : pose source à (1113, 578), 376 × 380 px → 307 × 309 px pleins ; décalage dans la cellule (351, 394)
+  - `hit_crouch_01` : pose source à (41, 114), 702 × 627 px → 392 × 350 px pleins ; décalage dans la cellule (318, 354)
+  - `hit_crouch_02` : pose source à (745, 126), 620 × 615 px → 345 × 342 px pleins ; décalage dans la cellule (336, 361)
+  - `hit_crouch_03` : pose source à (1412, 157), 546 × 584 px → 304 × 325 px pleins ; décalage dans la cellule (359, 378)
+  - `jump_01` : pose source à (107, 175), 330 × 382 px → 370 × 430 px pleins ; décalage dans la cellule (359, 273)
+  - `jump_02` : pose source à (622, 4), 300 × 573 px → 336 × 646 px pleins ; décalage dans la cellule (344, 56)
+  - `jump_03` : pose source à (1115, 74), 264 × 381 px → 298 × 430 px pleins ; décalage dans la cellule (384, 274)
+  - `jump_04` : pose source à (144, 599), 244 × 299 px → 276 × 335 px pleins ; décalage dans la cellule (400, 367)
+  - `jump_05` : pose source à (594, 583), 378 × 437 px → 424 × 491 px pleins ; décalage dans la cellule (347, 211)
+  - `jump_06` : pose source à (1105, 632), 356 × 378 px → 401 × 424 px pleins ; décalage dans la cellule (311, 278)
+  - `jump_punch_01` : pose source à (13, 50), 441 × 528 px → 282 × 335 px pleins ; décalage dans la cellule (388, 367)
+  - `jump_punch_02` : pose source à (537, 80), 473 × 516 px → 301 × 330 px pleins ; décalage dans la cellule (382, 374)
+  - `jump_punch_03` : pose source à (1028, 111), 699 × 479 px → 448 × 304 px pleins ; décalage dans la cellule (329, 398)
+  - `jump_punch_04` : pose source à (1738, 63), 420 × 537 px → 268 × 342 px pleins ; décalage dans la cellule (417, 361)
+  - `jump_kick_01` : pose source à (19, 58), 431 × 462 px → 314 × 335 px pleins ; décalage dans la cellule (398, 368)
+  - `jump_kick_02` : pose source à (520, 59), 394 × 527 px → 286 × 385 px pleins ; décalage dans la cellule (429, 320)
+  - `jump_kick_03` : pose source à (1011, 113), 702 × 498 px → 513 × 362 px pleins ; décalage dans la cellule (410, 341)
+  - `jump_kick_04` : pose source à (1750, 58), 392 × 501 px → 284 × 364 px pleins ; décalage dans la cellule (421, 339)
+  - `ko_01` : pose source à (61, 46), 428 × 499 px → 431 × 504 px pleins ; décalage dans la cellule (291, 200)
+  - `ko_02` : pose source à (539, 121), 404 × 424 px → 406 × 426 px pleins ; décalage dans la cellule (219, 276)
+  - `ko_03` : pose source à (1011, 153), 507 × 351 px → 511 × 351 px pleins ; décalage dans la cellule (130, 351)
+  - `ko_04` : pose source à (22, 603), 546 × 363 px → 548 × 365 px pleins ; décalage dans la cellule (276, 338)
+  - `ko_05` : pose source à (540, 808), 464 × 167 px → 464 × 167 px pleins ; décalage dans la cellule (186, 536)
+  - `ko_06` : pose source à (1023, 807), 495 × 166 px → 498 × 166 px pleins ; décalage dans la cellule (140, 537)
   - `royal_lily_projectile_01` : pose source à (0, 0), 543 × 724 px → 229 × 147 px pleins ; décalage dans la cellule (334, 226)
   - `royal_lily_projectile_02` : pose source à (543, 0), 543 × 724 px → 210 × 147 px pleins ; décalage dans la cellule (345, 228)
   - `royal_lily_projectile_03` : pose source à (1086, 0), 543 × 724 px → 228 × 146 px pleins ; décalage dans la cellule (335, 227)

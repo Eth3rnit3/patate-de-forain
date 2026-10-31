@@ -53,7 +53,7 @@ namespace Patate.Tests
             Assert.IsNotNull(saintLouis);
             Assert.AreEqual("0.1.0", saintLouis.GameplayRef.Version);
             Assert.AreEqual(64, saintLouis.GameplayRef.Hash.Length);
-            CollectionAssert.AreEquivalent(new[] { "special_royal_lily", "stand_punch_light", "stand_kick_light", "stand_kick_heavy" }, saintLouis.Gameplay.Moves.Select(m => m.Id));
+            CollectionAssert.AreEquivalent(new[] { "special_royal_lily", "stand_punch_light", "stand_kick_light", "stand_kick_heavy", "crouch_punch", "crouch_kick", "jump_punch", "jump_kick" }, saintLouis.Gameplay.Moves.Select(m => m.Id));
         }
 
         [Test]

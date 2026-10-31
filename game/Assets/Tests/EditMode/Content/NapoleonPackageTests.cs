@@ -23,7 +23,7 @@ namespace Patate.Tests
             Assert.AreEqual("0.1.0", napoleon.GameplayRef.Version);
             Assert.AreEqual(64, napoleon.GameplayRef.Hash.Length);
             Assert.AreNotEqual(catalog.Get("saint-louis").GameplayRef.Hash, napoleon.GameplayRef.Hash);
-            CollectionAssert.AreEquivalent(new[] { "special_imperial_volley", "stand_punch_light", "stand_kick_light", "stand_kick_heavy" }, napoleon.Gameplay.Moves.Select(m => m.Id));
+            CollectionAssert.AreEquivalent(new[] { "special_imperial_volley", "stand_punch_light", "stand_kick_light", "stand_kick_heavy", "crouch_punch", "crouch_kick", "jump_punch", "jump_kick" }, napoleon.Gameplay.Moves.Select(m => m.Id));
             CollectionAssert.AreEquivalent(new[] { "imperial_volley" }, napoleon.Gameplay.Projectiles.Select(p => p.Id));
         }
 

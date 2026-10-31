@@ -24,6 +24,11 @@ interface AnimationConfig {
   referenceFrame?: number;
   /** Réutilise l'échelle d'une autre animation dessinée à la même taille. */
   scaleLike?: string;
+  /**
+   * Planche sans pose debout (accroupi, en l'air, au sol) : la pose de référence
+   * prend la hauteur exportée d'une pose comparable d'une animation déjà exportée.
+   */
+  matchHeight?: { animation: string; frame: number };
   /** Échelle imposée (effets). */
   scale?: number;
   anchor: AnchorMode;
@@ -71,6 +76,8 @@ async function main(): Promise<void> {
   const report: string[] = [];
   const warnings: string[] = [];
   const scales = new Map<string, number>();
+  /** Hauteur pleine de chaque pose après mise à l'échelle, par animation. */
+  const heights = new Map<string, number[]>();
   const prepared: PreparedFrame[] = [];
 
   // 1. Extraction, nettoyage, échelle et repère de chaque pose.
@@ -79,8 +86,9 @@ async function main(): Promise<void> {
     const sheet = await loadRaster(sourceFile);
     const poses = extractPoses(sheet, animation.layout, animation.frames, animation.file);
     const isEffect = animation.kind === 'effect';
-    const scale = isEffect ? (animation.scale ?? 1) : resolveScale(animation, poses.map((p) => p.raster), scales);
+    const scale = isEffect ? (animation.scale ?? 1) : resolveScale(animation, poses.map((p) => p.raster), scales, heights);
     scales.set(animation.name, scale);
+    heights.set(animation.name, poses.map((p) => (alphaBounds(p.raster, SOLID_ALPHA)?.h ?? 0) * scale));
 
     let sheetOffset = 0;
     if (!isEffect) {
@@ -180,7 +188,16 @@ async function main(): Promise<void> {
   for (const warning of warnings) console.warn(`Attention : ${warning}`);
 }
 
-function resolveScale(animation: AnimationConfig, poses: Raster[], scales: Map<string, number>): number {
+function resolveScale(animation: AnimationConfig, poses: Raster[], scales: Map<string, number>, heights: Map<string, number[]>): number {
+  if (animation.matchHeight) {
+    const { animation: other, frame } = animation.matchHeight;
+    const target = heights.get(other)?.[frame - 1];
+    if (target === undefined) throw new Error(`${animation.name} : « matchHeight » ${other} pose ${frame} doit être exportée avant`);
+    const own = poses[(animation.referenceFrame ?? 1) - 1];
+    const solid = own && alphaBounds(own, SOLID_ALPHA);
+    if (!solid) throw new Error(`${animation.name} : pose de référence introuvable`);
+    return target / solid.h;
+  }
   if (animation.scaleLike) {
     const scale = scales.get(animation.scaleLike);
     if (scale === undefined) throw new Error(`${animation.name} : « scaleLike » ${animation.scaleLike} doit être exporté avant`);

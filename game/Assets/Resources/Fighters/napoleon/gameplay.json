@@ -28,7 +28,15 @@
       "id": "special_imperial_volley",
       "commands": [
         { "button": "special" },
-        { "motion": [2, 3, 6], "button": "lightPunch", "window": 15 }
+        {
+          "motion": [
+            2,
+            3,
+            6
+          ],
+          "button": "lightPunch",
+          "window": 15
+        }
       ],
       "priority": 10,
       "segments": [
@@ -36,7 +44,13 @@
         {
           "phase": "recovery",
           "duration": 7,
-          "onEnter": [{ "type": "spawnProjectile", "projectile": "imperial_volley", "offset": { "x": 295, "y": 375 } }],
+          "onEnter": [
+            {
+              "type": "spawnProjectile",
+              "projectile": "imperial_volley",
+              "offset": { "x": 295, "y": 375 }
+            }
+          ],
           "hurtboxes": [
             { "x": -55, "y": 380, "w": 110, "h": 100 },
             { "x": -100, "y": 190, "w": 215, "h": 190 },
@@ -49,13 +63,17 @@
     },
     {
       "id": "stand_punch_light",
-      "commands": [{ "button": "lightPunch" }],
+      "commands": [
+        { "button": "lightPunch" }
+      ],
       "segments": [
         { "phase": "startup", "duration": 5 },
         {
           "phase": "active",
           "duration": 2,
-          "hitboxes": [{ "x": 150, "y": 337, "w": 110, "h": 52 }],
+          "hitboxes": [
+            { "x": 150, "y": 337, "w": 110, "h": 52 }
+          ],
           "hurtboxes": [
             { "x": -20, "y": 390, "w": 115, "h": 90 },
             { "x": -90, "y": 190, "w": 200, "h": 200 },
@@ -66,7 +84,9 @@
         {
           "phase": "active",
           "duration": 3,
-          "hitboxes": [{ "x": 180, "y": 335, "w": 136, "h": 55 }],
+          "hitboxes": [
+            { "x": 180, "y": 335, "w": 136, "h": 55 }
+          ],
           "hurtboxes": [
             { "x": 5, "y": 390, "w": 115, "h": 90 },
             { "x": -70, "y": 190, "w": 200, "h": 200 },
@@ -88,13 +108,17 @@
     },
     {
       "id": "stand_kick_light",
-      "commands": [{ "button": "lightKick" }],
+      "commands": [
+        { "button": "lightKick" }
+      ],
       "segments": [
         { "phase": "startup", "duration": 8 },
         {
           "phase": "active",
           "duration": 3,
-          "hitboxes": [{ "x": 130, "y": 290, "w": 104, "h": 92 }],
+          "hitboxes": [
+            { "x": 130, "y": 290, "w": 104, "h": 92 }
+          ],
           "hurtboxes": [
             { "x": -150, "y": 390, "w": 110, "h": 90 },
             { "x": -210, "y": 190, "w": 210, "h": 200 },
@@ -125,13 +149,17 @@
     },
     {
       "id": "stand_kick_heavy",
-      "commands": [{ "button": "heavyKick" }],
+      "commands": [
+        { "button": "heavyKick" }
+      ],
       "segments": [
         { "phase": "startup", "duration": 16 },
         {
           "phase": "active",
           "duration": 5,
-          "hitboxes": [{ "x": 120, "y": 365, "w": 101, "h": 63 }],
+          "hitboxes": [
+            { "x": 120, "y": 365, "w": 101, "h": 63 }
+          ],
           "hurtboxes": [
             { "x": -255, "y": 375, "w": 115, "h": 100 },
             { "x": -250, "y": 200, "w": 250, "h": 175 },
@@ -157,6 +185,138 @@
         "hitstop": 12,
         "pushback": { "hit": 90, "block": 70 },
         "level": "mid",
+        "blockable": true
+      }
+    },
+    {
+      "id": "crouch_punch",
+      "stance": "crouch",
+      "commands": [
+        { "button": "lightPunch" }
+      ],
+      "segments": [
+        { "phase": "startup", "duration": 5 },
+        {
+          "phase": "active",
+          "duration": 3,
+          "hitboxes": [
+            { "x": 130, "y": 195, "w": 160, "h": 55 }
+          ],
+          "hurtboxes": [
+            { "x": -40, "y": 210, "w": 110, "h": 90 },
+            { "x": -100, "y": 105, "w": 210, "h": 115 },
+            { "x": -150, "y": 0, "w": 300, "h": 115 },
+            { "x": 90, "y": 195, "w": 170, "h": 55 }
+          ]
+        },
+        { "phase": "recovery", "duration": 9 }
+      ],
+      "hit": {
+        "damage": 35,
+        "hitstun": 12,
+        "blockstun": 9,
+        "hitstop": 6,
+        "pushback": { "hit": 45, "block": 35 },
+        "level": "mid",
+        "blockable": true
+      }
+    },
+    {
+      "id": "crouch_kick",
+      "stance": "crouch",
+      "commands": [
+        { "button": "lightKick" },
+        { "button": "heavyKick" }
+      ],
+      "segments": [
+        { "phase": "startup", "duration": 7 },
+        {
+          "phase": "active",
+          "duration": 4,
+          "hitboxes": [
+            { "x": 150, "y": 20, "w": 150, "h": 110 }
+          ],
+          "hurtboxes": [
+            { "x": -40, "y": 210, "w": 110, "h": 90 },
+            { "x": -100, "y": 105, "w": 210, "h": 115 },
+            { "x": -150, "y": 0, "w": 300, "h": 115 },
+            { "x": 60, "y": 20, "w": 220, "h": 110 }
+          ]
+        },
+        { "phase": "recovery", "duration": 12 }
+      ],
+      "hit": {
+        "damage": 55,
+        "hitstun": 16,
+        "blockstun": 12,
+        "hitstop": 8,
+        "pushback": { "hit": 60, "block": 50 },
+        "level": "low",
+        "blockable": true
+      }
+    },
+    {
+      "id": "jump_punch",
+      "stance": "air",
+      "commands": [
+        { "button": "lightPunch" }
+      ],
+      "segments": [
+        { "phase": "startup", "duration": 5 },
+        {
+          "phase": "active",
+          "duration": 8,
+          "hitboxes": [
+            { "x": 90, "y": 50, "w": 170, "h": 90 }
+          ],
+          "hurtboxes": [
+            { "x": -50, "y": 290, "w": 110, "h": 100 },
+            { "x": -95, "y": 60, "w": 190, "h": 240 },
+            { "x": 60, "y": 60, "w": 170, "h": 90 }
+          ]
+        },
+        { "phase": "recovery", "duration": 6 }
+      ],
+      "hit": {
+        "damage": 60,
+        "hitstun": 16,
+        "blockstun": 10,
+        "hitstop": 7,
+        "pushback": { "hit": 50, "block": 40 },
+        "level": "high",
+        "blockable": true
+      }
+    },
+    {
+      "id": "jump_kick",
+      "stance": "air",
+      "commands": [
+        { "button": "lightKick" },
+        { "button": "heavyKick" }
+      ],
+      "segments": [
+        { "phase": "startup", "duration": 6 },
+        {
+          "phase": "active",
+          "duration": 8,
+          "hitboxes": [
+            { "x": 130, "y": 120, "w": 270, "h": 130 }
+          ],
+          "hurtboxes": [
+            { "x": -50, "y": 290, "w": 110, "h": 100 },
+            { "x": -95, "y": 60, "w": 190, "h": 240 },
+            { "x": 80, "y": 120, "w": 260, "h": 130 }
+          ]
+        },
+        { "phase": "recovery", "duration": 6 }
+      ],
+      "hit": {
+        "damage": 75,
+        "hitstun": 18,
+        "blockstun": 12,
+        "hitstop": 8,
+        "pushback": { "hit": 60, "block": 45 },
+        "level": "high",
         "blockable": true
       }
     }

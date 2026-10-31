@@ -6,7 +6,22 @@
       { "x": -55, "y": 380, "w": 110, "h": 100 },
       { "x": -100, "y": 190, "w": 215, "h": 190 },
       { "x": -145, "y": 0, "w": 290, "h": 190 }
-    ]
+    ],
+    "crouch": {
+      "pushbox": { "x": -70, "y": 0, "w": 140, "h": 280 },
+      "hurtboxes": [
+        { "x": -40, "y": 210, "w": 110, "h": 90 },
+        { "x": -100, "y": 105, "w": 210, "h": 115 },
+        { "x": -150, "y": 0, "w": 300, "h": 115 }
+      ]
+    },
+    "air": {
+      "pushbox": { "x": -60, "y": 110, "w": 120, "h": 290 },
+      "hurtboxes": [
+        { "x": -50, "y": 290, "w": 110, "h": 100 },
+        { "x": -95, "y": 60, "w": 190, "h": 240 }
+      ]
+    }
   },
   "moves": [
     {
@@ -67,7 +82,7 @@
         "blockstun": 10,
         "hitstop": 6,
         "pushback": { "hit": 50, "block": 40 },
-        "level": "high",
+        "level": "mid",
         "blockable": true
       }
     },
@@ -141,7 +156,7 @@
         "blockstun": 16,
         "hitstop": 12,
         "pushback": { "hit": 90, "block": 70 },
-        "level": "high",
+        "level": "mid",
         "blockable": true
       }
     }

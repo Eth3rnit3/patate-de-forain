@@ -25,24 +25,64 @@ namespace Patate.Combat
     public sealed class FighterStats
     {
         public readonly int Health, WalkForwardSpeed, WalkBackSpeed;
+        public readonly JumpStats Jump;
 
-        public FighterStats(int health, int walkForwardSpeed, int walkBackSpeed)
+        public FighterStats(int health, int walkForwardSpeed, int walkBackSpeed, JumpStats jump = null)
         {
-            Health = health; WalkForwardSpeed = walkForwardSpeed; WalkBackSpeed = walkBackSpeed;
+            Health = health; WalkForwardSpeed = walkForwardSpeed; WalkBackSpeed = walkBackSpeed; Jump = jump ?? JumpStats.Default;
         }
     }
 
-    public sealed class BodyDefinition
+    /// <summary>
+    /// Saut en arithmétique entière : chaque tick, Y += vitesse puis vitesse -= gravité.
+    /// Avec 40 et 2 : 420 unités de haut, 41 ticks en l'air.
+    /// </summary>
+    public sealed class JumpStats
+    {
+        public readonly int Velocity, Gravity, ForwardSpeed, BackSpeed, PreJumpTicks, LandingTicks;
+
+        public static readonly JumpStats Default = new JumpStats(40, 2, 9, 8, 4, 4);
+
+        public JumpStats(int velocity, int gravity, int forwardSpeed, int backSpeed, int preJumpTicks, int landingTicks)
+        {
+            Velocity = velocity; Gravity = gravity; ForwardSpeed = forwardSpeed; BackSpeed = backSpeed;
+            PreJumpTicks = preJumpTicks; LandingTicks = landingTicks;
+        }
+
+        /// <summary>Ticks passés en l'air quand la vitesse verticale vaut <paramref name="velocityY"/>.</summary>
+        public int AirTicks(int velocityY) => (Velocity - velocityY) / System.Math.Max(1, Gravity);
+    }
+
+    /// <summary>Boîtes du corps dans une posture : collision corporelle et zones vulnérables.</summary>
+    public sealed class BodyShape
     {
         /// <summary>Collision corporelle : empêche les combattants de se traverser.</summary>
         public readonly Box Pushbox;
         /// <summary>Zones vulnérables au repos, en marche, en garde et en réaction.</summary>
         public readonly IReadOnlyList<Box> Hurtboxes;
 
-        public BodyDefinition(Box pushbox, IReadOnlyList<Box> hurtboxes)
+        public BodyShape(Box pushbox, IReadOnlyList<Box> hurtboxes)
         {
             Pushbox = pushbox; Hurtboxes = hurtboxes;
         }
+    }
+
+    public sealed class BodyDefinition
+    {
+        public readonly BodyShape Stand, Crouch, Air;
+
+        /// <summary>Sans forme accroupie ou aérienne, celle debout sert partout.</summary>
+        public BodyDefinition(Box pushbox, IReadOnlyList<Box> hurtboxes, BodyShape crouch = null, BodyShape air = null)
+        {
+            Stand = new BodyShape(pushbox, hurtboxes);
+            Crouch = crouch ?? Stand;
+            Air = air ?? Stand;
+        }
+
+        public Box Pushbox => Stand.Pushbox;
+        public IReadOnlyList<Box> Hurtboxes => Stand.Hurtboxes;
+
+        public BodyShape For(Posture posture) => posture == Posture.Crouch ? Crouch : posture == Posture.Air ? Air : Stand;
     }
 
     /// <summary>
@@ -92,7 +132,15 @@ namespace Patate.Combat
         }
     }
 
+    /// <summary>
+    /// High : à garder debout (coups sautés, coups d'en haut). Low : à garder accroupi.
+    /// Mid : les deux gardes conviennent. Un coup haut qui passe au-dessus d'un
+    /// combattant accroupi le doit à ses boîtes, pas à son niveau.
+    /// </summary>
     public enum HitLevel { High, Mid, Low }
+
+    /// <summary>Posture dans laquelle un coup se déclenche.</summary>
+    public enum MoveStance { Stand, Crouch, Air }
 
     public sealed class HitProperties
     {
@@ -131,10 +179,12 @@ namespace Patate.Combat
         public readonly IReadOnlyList<SegmentDefinition> Segments;
         /// <summary>Null pour un coup sans contact direct (ex. lancer de projectile).</summary>
         public readonly HitProperties Hit;
+        public readonly MoveStance Stance;
 
-        public MoveDefinition(string id, IReadOnlyList<CommandDefinition> commands, int priority, IReadOnlyList<SegmentDefinition> segments, HitProperties hit)
+        public MoveDefinition(string id, IReadOnlyList<CommandDefinition> commands, int priority, IReadOnlyList<SegmentDefinition> segments, HitProperties hit,
+            MoveStance stance = MoveStance.Stand)
         {
-            Id = id; Commands = commands; Priority = priority; Segments = segments; Hit = hit;
+            Id = id; Commands = commands; Priority = priority; Segments = segments; Hit = hit; Stance = stance;
         }
     }
 

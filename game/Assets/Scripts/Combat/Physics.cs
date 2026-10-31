@@ -17,6 +17,7 @@ namespace Patate.Combat
                 if (frozen[slot]) continue;
                 int before = fighter.X;
                 fighter.X += IntendedVelocity(fighter, context);
+                Fall(fighter, context);
                 int transferTo = fighter.Push?.TransferTo ?? -1;
                 int pushed = ApplyPush(fighter);
                 fighter.X += pushed;
@@ -34,8 +35,20 @@ namespace Patate.Combat
             SeparateBodies(state, context);
         }
 
+        /// <summary>Trajectoire verticale entière ; la réception remet au sol (Y = 0).</summary>
+        static void Fall(FighterState fighter, SimulationContext context)
+        {
+            if (fighter.Posture != Posture.Air) return;
+            var definition = context.Of(fighter);
+            fighter.Y += fighter.VelocityY;
+            fighter.VelocityY -= definition.Gameplay.Stats.Jump.Gravity;
+            if (fighter.Y <= 0) FighterBehavior.Land(fighter, definition);
+        }
+
         static int IntendedVelocity(FighterState fighter, SimulationContext context)
         {
+            // En l'air, la vitesse du saut remplace la marche et l'avancée des coups.
+            if (fighter.Posture == Posture.Air) return fighter.VelocityX;
             var definition = context.Of(fighter);
             var stats = definition.Gameplay.Stats;
             switch (fighter.Action.Kind)
@@ -87,13 +100,17 @@ namespace Patate.Combat
             }
         }
 
-        /// <summary>Les pushboxes ne se chevauchent jamais : chacun recule de moitié, un bord reporte sur l'autre.</summary>
+        /// <summary>
+        /// Les pushboxes ne se chevauchent jamais : chacun recule de moitié, un bord reporte sur l'autre.
+        /// Un combattant assez haut en l'air passe au-dessus de l'autre.
+        /// </summary>
         static void SeparateBodies(MatchState state, SimulationContext context)
         {
             var a = state.Fighters[0];
             var b = state.Fighters[1];
             var boxA = Hitboxes.Pushbox(a, context.Fighters[0]);
             var boxB = Hitboxes.Pushbox(b, context.Fighters[1]);
+            if (boxA.Bottom >= boxB.Top || boxB.Bottom >= boxA.Top) return;
             int overlap = Math.Min(boxA.Right, boxB.Right) - Math.Max(boxA.Left, boxB.Left);
             if (overlap <= 0) return;
             // À position égale, l'emplacement 0 est considéré à gauche : résultat déterministe.

@@ -75,7 +75,8 @@ namespace Patate.UnityAdapters
         {
             var pad = Device;
             yield return ("Déplacement", "stick gauche ou croix");
-            yield return ("Garde", "tenir la direction opposée à l'adversaire");
+            yield return ("Sauter / s'accroupir", "haut / bas  (coups en l'air et accroupi)");
+            yield return ("Garde", "arrière contre l'adversaire ; bas-arrière pour les coups bas");
             yield return ("Poing", Name(pad, GamepadButton.West));
             yield return ("Pied rapide", Name(pad, GamepadButton.South));
             yield return ("Pied puissant", Name(pad, GamepadButton.East));

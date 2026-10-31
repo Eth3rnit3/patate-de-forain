@@ -83,8 +83,9 @@ namespace Patate.Combat
             w.Write(f.Slot);
             WriteString(w, f.Definition.Id); WriteString(w, f.Definition.Version); WriteString(w, f.Definition.Hash);
             w.Write(f.X); w.Write(f.Y); w.Write(f.Facing); w.Write(f.Health); w.Write(f.Hitstop);
+            w.Write((int)f.Posture); w.Write(f.VelocityX); w.Write(f.VelocityY); w.Write(f.AirMoveUsed);
             var a = f.Action;
-            w.Write((int)a.Kind); w.Write(a.Tick); w.Write(a.Forward); WriteString(w, a.MoveId); w.Write(a.HasHit); w.Write(a.Duration);
+            w.Write((int)a.Kind); w.Write(a.Tick); w.Write(a.Forward); WriteString(w, a.MoveId); w.Write(a.HasHit); w.Write(a.Duration); w.Write(a.Direction);
             w.Write(f.Push != null);
             if (f.Push != null) { w.Write(f.Push.Remaining); w.Write(f.Push.TicksLeft); w.Write(f.Push.Direction); w.Write(f.Push.TransferTo); }
             w.Write(f.InputHistory.Length);
@@ -96,10 +97,11 @@ namespace Patate.Combat
             var f = new FighterState { Slot = r.ReadInt32() };
             f.Definition = new DefinitionRef(ReadString(r), ReadString(r), ReadString(r));
             f.X = r.ReadInt32(); f.Y = r.ReadInt32(); f.Facing = r.ReadInt32(); f.Health = r.ReadInt32(); f.Hitstop = r.ReadInt32();
+            f.Posture = (Posture)r.ReadInt32(); f.VelocityX = r.ReadInt32(); f.VelocityY = r.ReadInt32(); f.AirMoveUsed = r.ReadBoolean();
             f.Action = new ActionState
             {
                 Kind = (ActionKind)r.ReadInt32(), Tick = r.ReadInt32(), Forward = r.ReadBoolean(),
-                MoveId = ReadString(r), HasHit = r.ReadBoolean(), Duration = r.ReadInt32(),
+                MoveId = ReadString(r), HasHit = r.ReadBoolean(), Duration = r.ReadInt32(), Direction = r.ReadInt32(),
             };
             if (r.ReadBoolean()) f.Push = new PushState { Remaining = r.ReadInt32(), TicksLeft = r.ReadInt32(), Direction = r.ReadInt32(), TransferTo = r.ReadInt32() };
             f.InputHistory = new Buttons[r.ReadInt32()];

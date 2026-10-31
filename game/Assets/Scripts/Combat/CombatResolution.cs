@@ -40,10 +40,12 @@ namespace Patate.Combat
                 var move = context.Of(attacker).Move(attacker.Action.MoveId);
                 if (move?.Definition.Hit == null) continue;
                 if (!Geometry.FirstOverlap(Hitboxes.Active(attacker, context.Of(attacker)), Hitboxes.Hurtboxes(defender, context.Of(defender)), out var area, out var hurt)) continue;
+                // Sens réel du coup : un saut par-dessus (cross-up) frappe dans le dos.
+                int direction = defender.X == attacker.X ? attacker.Facing : Math.Sign(defender.X - attacker.X);
                 contacts.Add(new Contact
                 {
                     Attacker = slot, Defender = defender.Slot, Hit = move.Definition.Hit, MoveId = move.Id,
-                    Direction = attacker.Facing, Area = area, Hurt = hurt,
+                    Direction = direction, Area = area, Hurt = hurt,
                 });
             }
         }
@@ -85,14 +87,20 @@ namespace Patate.Combat
             foreach (var projectile in destroyed) RemoveProjectile(state, projectile, ProjectileEndReason.Clash, events);
         }
 
-        /// <summary>Garde debout : tenir la direction opposée à la source, dans un état qui le permet.</summary>
+        /// <summary>
+        /// Garde : tenir la direction opposée à la source, au sol, dans un état qui le permet.
+        /// Debout, elle arrête les coups hauts et moyens ; accroupie (bas-arrière), les bas et moyens.
+        /// </summary>
         public static bool CanBlock(FighterState defender, HitProperties hit, int sourceDirection)
         {
-            if (!hit.Blockable || hit.Level == HitLevel.Low) return false;
+            if (!hit.Blockable || defender.Posture == Posture.Air) return false;
             var kind = defender.Action.Kind;
-            if (kind != ActionKind.Idle && kind != ActionKind.Walk && kind != ActionKind.Guard && kind != ActionKind.Blockstun) return false;
+            if (kind != ActionKind.Idle && kind != ActionKind.Walk && kind != ActionKind.Guard && kind != ActionKind.Blockstun
+                && kind != ActionKind.Crouch) return false;
             // « Arrière » = s'éloigner de la source, quelle que soit l'orientation actuelle.
-            return InputRules.Horizontal(defender.CurrentInput, -sourceDirection) == HorizontalIntent.Back;
+            if (InputRules.Horizontal(defender.CurrentInput, -sourceDirection) != HorizontalIntent.Back) return false;
+            bool crouching = InputRules.IsCrouching(InputRules.Direction(defender.CurrentInput, -sourceDirection));
+            return crouching ? hit.Level != HitLevel.High : hit.Level != HitLevel.Low;
         }
 
         static void Apply(Contact contact, MatchState state, SimulationContext context, List<MatchEvent> events)
@@ -114,6 +122,9 @@ namespace Patate.Combat
                 Direction = contact.Direction,
                 TransferTo = melee ? attacker.Slot : -1,
             };
+            if (blocked) defender.Posture = InputRules.IsCrouching(InputRules.Direction(defender.CurrentInput, -contact.Direction)) ? Posture.Crouch : Posture.Stand;
+            // Touché en l'air : il retombe sur place, le recul l'écarte.
+            if (!blocked && defender.Posture == Posture.Air) defender.VelocityX = 0;
             if (defender.Health == 0) defender.Action = ActionState.Of(ActionKind.KO);
             else if (blocked) defender.Action = new ActionState { Kind = ActionKind.Blockstun, Duration = hit.Blockstun };
             else defender.Action = new ActionState { Kind = ActionKind.Hitstun, Duration = hit.Hitstun };

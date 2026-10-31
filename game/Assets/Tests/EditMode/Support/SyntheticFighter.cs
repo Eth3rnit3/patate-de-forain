@@ -43,6 +43,42 @@ namespace Patate.Tests
             },
             new[] { new ProjectileDefinition("orb", orbSpeed, orbLifetime, new Box(-30, -30, 60, 60), 1, OrbHit) });
 
+        public static readonly HitProperties SweepHit = new HitProperties(
+            damage: 60, chipDamage: 0, hitstun: 14, blockstun: 10, hitstop: 6, pushbackHit: 40, pushbackBlock: 30, level: HitLevel.Low, blockable: true);
+        public static readonly HitProperties DiveHit = new HitProperties(
+            damage: 70, chipDamage: 0, hitstun: 16, blockstun: 10, hitstop: 6, pushbackHit: 40, pushbackBlock: 30, level: HitLevel.High, blockable: true);
+
+        /// <summary>Le même mannequin, avec un corps accroupi et aérien, un balayage, un coup accroupi et un coup sauté.</summary>
+        public static FighterGameplay WithStances()
+        {
+            var basic = Gameplay();
+            var moves = new List<MoveDefinition>(basic.Moves)
+            {
+                new MoveDefinition("crouch_jab", new[] { new CommandDefinition(Buttons.LightPunch) }, 0, new[]
+                {
+                    new SegmentDefinition(Phase.Startup, 4),
+                    new SegmentDefinition(Phase.Active, 2, hitboxes: new[] { new Box(60, 180, 120, 40) }),
+                    new SegmentDefinition(Phase.Recovery, 6),
+                }, JabHit.With(damage: 40), MoveStance.Crouch),
+                new MoveDefinition("sweep", new[] { new CommandDefinition(Buttons.LightKick) }, 0, new[]
+                {
+                    new SegmentDefinition(Phase.Startup, 5),
+                    new SegmentDefinition(Phase.Active, 3, hitboxes: new[] { new Box(60, 0, 140, 40) }),
+                    new SegmentDefinition(Phase.Recovery, 10),
+                }, SweepHit, MoveStance.Crouch),
+                new MoveDefinition("dive", new[] { new CommandDefinition(Buttons.LightPunch) }, 0, new[]
+                {
+                    new SegmentDefinition(Phase.Startup, 3),
+                    new SegmentDefinition(Phase.Active, 12, hitboxes: new[] { new Box(40, -40, 120, 120) }),
+                    new SegmentDefinition(Phase.Recovery, 6),
+                }, DiveHit, MoveStance.Air),
+            };
+            var body = new BodyDefinition(basic.Body.Pushbox, basic.Body.Hurtboxes,
+                crouch: new BodyShape(new Box(-60, 0, 120, 250), new[] { new Box(-70, 0, 140, 260) }),
+                air: new BodyShape(new Box(-50, 120, 100, 260), new[] { new Box(-60, 80, 120, 320) }));
+            return new FighterGameplay(basic.Stats, body, moves, basic.Projectiles);
+        }
+
         public static CompiledFighter Compile(FighterGameplay gameplay = null) =>
             new CompiledFighter(new DefinitionRef("mannequin", "0.0.1", "test"), gameplay ?? Gameplay());
     }

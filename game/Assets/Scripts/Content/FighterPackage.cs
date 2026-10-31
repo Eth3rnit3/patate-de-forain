@@ -65,8 +65,16 @@ namespace Patate.Content
         public Dictionary<string, string> Sounds = new Dictionary<string, string>();
     }
 
-    /// <summary>États visuels hors coups ; chacun doit avoir une animation.</summary>
-    public enum FighterVisualState { Idle, WalkForward, WalkBack, Guard, Hitstun, Blockstun, KO }
+    /// <summary>
+    /// États visuels hors coups. Les sept premiers sont obligatoires ; les suivants
+    /// (accroupi, saut) sont facultatifs et retombent sur un état voisin
+    /// (FramePicker.Fallback) tant que le paquet n'en fournit pas.
+    /// </summary>
+    public enum FighterVisualState
+    {
+        Idle, WalkForward, WalkBack, Guard, Hitstun, Blockstun, KO,
+        Crouch, CrouchGuard, CrouchHitstun, CrouchBlockstun, PreJump, Jump, Land, AirHitstun,
+    }
 
     public sealed class AnimationDefinition
     {

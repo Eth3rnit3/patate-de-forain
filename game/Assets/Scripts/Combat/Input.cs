@@ -46,7 +46,17 @@ namespace Patate.Combat
             return 5 + horizontal + vertical * 3;
         }
 
-        /// <summary>Sans accroupissement ni saut, bas-avant marche et bas-arrière garde.</summary>
+        /// <summary>Bas, bas-avant ou bas-arrière tenus : accroupi (1, 2, 3).</summary>
+        public static bool IsCrouching(int direction) => direction >= 1 && direction <= 3;
+
+        /// <summary>Haut, haut-avant ou haut-arrière : saut (7, 8, 9).</summary>
+        public static bool IsJumping(int direction) => direction >= 7;
+
+        /// <summary>
+        /// Composante avant / arrière de la direction. Le combattant décide d'abord
+        /// du saut et de l'accroupissement ; ceci sert ensuite à la marche, à la
+        /// garde (bas-arrière = garde basse) et au sens du saut.
+        /// </summary>
         public static HorizontalIntent Horizontal(Buttons input, int facing)
         {
             switch (Direction(input, facing))

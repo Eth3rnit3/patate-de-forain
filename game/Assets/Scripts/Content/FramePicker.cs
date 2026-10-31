@@ -21,38 +21,74 @@ namespace Patate.Content
             }
         }
 
+        /// <summary>État facultatif → état à utiliser s'il manque (lui-même éventuellement remplacé).</summary>
+        public static readonly System.Collections.Generic.IReadOnlyDictionary<FighterVisualState, FighterVisualState> Fallback =
+            new System.Collections.Generic.Dictionary<FighterVisualState, FighterVisualState>
+            {
+                [FighterVisualState.Crouch] = FighterVisualState.Idle,
+                [FighterVisualState.CrouchGuard] = FighterVisualState.Guard,
+                [FighterVisualState.CrouchHitstun] = FighterVisualState.Hitstun,
+                [FighterVisualState.CrouchBlockstun] = FighterVisualState.Blockstun,
+                [FighterVisualState.PreJump] = FighterVisualState.Crouch,
+                [FighterVisualState.Jump] = FighterVisualState.Idle,
+                [FighterVisualState.Land] = FighterVisualState.PreJump,
+                [FighterVisualState.AirHitstun] = FighterVisualState.Hitstun,
+            };
+
         public static Pick ForFighter(FighterState fighter, PresentationDefinition presentation)
         {
             var action = fighter.Action;
-            AnimationBinding binding;
+            bool crouched = fighter.Posture == Posture.Crouch;
             int duration = 0;
+            FighterVisualState state;
             switch (action.Kind)
             {
                 case ActionKind.Move:
-                    if (!presentation.Moves.TryGetValue(action.MoveId ?? "", out binding)) binding = presentation.States[FighterVisualState.Idle];
+                    if (presentation.Moves.TryGetValue(action.MoveId ?? "", out var move)) return Resolve(move, presentation, action.Tick);
+                    state = FighterVisualState.Idle;
                     break;
                 case ActionKind.Walk:
-                    binding = presentation.States[action.Forward ? FighterVisualState.WalkForward : FighterVisualState.WalkBack];
+                    state = action.Forward ? FighterVisualState.WalkForward : FighterVisualState.WalkBack;
                     break;
                 case ActionKind.Guard:
-                    binding = presentation.States[FighterVisualState.Guard];
+                    state = crouched ? FighterVisualState.CrouchGuard : FighterVisualState.Guard;
                     break;
                 case ActionKind.Hitstun:
-                    binding = presentation.States[FighterVisualState.Hitstun];
+                    state = fighter.Posture == Posture.Air ? FighterVisualState.AirHitstun : crouched ? FighterVisualState.CrouchHitstun : FighterVisualState.Hitstun;
                     duration = action.Duration;
                     break;
                 case ActionKind.Blockstun:
-                    binding = presentation.States[FighterVisualState.Blockstun];
+                    state = crouched ? FighterVisualState.CrouchBlockstun : FighterVisualState.Blockstun;
                     duration = action.Duration;
                     break;
                 case ActionKind.KO:
-                    binding = presentation.States[FighterVisualState.KO];
+                    state = FighterVisualState.KO;
+                    break;
+                case ActionKind.Crouch:
+                    state = FighterVisualState.Crouch;
+                    break;
+                case ActionKind.PreJump:
+                    state = FighterVisualState.PreJump;
+                    break;
+                case ActionKind.Jump:
+                    state = FighterVisualState.Jump;
+                    break;
+                case ActionKind.Land:
+                    state = FighterVisualState.Land;
+                    duration = action.Duration;
                     break;
                 default:
-                    binding = presentation.States[FighterVisualState.Idle];
+                    state = FighterVisualState.Idle;
                     break;
             }
-            return Resolve(binding, presentation, action.Tick, duration);
+            return Resolve(Binding(presentation, state), presentation, action.Tick, duration);
+        }
+
+        /// <summary>Animation de l'état, ou de l'état de repli s'il n'est pas fourni.</summary>
+        public static AnimationBinding Binding(PresentationDefinition presentation, FighterVisualState state)
+        {
+            while (!presentation.States.ContainsKey(state) && Fallback.TryGetValue(state, out var next)) state = next;
+            return presentation.States[state];
         }
 
         public static Pick Resolve(AnimationBinding binding, PresentationDefinition presentation, int tick, int stateDuration = 0)

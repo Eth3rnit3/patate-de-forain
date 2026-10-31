@@ -10,7 +10,7 @@ namespace Patate.Combat
     /// </summary>
     public sealed class MatchState
     {
-        public const int FormatVersion = 1;
+        public const int FormatVersion = 2;
         public string RulesId;
         public int RulesVersion;
         public int Tick;
@@ -70,7 +70,18 @@ namespace Patate.Combat
         Hitstun,
         Blockstun,
         KO,
+        /// <summary>Accroupi, bas tenu. Debout ↔ accroupi est instantané.</summary>
+        Crouch,
+        /// <summary>Appel du saut : quelques ticks au sol avant de décoller. Direction : sens du saut.</summary>
+        PreJump,
+        /// <summary>En l'air sans coup en cours. Tick = ticks passés en l'air.</summary>
+        Jump,
+        /// <summary>Réception d'un saut : courte récupération au sol.</summary>
+        Land,
     }
+
+    /// <summary>Posture : choisit les boîtes du corps et ce qui peut être gardé.</summary>
+    public enum Posture { Stand, Crouch, Air }
 
     /// <summary>Action en cours. Une seule forme plate pour rester simple à copier et sérialiser.</summary>
     public sealed class ActionState
@@ -83,8 +94,10 @@ namespace Patate.Combat
         public string MoveId;
         /// <summary>Move : le coup a déjà touché (ou été bloqué) une fois.</summary>
         public bool HasHit;
-        /// <summary>Hitstun / Blockstun : durée totale.</summary>
+        /// <summary>Hitstun / Blockstun / Land : durée totale.</summary>
         public int Duration;
+        /// <summary>PreJump : sens du saut dans le monde (-1, 0, 1).</summary>
+        public int Direction;
 
         public static ActionState Of(ActionKind kind) => new ActionState { Kind = kind };
 
@@ -112,6 +125,11 @@ namespace Patate.Combat
         public int X, Y;
         public int Facing;
         public int Health;
+        public Posture Posture;
+        /// <summary>En l'air : vitesses en unités par tick (Y vers le haut).</summary>
+        public int VelocityX, VelocityY;
+        /// <summary>Un seul coup par saut.</summary>
+        public bool AirMoveUsed;
         public ActionState Action;
         /// <summary>Ticks de gel restants (impact). Le combattant ne progresse pas pendant ce temps.</summary>
         public int Hitstop;

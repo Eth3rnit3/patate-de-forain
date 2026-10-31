@@ -46,6 +46,10 @@ namespace Patate.Content
         {
             ["high"] = HitLevel.High, ["mid"] = HitLevel.Mid, ["low"] = HitLevel.Low,
         };
+        static readonly Dictionary<string, MoveStance> StanceNames = new Dictionary<string, MoveStance>
+        {
+            ["stand"] = MoveStance.Stand, ["crouch"] = MoveStance.Crouch, ["air"] = MoveStance.Air,
+        };
         static readonly Dictionary<string, Playback> PlaybackNames = new Dictionary<string, Playback>
         {
             ["once"] = Playback.Once, ["loop"] = Playback.Loop, ["reverseLoop"] = Playback.ReverseLoop,
@@ -56,6 +60,10 @@ namespace Patate.Content
             ["idle"] = FighterVisualState.Idle, ["walkForward"] = FighterVisualState.WalkForward, ["walkBack"] = FighterVisualState.WalkBack,
             ["guard"] = FighterVisualState.Guard, ["hitstun"] = FighterVisualState.Hitstun, ["blockstun"] = FighterVisualState.Blockstun,
             ["ko"] = FighterVisualState.KO,
+            ["crouch"] = FighterVisualState.Crouch, ["crouchGuard"] = FighterVisualState.CrouchGuard,
+            ["crouchHitstun"] = FighterVisualState.CrouchHitstun, ["crouchBlockstun"] = FighterVisualState.CrouchBlockstun,
+            ["preJump"] = FighterVisualState.PreJump, ["jump"] = FighterVisualState.Jump, ["land"] = FighterVisualState.Land,
+            ["airHitstun"] = FighterVisualState.AirHitstun,
         };
 
         public sealed class Result
@@ -133,19 +141,40 @@ namespace Patate.Content
             BodyDefinition body = null;
             if (bodyNode != null)
             {
-                bodyNode.AllowOnly("pushbox", "hurtboxes");
-                var pushbox = bodyNode.Object("pushbox");
-                body = new BodyDefinition(pushbox == null ? default : ReadBox(pushbox), ReadBoxes(bodyNode, "hurtboxes", minCount: 1));
+                bodyNode.AllowOnly("pushbox", "hurtboxes", "crouch", "air");
+                var stand = ReadShape(bodyNode);
+                var crouch = bodyNode.Object("crouch", required: false);
+                var air = bodyNode.Object("air", required: false);
+                if (crouch != null) crouch.AllowOnly("pushbox", "hurtboxes");
+                if (air != null) air.AllowOnly("pushbox", "hurtboxes");
+                body = new BodyDefinition(stand.Pushbox, stand.Hurtboxes, crouch == null ? null : ReadShape(crouch), air == null ? null : ReadShape(air));
             }
             var moves = node.Array("moves", Limits.Moves, minCount: 1).Select(ReadMove).Where(m => m != null).ToList();
             var projectiles = node.Array("projectiles", Limits.Projectiles, required: false).Select(ReadProjectile).Where(p => p != null).ToList();
             return stats == null || body == null ? null : new FighterGameplay(stats, body, moves, projectiles);
         }
 
+        /// <summary>Forme du corps dans une posture (debout, « crouch » ou « air ») : pushbox et hurtboxes.</summary>
+        static BodyShape ReadShape(JsonNode node)
+        {
+            var pushbox = node.Object("pushbox");
+            return new BodyShape(pushbox == null ? default : ReadBox(pushbox), ReadBoxes(node, "hurtboxes", minCount: 1));
+        }
+
         static FighterStats ReadStats(JsonNode node)
         {
-            node.AllowOnly("health", "walkForwardSpeed", "walkBackSpeed");
-            return new FighterStats(node.Int("health", 1, Limits.Health), node.Int("walkForwardSpeed", 0, Limits.Speed), node.Int("walkBackSpeed", 0, Limits.Speed));
+            node.AllowOnly("health", "walkForwardSpeed", "walkBackSpeed", "jump");
+            var jumpNode = node.Object("jump", required: false);
+            JumpStats jump = null;
+            if (jumpNode != null)
+            {
+                var d = JumpStats.Default;
+                jumpNode.AllowOnly("velocity", "gravity", "forwardSpeed", "backSpeed", "preJumpTicks", "landingTicks");
+                jump = new JumpStats(jumpNode.Int("velocity", 1, Limits.Speed, d.Velocity), jumpNode.Int("gravity", 1, Limits.Speed, d.Gravity),
+                    jumpNode.Int("forwardSpeed", 0, Limits.Speed, d.ForwardSpeed), jumpNode.Int("backSpeed", 0, Limits.Speed, d.BackSpeed),
+                    jumpNode.Int("preJumpTicks", 1, 30, d.PreJumpTicks), jumpNode.Int("landingTicks", 0, 30, d.LandingTicks));
+            }
+            return new FighterStats(node.Int("health", 1, Limits.Health), node.Int("walkForwardSpeed", 0, Limits.Speed), node.Int("walkBackSpeed", 0, Limits.Speed), jump);
         }
 
         static Box ReadBox(JsonNode node)
@@ -161,12 +190,13 @@ namespace Patate.Content
         static MoveDefinition ReadMove(JsonNode node)
         {
             if (!node.IsObject("coup attendu (objet)")) return null;
-            node.AllowOnly("id", "commands", "priority", "segments", "hit");
+            node.AllowOnly("id", "commands", "priority", "segments", "hit", "stance");
             var id = node.String("id", IdPattern, "minuscules, chiffres, - ou _");
             var commands = node.Array("commands", Limits.Commands, minCount: 1).Select(ReadCommand).Where(c => c != null).ToList();
             var segments = node.Array("segments", Limits.Segments, minCount: 1).Select(ReadSegment).Where(s => s != null).ToList();
             var hitNode = node.Object("hit", required: false);
-            return new MoveDefinition(id, commands, node.Int("priority", -100, 100, 0), segments, hitNode == null ? null : ReadHit(hitNode));
+            return new MoveDefinition(id, commands, node.Int("priority", -100, 100, 0), segments, hitNode == null ? null : ReadHit(hitNode),
+                node.Enum("stance", StanceNames, MoveStance.Stand, required: false));
         }
 
         static CommandDefinition ReadCommand(JsonNode node)
@@ -392,7 +422,10 @@ namespace Patate.Content
 
             foreach (var state in StateNames)
             {
-                if (!presentation.States.TryGetValue(state.Value, out var binding)) report.Error(file, $"states.{state.Key}", "animation obligatoire manquante");
+                if (!presentation.States.TryGetValue(state.Value, out var binding))
+                {
+                    if (!FramePicker.Fallback.ContainsKey(state.Value)) report.Error(file, $"states.{state.Key}", "animation obligatoire manquante");
+                }
                 else CheckBinding(binding, $"states.{state.Key}", presentation, report);
             }
 

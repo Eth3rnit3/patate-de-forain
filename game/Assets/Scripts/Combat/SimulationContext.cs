@@ -31,13 +31,13 @@ namespace Patate.Combat
         }
 
         public static WorldBox Pushbox(FighterState fighter, CompiledFighter definition) =>
-            Geometry.ToWorld(definition.Gameplay.Body.Pushbox, fighter.X, fighter.Y, fighter.Facing);
+            Geometry.ToWorld(definition.Gameplay.Body.For(fighter.Posture).Pushbox, fighter.X, fighter.Y, fighter.Facing);
 
         public static List<WorldBox> Hurtboxes(FighterState fighter, CompiledFighter definition)
         {
             var result = new List<WorldBox>();
             if (fighter.Action.Kind == ActionKind.KO) return result;
-            var boxes = CurrentSegment(fighter, definition)?.Definition.Hurtboxes ?? definition.Gameplay.Body.Hurtboxes;
+            var boxes = CurrentSegment(fighter, definition)?.Definition.Hurtboxes ?? definition.Gameplay.Body.For(fighter.Posture).Hurtboxes;
             foreach (var box in boxes) result.Add(Geometry.ToWorld(box, fighter.X, fighter.Y, fighter.Facing));
             return result;
         }

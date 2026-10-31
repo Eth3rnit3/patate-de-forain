@@ -17,6 +17,9 @@ namespace Patate.Content
         public int MaxWalkSpeed = int.MaxValue;
         public int MaxDamagePerHit = int.MaxValue;
         public int MaxProjectileSpeed = int.MaxValue;
+        /// <summary>Hauteur maximale du saut (unités) et vitesse horizontale maximale en l'air.</summary>
+        public int MaxJumpHeight = int.MaxValue;
+        public int MaxJumpSpeed = int.MaxValue;
         /// <summary>Durée minimale de préparation d'un coup qui touche, en ticks.</summary>
         public int MinStartup;
         /// <summary>Empreintes de gameplay approuvées ; null = toute version conforme aux bornes.</summary>
@@ -32,6 +35,8 @@ namespace Patate.Content
             MaxWalkSpeed = 10,
             MaxDamagePerHit = 150,
             MaxProjectileSpeed = 16,
+            MaxJumpHeight = 480,
+            MaxJumpSpeed = 12,
             MinStartup = 3,
         };
 
@@ -44,6 +49,10 @@ namespace Patate.Content
                 problems.Add($"version {package.GameplayRef} non approuvée pour le mode « {Id} »");
             if (g.Stats.Health > MaxHealth) problems.Add($"vie {g.Stats.Health} > {MaxHealth}");
             if (System.Math.Max(g.Stats.WalkForwardSpeed, g.Stats.WalkBackSpeed) > MaxWalkSpeed) problems.Add($"vitesse de marche > {MaxWalkSpeed}");
+            var jump = g.Stats.Jump;
+            int height = jump.Velocity * (jump.Velocity / jump.Gravity + 1) / 2;
+            if (height > MaxJumpHeight) problems.Add($"hauteur de saut {height} > {MaxJumpHeight}");
+            if (System.Math.Max(jump.ForwardSpeed, jump.BackSpeed) > MaxJumpSpeed) problems.Add($"vitesse en l'air > {MaxJumpSpeed}");
             foreach (var move in g.Moves)
             {
                 if (move.Hit != null && move.Hit.Damage > MaxDamagePerHit) problems.Add($"{move.Id} : dégâts {move.Hit.Damage} > {MaxDamagePerHit}");

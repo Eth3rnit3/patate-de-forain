@@ -65,8 +65,9 @@ namespace Patate.UnityAdapters
             var keyboard = Keyboard.current;
             string Name(Key key) => keyboard != null ? keyboard[key].displayName : key.ToString();
             string Keys(Buttons button) => string.Join(" / ", bindings.Where(b => b.button == button).SelectMany(b => b.keys).Select(Name));
-            yield return ("Déplacement", $"{Keys(Buttons.Left)} {Keys(Buttons.Right)}  (bas : {Keys(Buttons.Down)})");
-            yield return ("Garde", "tenir la direction opposée à l'adversaire");
+            yield return ("Déplacement", $"{Keys(Buttons.Left)} {Keys(Buttons.Right)}");
+            yield return ("Sauter / s'accroupir", $"{Keys(Buttons.Up)} / {Keys(Buttons.Down)}  (coups en l'air et accroupi)");
+            yield return ("Garde", "arrière contre l'adversaire ; bas-arrière pour les coups bas");
             yield return ("Poing", Keys(Buttons.LightPunch));
             yield return ("Pied rapide", Keys(Buttons.LightKick));
             yield return ("Pied puissant", Keys(Buttons.HeavyKick));

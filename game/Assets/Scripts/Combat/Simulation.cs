@@ -127,7 +127,7 @@ namespace Patate.Combat
             for (int slot = 0; slot < 2; slot++)
             {
                 var fighter = state.Fighters[slot];
-                if (frozen[slot] || !FighterBehavior.IsActionable(fighter)) continue;
+                if (frozen[slot] || !FighterBehavior.CanTurn(fighter)) continue;
                 var opponent = state.Fighters[MatchState.Opponent(slot)];
                 if (opponent.X != fighter.X) fighter.Facing = opponent.X > fighter.X ? 1 : -1;
             }

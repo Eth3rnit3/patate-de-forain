@@ -49,7 +49,7 @@ Hypothèses non testées, pour une simulation à 60 mises à jour par seconde. L
 | Poing rapide | 3, 2, 2, 3, 4, 6 | Pose 4 active |
 | Pied rapide | 3, 3, 2, 3, 5, 8 | Pose 4 active |
 | Pied puissant | 4, 4, 5, 3, 5, 5, 5, 9 | Pose 5 active |
-| Salve impériale | 4, 5, 5, 6, 3, 4, 10, 11 | Émission à l'entrée de la pose 5 |
+| Salve impériale | 3, 4, 4, 4, 3, 4, 10, 11 | Émission à l'entrée de la pose 5 |
 | Boulet | 3, 3, 3, 3 en boucle | Translation gérée par la simulation |
 | Impact | 2, 2, 3, 3 | Lecture unique puis suppression |
 

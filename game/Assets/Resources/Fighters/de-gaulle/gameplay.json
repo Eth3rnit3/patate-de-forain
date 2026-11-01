@@ -40,7 +40,7 @@
       ],
       "priority": 10,
       "segments": [
-        { "phase": "startup", "duration": 21 },
+        { "phase": "startup", "duration": 16 },
         {
           "phase": "recovery",
           "duration": 7,
@@ -57,6 +57,8 @@
     },
     {
       "id": "stand_punch_light",
+      "cancels": ["stand_kick_light", "stand_kick_heavy"],
+      "cancelsOnHit": ["special_appel"],
       "commands": [
         { "button": "lightPunch" }
       ],
@@ -92,7 +94,7 @@
       ],
       "hit": {
         "damage": 40,
-        "hitstun": 14,
+        "hitstun": 21,
         "blockstun": 10,
         "hitstop": 6,
         "pushback": { "hit": 50, "block": 40 },
@@ -102,6 +104,8 @@
     },
     {
       "id": "stand_kick_light",
+      "cancels": ["stand_kick_heavy"],
+      "cancelsOnHit": ["special_appel"],
       "commands": [
         { "button": "lightKick" }
       ],
@@ -133,7 +137,7 @@
       ],
       "hit": {
         "damage": 60,
-        "hitstun": 16,
+        "hitstun": 21,
         "blockstun": 12,
         "hitstop": 8,
         "pushback": { "hit": 60, "block": 50 },
@@ -143,6 +147,7 @@
     },
     {
       "id": "stand_kick_heavy",
+      "cancelsOnHit": ["special_appel"],
       "commands": [
         { "button": "heavyKick" }
       ],
@@ -184,6 +189,8 @@
     },
     {
       "id": "crouch_punch",
+      "cancels": ["crouch_kick"],
+      "cancelsOnHit": ["special_appel"],
       "stance": "crouch",
       "commands": [
         { "button": "lightPunch" }
@@ -207,7 +214,7 @@
       ],
       "hit": {
         "damage": 35,
-        "hitstun": 12,
+        "hitstun": 19,
         "blockstun": 9,
         "hitstop": 6,
         "pushback": { "hit": 45, "block": 35 },
@@ -217,6 +224,7 @@
     },
     {
       "id": "crouch_kick",
+      "cancelsOnHit": ["special_appel"],
       "stance": "crouch",
       "commands": [
         { "button": "lightKick" },
@@ -240,7 +248,7 @@
       ],
       "hit": {
         "damage": 55,
-        "hitstun": 16,
+        "hitstun": 19,
         "blockstun": 12,
         "hitstop": 8,
         "pushback": { "hit": 60, "block": 50 },

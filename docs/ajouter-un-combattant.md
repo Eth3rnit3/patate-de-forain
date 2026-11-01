@@ -173,6 +173,9 @@ Augmenter `version` à chaque changement de gameplay publié. L'empreinte SHA-25
 | `commands[].direction` | Direction tenue, en notation pavé numérique (6 = avant, 4 = arrière, 2 = bas) |
 | `commands[].motion` | Séquence de directions, ex. `[2, 3, 6]`, dans `window` ticks |
 | `priority` | Plus grand = essayé en premier (spéciaux avant normaux) |
+| `cancels` | Coups qui peuvent interrompre celui-ci dès qu'il a touché **ou** été gardé (enchaînements), ex. `["stand_kick_light", "stand_kick_heavy"]` sur le poing. Pas de coup sauté, pas le coup lui-même. La suite ne fait un combo que si elle touche avant la fin de `hit.hitstun` : le test `ChainPackageTests` le vérifie pour chaque annulation déclarée |
+| `cancelsOnHit` | Coups qui peuvent l'interrompre seulement s'il a **touché** (pas gardé), ex. le spécial |
+| `cancelOnly` | `true` : le coup ne part jamais du neutre, seulement en annulant un coup qui le liste (suite d'un enchaînement propre au personnage) |
 | `segments[].phase` | `startup`, `active` (seule phase où une hitbox compte) ou `recovery` |
 | `segments[].hurtboxes` | Remplace les hurtboxes du corps pendant le segment (ex. jambe tendue, vulnérable) |
 | `segments[].advance` | Avancée par tick |

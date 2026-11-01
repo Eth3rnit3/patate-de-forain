@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Patate.Combat
 {
@@ -129,10 +130,39 @@ namespace Patate.Combat
         {
             foreach (var move in definition.MovesByPriority)
             {
-                if (move.Definition.Stance != stance || !Triggered(move, fighter) || !SegmentActions.CanStartMove(move, fighter, definition, state)) continue;
-                fighter.Action = new ActionState { Kind = ActionKind.Move, MoveId = move.Id };
-                events.Add(new MatchEvent { Type = MatchEventType.MoveStart, Tick = state.Tick, Slot = fighter.Slot, MoveId = move.Id });
-                SegmentActions.RunEntries(move, 0, fighter, definition, state, events);
+                if (move.Definition.CancelOnly || move.Definition.Stance != stance || !Triggered(move, fighter) || !SegmentActions.CanStartMove(move, fighter, definition, state)) continue;
+                StartMove(fighter, move, definition, state, events);
+                return true;
+            }
+            return false;
+        }
+
+        static void StartMove(FighterState fighter, CompiledMove move, CompiledFighter definition, MatchState state, List<MatchEvent> events)
+        {
+            fighter.Action = new ActionState { Kind = ActionKind.Move, MoveId = move.Id };
+            events.Add(new MatchEvent { Type = MatchEventType.MoveStart, Tick = state.Tick, Slot = fighter.Slot, MoveId = move.Id });
+            SegmentActions.RunEntries(move, 0, fighter, definition, state, events);
+        }
+
+        /// <summary>
+        /// Annulation : un coup au sol qui a touché (ou été gardé, selon la liste)
+        /// cède la place à l'un des coups qu'il déclare, dès l'appui. Appelé aussi
+        /// pendant le gel d'impact : le nouveau coup démarre quand le gel se termine.
+        /// </summary>
+        public static bool TryCancel(FighterState fighter, Buttons input, CompiledFighter definition, MatchState state, List<MatchEvent> events)
+        {
+            var action = fighter.Action;
+            if (action.Kind != ActionKind.Move || !action.HasHit || fighter.Posture == Posture.Air) return false;
+            var current = definition.Move(action.MoveId);
+            if (current == null) return false;
+            bool crouching = InputRules.IsCrouching(InputRules.Direction(input, fighter.Facing));
+            var stance = crouching ? MoveStance.Crouch : MoveStance.Stand;
+            foreach (var move in definition.MovesByPriority)
+            {
+                bool allowed = current.Definition.Cancels.Contains(move.Id) || (action.HitLanded && current.Definition.CancelsOnHit.Contains(move.Id));
+                if (!allowed || move.Definition.Stance != stance || !Triggered(move, fighter) || !SegmentActions.CanStartMove(move, fighter, definition, state)) continue;
+                fighter.Posture = crouching ? Posture.Crouch : Posture.Stand;
+                StartMove(fighter, move, definition, state, events);
                 return true;
             }
             return false;

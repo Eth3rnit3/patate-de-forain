@@ -48,6 +48,6 @@ Hypothèses de départ pour une simulation à 60 mises à jour par seconde, à a
 | Poing rapide (estoc) | 2, 3, 2, 3, 4, 7 | Poses 3 et 4 actives |
 | Pied rapide | 3, 3, 2, 3, 5, 8 | Pose 4 active |
 | Pied puissant | 4, 4, 5, 3, 5, 5, 5, 9 | Pose 5 active |
-| Le Panache | 4, 5, 5, 5, 3, 4, 10, 11 | Émission à l'entrée de la pose 5 |
+| Le Panache | 3, 4, 4, 4, 3, 4, 10, 11 | Émission à l'entrée de la pose 5 |
 | Plume | 3, 3, 3, 3 en boucle | Translation gérée par la simulation |
 | Impact | 2, 2, 3, 3 | Lecture unique puis suppression |

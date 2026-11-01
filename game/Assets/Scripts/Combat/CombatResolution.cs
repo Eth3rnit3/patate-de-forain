@@ -132,6 +132,7 @@ namespace Patate.Combat
             if (melee && attacker.Action.Kind == ActionKind.Move)
             {
                 attacker.Action.HasHit = true;
+                attacker.Action.HitLanded = !blocked;
                 attacker.Hitstop = hit.Hitstop;
             }
 

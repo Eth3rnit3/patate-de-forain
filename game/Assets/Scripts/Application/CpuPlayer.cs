@@ -139,8 +139,8 @@ namespace Patate.Application
                         }
                     if (startup < 0 && (segment.Definition.Phase == Phase.Active || ranged)) startup = segment.Start;
                 }
-                // Les coups sautés ne partent qu'en l'air : l'IA reste au sol.
-                if (simplest == null || (move.Definition.Hit == null && !ranged) || move.Definition.Stance == MoveStance.Air) continue;
+                // Les coups sautés ne partent qu'en l'air : l'IA reste au sol. Les suites d'enchaînement ne partent pas du neutre.
+                if (simplest == null || (move.Definition.Hit == null && !ranged) || move.Definition.Stance == MoveStance.Air || move.Definition.CancelOnly) continue;
                 result.Add(new MoveInfo { Move = move, Command = simplest, Ranged = ranged, Startup = Math.Max(0, startup), Reach = reach });
             }
             return result;

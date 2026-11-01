@@ -93,6 +93,8 @@
     },
     {
       "id": "stand_punch_light",
+      "cancels": ["stand_kick_light", "stand_kick_heavy"],
+      "cancelsOnHit": ["special_alesia"],
       "commands": [
         { "button": "lightPunch" }
       ],
@@ -115,7 +117,7 @@
       ],
       "hit": {
         "damage": 50,
-        "hitstun": 15,
+        "hitstun": 22,
         "blockstun": 11,
         "hitstop": 7,
         "pushback": { "hit": 55, "block": 45 },
@@ -125,6 +127,8 @@
     },
     {
       "id": "stand_kick_light",
+      "cancels": ["stand_kick_heavy"],
+      "cancelsOnHit": ["special_alesia"],
       "commands": [
         { "button": "lightKick" }
       ],
@@ -156,7 +160,7 @@
       ],
       "hit": {
         "damage": 70,
-        "hitstun": 17,
+        "hitstun": 22,
         "blockstun": 13,
         "hitstop": 9,
         "pushback": { "hit": 65, "block": 55 },
@@ -166,6 +170,7 @@
     },
     {
       "id": "stand_kick_heavy",
+      "cancelsOnHit": ["special_alesia"],
       "commands": [
         { "button": "heavyKick" }
       ],
@@ -207,6 +212,8 @@
     },
     {
       "id": "crouch_punch",
+      "cancels": ["crouch_kick"],
+      "cancelsOnHit": ["special_alesia"],
       "stance": "crouch",
       "commands": [
         { "button": "lightPunch" }
@@ -230,7 +237,7 @@
       ],
       "hit": {
         "damage": 40,
-        "hitstun": 12,
+        "hitstun": 17,
         "blockstun": 9,
         "hitstop": 6,
         "pushback": { "hit": 45, "block": 35 },
@@ -240,6 +247,7 @@
     },
     {
       "id": "crouch_kick",
+      "cancelsOnHit": ["special_alesia"],
       "stance": "crouch",
       "commands": [
         { "button": "lightKick" },
@@ -263,7 +271,7 @@
       ],
       "hit": {
         "damage": 60,
-        "hitstun": 16,
+        "hitstun": 17,
         "blockstun": 12,
         "hitstop": 8,
         "pushback": { "hit": 60, "block": 50 },

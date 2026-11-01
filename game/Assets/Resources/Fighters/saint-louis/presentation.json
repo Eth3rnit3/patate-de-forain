@@ -59,9 +59,9 @@
     },
     "special_royal_lily_cast": {
       "frames": [
-        { "sprite": "special_royal_lily_cast_01", "duration": 4 },
-        { "sprite": "special_royal_lily_cast_02", "duration": 5 },
-        { "sprite": "special_royal_lily_cast_03", "duration": 5 },
+        { "sprite": "special_royal_lily_cast_01", "duration": 3 },
+        { "sprite": "special_royal_lily_cast_02", "duration": 4 },
+        { "sprite": "special_royal_lily_cast_03", "duration": 4 },
         { "sprite": "special_royal_lily_cast_04", "duration": 4 },
         { "sprite": "special_royal_lily_cast_05", "duration": 3 },
         { "sprite": "special_royal_lily_cast_06", "duration": 3 },

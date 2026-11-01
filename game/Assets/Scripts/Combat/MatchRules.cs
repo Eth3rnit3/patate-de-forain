@@ -7,7 +7,7 @@ namespace Patate.Combat
     public sealed class MatchRules
     {
         public string Id = "patate-core";
-        public int Version = 2;
+        public int Version = 3;
         public int TicksPerSecond = 60;
         /// <summary>Limites de l'arène en x ; les pushboxes restent à l'intérieur.</summary>
         public int ArenaLeft = -1200, ArenaRight = 1200;

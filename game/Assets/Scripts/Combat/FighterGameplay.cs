@@ -180,11 +180,18 @@ namespace Patate.Combat
         /// <summary>Null pour un coup sans contact direct (ex. lancer de projectile).</summary>
         public readonly HitProperties Hit;
         public readonly MoveStance Stance;
+        /// <summary>Coups qui peuvent interrompre celui-ci une fois qu'il a touché ou été gardé (enchaînements).</summary>
+        public readonly IReadOnlyList<string> Cancels;
+        /// <summary>Coups qui peuvent l'interrompre seulement s'il a touché (ex. annulation en spécial).</summary>
+        public readonly IReadOnlyList<string> CancelsOnHit;
+        /// <summary>Accessible uniquement en annulant un autre coup, jamais depuis le neutre (suite d'un enchaînement).</summary>
+        public readonly bool CancelOnly;
 
         public MoveDefinition(string id, IReadOnlyList<CommandDefinition> commands, int priority, IReadOnlyList<SegmentDefinition> segments, HitProperties hit,
-            MoveStance stance = MoveStance.Stand)
+            MoveStance stance = MoveStance.Stand, IReadOnlyList<string> cancels = null, IReadOnlyList<string> cancelsOnHit = null, bool cancelOnly = false)
         {
             Id = id; Commands = commands; Priority = priority; Segments = segments; Hit = hit; Stance = stance;
+            Cancels = cancels ?? new string[0]; CancelsOnHit = cancelsOnHit ?? new string[0]; CancelOnly = cancelOnly;
         }
     }
 

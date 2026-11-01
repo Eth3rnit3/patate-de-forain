@@ -94,6 +94,8 @@ namespace Patate.Combat
         public string MoveId;
         /// <summary>Move : le coup a déjà touché (ou été bloqué) une fois.</summary>
         public bool HasHit;
+        /// <summary>Move : ce contact a touché sans être gardé.</summary>
+        public bool HitLanded;
         /// <summary>Hitstun / Blockstun / Land : durée totale.</summary>
         public int Duration;
         /// <summary>PreJump : sens du saut dans le monde (-1, 0, 1).</summary>

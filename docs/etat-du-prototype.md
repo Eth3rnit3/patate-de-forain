@@ -26,6 +26,12 @@ Six combattants jouables, **Saint Louis**, **Napoléon**, **De Gaulle**, **Verci
   - touché en l'air, le combattant retombe et reste étourdi jusqu'à la réception ;
   - KO : chute au sol en six poses, habits déchirés et taches de sang (sans gore) ;
   - deux projectiles adverses s'annulent ; deux coups simultanés s'échangent.
+- **Enchaînements** (règles `patate-core` v3), pour les six combattants :
+  - un coup qui touche **ou** est gardé s'interrompt dans un coup plus lourd : poing → pied rapide → pied puissant (le poing peut aussi passer directement au pied puissant), et poing accroupi → balayette ;
+  - un coup normal qui **touche** (pas gardé) s'annule dans le spécial, même le pied puissant et la balayette ;
+  - l'appui compte dès le contact, y compris pendant le gel d'impact ; la suite démarre à la fin du gel ;
+  - au contact, chaque enchaînement déclaré est un vrai combo : la suite touche avant la fin de l'étourdissement. De loin, le recul peut faire manquer la suite ;
+  - les annulations se déclarent coup par coup dans `gameplay.json` (`cancels`, `cancelsOnHit`, `cancelOnly`), sans code propre à un personnage.
 - **Manche** : introduction, chronomètre de 99 secondes, KO ou temps écoulé, annonce du vainqueur, puis **Entrée** (ou **Start**) vers l'écran de résultat ; **F5** recommence la manche.
 - **Menus** : écran titre avec le logo, choix du mode (Versus local, Solo contre l'ordinateur avec trois niveaux, En ligne), choix de l'appareil de chaque joueur (« Qui joue ? » : clavier gauche, clavier droit, manette 1, 2…), sélection des personnages (joueurs déjà placés ; un appareil libre peut encore rejoindre en appuyant, portraits, choix du décor quand il y en a plusieurs), résultat (revanche, changer de personnage, retour au menu). Navigation au clavier et à la manette.
 - **Décors** : fête foraine, Sainte-Chapelle et Austerlitz, chacun en trois calques peints (ciel, plan moyen, sol) avec parallaxe, plus l'arène d'entraînement ; vignette de chaque décor à la sélection.
@@ -40,7 +46,7 @@ Six combattants jouables, **Saint Louis**, **Napoléon**, **De Gaulle**, **Verci
 
 ## Ce qui a été vérifié, et comment
 
-- **149 tests EditMode, tous verts** : 149/149 au dernier lancement (1ᵉʳ novembre 2026, dans l'éditeur ouvert avec `unity command test run --mode EditMode`) (le test du relais, `[Explicit]`, lancé à part avec le relais local) ; en mode batch : `unity test --mode EditMode .`. Ils couvrent :
+- **154 tests EditMode, tous verts** : 154/154 au dernier lancement (1ᵉʳ novembre 2026, dans l'éditeur ouvert avec `unity command test run --mode EditMode`) (le test du relais, `[Explicit]`, lancé à part avec le relais local) ; en mode batch : `unity test --mode EditMode .`. Ils couvrent :
   - **chronologie** : les phases tombent aux ticks exacts, l'appui sur un bouton déclenche le coup mais pas son maintien, quart de cercle selon l'orientation ;
   - **dégâts** : un seul impact par coup, étourdissement plus gel, recul exact, échange de coups simultanés ;
   - **garde** : tenir arrière, garde de proximité, pas de garde en pleine attaque, attaque non blocable ;
@@ -50,11 +56,12 @@ Six combattants jouables, **Saint Louis**, **Napoléon**, **De Gaulle**, **Verci
   - **indépendance des deux combattants** ;
   - **saut et accroupissement** : hauteur et durée du saut, distance d'un saut avant, pas de marche en l'air ni accroupi, coup accroupi au bouton bas tenu, coup haut qui passe au-dessus d'un adversaire accroupi, coup bas gardé seulement accroupi, coup sauté gardé debout mais pas accroupi, un coup par saut puis réception, pas de garde en l'air, sauvegarde et restauration en plein saut ;
   - **manche** : KO, temps écoulé, entrées ignorées pendant l'introduction et après le KO ;
-  - **validation des paquets** : les vrais paquets des six combattants sont acceptés ; 15 paquets volontairement cassés sont refusés, chacun avec un message localisé ;
+  - **validation des paquets** : les vrais paquets des six combattants sont acceptés ; 18 paquets volontairement cassés sont refusés (dont trois annulations invalides : coup inconnu, coup sauté, coup lui-même), chacun avec un message localisé ;
   - **présentation** : la pose de frappe est affichée pendant les ticks actifs, le projectile apparaît à la 5ᵉ pose, les réactions sont étirées sur leur durée (pour les deux combattants) ;
   - **Napoléon contre Saint Louis** : la Salve impériale touche Saint Louis immobile (90 dégâts) ; Napoléon le met KO avec ses trois coups normaux, qui portent tous ;
   - **De Gaulle contre Napoléon** : l'Appel du 18 Juin touche Napoléon debout (85 dégâts) et part à l'entrée de la 5ᵉ pose ; la pose de frappe s'affiche pendant les ticks actifs ; De Gaulle met Napoléon KO avec ses trois coups normaux ;
   - **Vercingétorix, Jeanne d'Arc et Cyrano contre Napoléon** : la pose de frappe s'affiche pendant les ticks actifs (charges comprises, poses 4 à 6) ; les charges partent de la distance de départ, avancent et touchent Napoléon (120 et 90 dégâts) ; le Panache part à l'entrée de la 5ᵉ pose et touche Napoléon debout (80 dégâts) ; chacun met Napoléon KO avec ses trois coups normaux ;
+  - **enchaînements** : pour chaque annulation déclarée des six combattants, au contact de Napoléon, la suite touche pendant l'étourdissement du premier coup ; sans annulation déclarée, la suite attend la fin du coup ;
   - **politiques de statistiques** : modes libre et équilibré ;
   - **session** : combat miroir réel joué jusqu'au KO sans rendu, replay par le journal d'entrées, nouvelle manche, horloge à pas fixe à 144 Hz ;
   - **clavier** : correspondances des deux joueurs, vérifiées sur un clavier virtuel ;
@@ -118,10 +125,11 @@ Le transport de l'éditeur et du PC (`ClientWebSocket`) a échangé avec le rela
   - pied rapide, pied puissant et spécial : ceux de `moveset-prototype-v01.md` ;
   - poing : aucune donnée documentée, j'ai pris 2-3-2-3-4-6 ticks, actif sur les poses 3 et 4.
 - **Napoléon** : timings de `assets/characters/napoleon/moveset-prototype-v01.md`, poing actif sur les poses 3 et 4 comme Saint Louis. Mêmes dégâts que Saint Louis ; marche plus lente (7 et 5), boulet un peu plus lent (11 par tick). Ses coups de pied ont moins d'allonge que son poing, parce qu'il recule le buste en frappant.
-- **De Gaulle** : garde à 560 unités (le plus grand), timings de `assets/characters/de-gaulle/moveset-prototype-v01.md`, un peu plus lents au démarrage (poing 6 ticks, pied rapide 9, pied puissant 18, appel 21). Mêmes dégâts que les autres, onde à 85 dégâts et 10 par tick. Marche la plus lente (6 et 4). Son allonge se voit surtout en bas et en l'air : balayette jusqu'à 430 unités, pied sauté jusqu'à 515.
+- **De Gaulle** : garde à 560 unités (le plus grand), timings de `assets/characters/de-gaulle/moveset-prototype-v01.md`, un peu plus lents au démarrage (poing 6 ticks, pied rapide 9, pied puissant 18, appel 16). Mêmes dégâts que les autres, onde à 85 dégâts et 10 par tick. Marche la plus lente (6 et 4). Son allonge se voit surtout en bas et en l'air : balayette jusqu'à 430 unités, pied sauté jusqu'à 515.
 - **Vercingétorix** : le colosse, garde à 520 unités, 1150 points de vie, marche à 5 et 4. Démarrages lents (poing 9 ticks, pied rapide 9, pied puissant 19, charge 14) et coups plus lourds (50, 70, 130). Pas de projectile ; sa charge avance de 14 par tick sur 18 ticks actifs.
 - **Jeanne d'Arc** : la plus petite (470 unités) et la plus rapide : poing 4 ticks, pied rapide 7, pied puissant 14, charge 11 ; 950 points de vie ; coups plus légers (35, 55, 100). Sa charge avance de 18 par tick sur 16 ticks actifs.
-- **Cyrano** : garde à 500 unités, 950 points de vie, marche à 8 et 6. La rapière lui donne la plus longue allonge debout (poing jusqu'à 465 unités) ; Panache en 19 ticks, plume à 12 par tick et 80 dégâts. Son pied sauté est court (260 unités).
+- **Cyrano** : garde à 500 unités, 950 points de vie, marche à 8 et 6. La rapière lui donne la plus longue allonge debout (poing jusqu'à 465 unités) ; Panache en 15 ticks, plume à 12 par tick et 80 dégâts. Son pied sauté est court (260 unités).
+- **Enchaînements** (1ᵉʳ novembre 2026) : pour que chaque suite fasse combo, l'étourdissement des coups légers a été allongé (poing 17 à 22 ticks selon le combattant, pied rapide 17 à 22, poing accroupi 14 à 19, balayette 16 à 19) et les spéciaux à projectile démarrent plus vite (lys 15 ticks au lieu de 18, salve 15 au lieu de 20, appel 16 au lieu de 21, panache 15 au lieu de 19). Contrepartie : un poing qui touche laisse désormais 8 à 10 ticks d'avance, ce qui peut suffire à placer un second poing une fois le premier terminé (non vérifié) ; le recul limiterait ces répétitions à quelques coups. À surveiller en jouant.
 - **Valeurs provisoires** : dégâts, étourdissement, gel, recul, vitesses de marche (8 et 6), vitesse du projectile (12 par tick), boîtes de collision. Les boîtes sont mesurées sur les poses exportées, mais restent grossières (trois hurtboxes par pose).
 - **Taille à l'écran** : garde à 500 unités, écran visible de 1080 unités de haut (le standard évoquait environ 600 px, à confirmer).
 
@@ -132,14 +140,14 @@ Le transport de l'éditeur et du PC (`ClientWebSocket`) a échangé avec le rela
 - **Pas d'animation dédiée** :
   - recul : marche avant lue à l'envers ;
   - garde de proximité : 1ʳᵉ pose de blocage tenue.
-- **Absents** : chopes, annulations, étourdissement cumulé (dizzy), compteur de combo.
+- **Absents** : chopes, étourdissement cumulé (dizzy), compteur de combo, dégâts dégressifs dans un combo.
 - **Un seul recul** : pas de recul « K.O. » ; la chute du KO se joue sur place.
 - **Saut** : une seule hauteur et une seule vitesse pour les deux combattants (`stats.jump` permet de les régler par personnage). Pas de super saut, de saut court ni de coup spécial en l'air. Pas de réception dédiée après un coup reçu en l'air : la pose de touché haut est tenue jusqu'au sol.
 - **Alignement de l'export** : il cale le pied arrière (ou le buste pour la marche) mais ne conserve pas les déplacements dessinés dans les planches. Les échelles par planche gardent quelques pour cent d'écart.
 - **Animations de garde et de marche jouées telles quelles** : six poses de garde quasi identiques, cycle de marche non retravaillé (voir les contrôles de l'équipe artistique).
 - **Aucun son** : les signaux sont branchés, mais sans fichier.
 - **Clavier** : un seul échantillon par image d'affichage, donc un appui plus court qu'une image peut être manqué. Certains claviers ne détectent pas toutes les combinaisons de touches simultanées (ghosting). Même échantillonnage par image pour la manette.
-- **Adversaire de l'ordinateur** : il s'accroupit pour ses coups bas et sa garde basse, mais ne saute jamais et n'utilise pas les coups sautés ; il n'a donc pas de réponse à un adversaire qui ne fait que lancer des projectiles de loin (il garde sans avancer). Pas de combos.
+- **Adversaire de l'ordinateur** : il s'accroupit pour ses coups bas et sa garde basse, mais ne saute jamais et n'utilise pas les coups sautés ; il n'a donc pas de réponse à un adversaire qui ne fait que lancer des projectiles de loin (il garde sans avancer). Il n'utilise pas les enchaînements.
 - **Pause** : le jeu se met en pause quand la fenêtre perd le focus.
 - **Jeu en ligne** : pas de reconnexion après une coupure ; un onglet caché met l'adversaire en attente ; relais déployé réservé aux pages du jeu (GitHub Pages et localhost) depuis le 1er novembre 2026, mais un client hors navigateur peut toujours s'y connecter, puisqu'il n'envoie pas d'en-tête `Origin` ; offre gratuite de Cloudflare, environ 250 manches par jour.
 - **Pas encore faits** : import de paquets et signature (voir l'[architecture](architecture.md)).

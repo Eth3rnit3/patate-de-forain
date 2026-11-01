@@ -190,14 +190,18 @@ namespace Patate.Content
         static MoveDefinition ReadMove(JsonNode node)
         {
             if (!node.IsObject("coup attendu (objet)")) return null;
-            node.AllowOnly("id", "commands", "priority", "segments", "hit", "stance");
+            node.AllowOnly("id", "commands", "priority", "segments", "hit", "stance", "cancels", "cancelsOnHit", "cancelOnly");
             var id = node.String("id", IdPattern, "minuscules, chiffres, - ou _");
             var commands = node.Array("commands", Limits.Commands, minCount: 1).Select(ReadCommand).Where(c => c != null).ToList();
             var segments = node.Array("segments", Limits.Segments, minCount: 1).Select(ReadSegment).Where(s => s != null).ToList();
             var hitNode = node.Object("hit", required: false);
             return new MoveDefinition(id, commands, node.Int("priority", -100, 100, 0), segments, hitNode == null ? null : ReadHit(hitNode),
-                node.Enum("stance", StanceNames, MoveStance.Stand, required: false));
+                node.Enum("stance", StanceNames, MoveStance.Stand, required: false), ReadMoveIds(node, "cancels"), ReadMoveIds(node, "cancelsOnHit"),
+                node.Bool("cancelOnly", false));
         }
+
+        static List<string> ReadMoveIds(JsonNode node, string key) =>
+            node.Array(key, Limits.Moves, required: false).Select(item => item.AsString(IdPattern, "identifiant de coup")).Where(s => s != null).ToList();
 
         static CommandDefinition ReadCommand(JsonNode node)
         {
@@ -292,10 +296,30 @@ namespace Patate.Content
                             report.Error(file, $"{path}.segments[{s}].onEnter", $"projectile « {spawn.Projectile} » non déclaré dans « projectiles »");
                 }
                 if (hasHitboxes && move.Hit == null) report.Error(file, path, "le coup a des hitboxes mais pas de propriétés « hit » (dégâts, recul…)");
+                CheckCancels(gameplay, move, path, report);
                 if (!hasHitboxes && move.Hit != null) report.Warning(file, path, "propriétés « hit » sans aucune hitbox active : elles ne serviront jamais");
             }
             for (int p = 0; p < gameplay.Projectiles.Count; p++)
                 if (gameplay.Projectiles[p].Hit == null) report.Error(file, $"projectiles[{p}]", "propriétés « hit » manquantes");
+        }
+
+        /// <summary>Annulations : cibles existantes, au sol, différentes du coup lui-même ; pas d'annulation en l'air.</summary>
+        static void CheckCancels(FighterGameplay gameplay, MoveDefinition move, string path, ValidationReport report)
+        {
+            const string file = FighterPackage.GameplayFile;
+            foreach (var (key, targets) in new[] { ("cancels", move.Cancels), ("cancelsOnHit", move.CancelsOnHit) })
+            {
+                if (targets.Count > 0 && move.Stance == MoveStance.Air) report.Error(file, $"{path}.{key}", "un coup sauté ne s'annule pas");
+                foreach (var target in targets)
+                {
+                    var found = gameplay.Moves.FirstOrDefault(m => m.Id == target);
+                    if (found == null) report.Error(file, $"{path}.{key}", $"coup « {target} » inconnu");
+                    else if (found.Stance == MoveStance.Air) report.Error(file, $"{path}.{key}", $"« {target} » est un coup sauté : on ne l'atteint pas en annulant un coup au sol");
+                    else if (target == move.Id) report.Error(file, $"{path}.{key}", "un coup ne s'annule pas en lui-même");
+                }
+            }
+            if (move.CancelOnly && !gameplay.Moves.Any(m => m.Cancels.Contains(move.Id) || m.CancelsOnHit.Contains(move.Id)))
+                report.Warning(file, path, "« cancelOnly » mais aucun coup ne mène à celui-ci : il ne sortira jamais");
         }
 
         // ------------------------------------------------------------ présentation

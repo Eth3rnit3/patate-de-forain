@@ -182,6 +182,14 @@ namespace Patate.Content
             return min;
         }
 
+        /// <summary>Lecture de cet élément lui-même comme chaîne (élément de liste).</summary>
+        public string AsString(Regex pattern, string patternHint)
+        {
+            if (token.Type == JTokenType.String && pattern.IsMatch(token.Value<string>())) return token.Value<string>();
+            Error(Path, $"doit être une chaîne au format attendu ({patternHint}) (reçu : {Describe(token)})");
+            return null;
+        }
+
         public bool IsObject(string message)
         {
             if (token.Type == JTokenType.Object) return true;

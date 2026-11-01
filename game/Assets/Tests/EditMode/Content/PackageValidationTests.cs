@@ -98,6 +98,18 @@ namespace Patate.Tests
             AssertError(ReadWith("gameplay.json", g => g["moves"][0]["segments"][1]["onEnter"][0]["type"] = "executeScript"), "gameplay.json", "onEnter[0].type", "inconnue du moteur");
 
         [Test]
+        public void RefuseUneAnnulationVersUnCoupInconnu() =>
+            AssertError(ReadWith("gameplay.json", g => g["moves"][1]["cancels"] = JArray.Parse("[\"coup_de_tete\"]")), "gameplay.json", "moves[1] (stand_punch_light).cancels", "inconnu");
+
+        [Test]
+        public void RefuseUneAnnulationVersUnCoupSaute() =>
+            AssertError(ReadWith("gameplay.json", g => g["moves"][1]["cancels"] = JArray.Parse("[\"jump_kick\"]")), "gameplay.json", "moves[1] (stand_punch_light).cancels", "coup sauté");
+
+        [Test]
+        public void RefuseUnCoupQuiSAnnuleEnLuiMeme() =>
+            AssertError(ReadWith("gameplay.json", g => g["moves"][1]["cancelsOnHit"] = JArray.Parse("[\"stand_punch_light\"]")), "gameplay.json", "moves[1] (stand_punch_light).cancelsOnHit", "en lui-même");
+
+        [Test]
         public void RefuseUneAnimationDeCoupDesynchroniseeDuGameplay() =>
             AssertError(ReadWith("presentation.json", p => p["animations"]["stand_kick_heavy"]["frames"][0]["duration"] = 7), "presentation.json", "moves.stand_kick_heavy", "dure 43 ticks mais le coup en dure 40");
 

@@ -59,10 +59,10 @@
     },
     "special_imperial_volley_cast": {
       "frames": [
-        { "sprite": "special_imperial_volley_cast_01", "duration": 4 },
-        { "sprite": "special_imperial_volley_cast_02", "duration": 5 },
-        { "sprite": "special_imperial_volley_cast_03", "duration": 5 },
-        { "sprite": "special_imperial_volley_cast_04", "duration": 6 },
+        { "sprite": "special_imperial_volley_cast_01", "duration": 3 },
+        { "sprite": "special_imperial_volley_cast_02", "duration": 4 },
+        { "sprite": "special_imperial_volley_cast_03", "duration": 4 },
+        { "sprite": "special_imperial_volley_cast_04", "duration": 4 },
         { "sprite": "special_imperial_volley_cast_05", "duration": 3 },
         { "sprite": "special_imperial_volley_cast_06", "duration": 4 },
         { "sprite": "special_imperial_volley_cast_07", "duration": 10 },

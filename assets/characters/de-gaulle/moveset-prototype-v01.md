@@ -49,6 +49,6 @@ Hypothèses de départ pour une simulation à 60 mises à jour par seconde, à a
 | Poing rapide | 3, 3, 2, 3, 4, 7 | Poses 3 et 4 actives |
 | Pied rapide | 3, 3, 3, 3, 5, 8 | Pose 4 active |
 | Pied puissant | 4, 5, 5, 4, 5, 5, 5, 10 | Pose 5 active |
-| Appel du 18 Juin | 4, 5, 6, 6, 3, 4, 10, 12 | Émission à l'entrée de la pose 5 |
+| Appel du 18 Juin | 3, 4, 5, 4, 3, 4, 10, 12 | Émission à l'entrée de la pose 5 |
 | Onde | 3, 3, 3, 3 en boucle | Translation gérée par la simulation |
 | Impact | 2, 2, 3, 3 | Lecture unique puis suppression |

@@ -37,10 +37,12 @@ namespace Patate.Combat
                 {
                     fighter.Hitstop--;
                     frozen[slot] = true;
+                    FighterBehavior.TryCancel(fighter, inputs[slot], context.Fighters[slot], state, events);
                     continue;
                 }
                 FighterBehavior.Advance(fighter, context.Fighters[slot], state, events);
                 if (FighterBehavior.IsActionable(fighter)) FighterBehavior.Decide(fighter, inputs[slot], context, state, events);
+                else FighterBehavior.TryCancel(fighter, inputs[slot], context.Fighters[slot], state, events);
             }
 
             FighterPhysics.Move(state, context, frozen);

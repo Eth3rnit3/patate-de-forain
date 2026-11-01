@@ -63,7 +63,8 @@ namespace Patate.Tests
             foreach (var fighterId in catalog.Fighters.Select(f => f.Id))
             {
                 var moves = catalog.Get(fighterId).Gameplay.Moves;
-                foreach (var first in moves)
+                // Une suite d'enchaînement ne part pas du neutre : son propre test la joue depuis le début de la chaîne.
+                foreach (var first in moves.Where(m => !m.CancelOnly))
                     foreach (var targetId in first.Cancels.Concat(first.CancelsOnHit))
                     {
                         chains++;

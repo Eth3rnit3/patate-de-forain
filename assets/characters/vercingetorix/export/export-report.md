@@ -4,10 +4,10 @@ Généré par `npm run assets:export -- tools/export-character/configs/vercinget
 
 ## Résultat
 
-- 89 poses. Cellules personnage 1088 × 768, pivot (544, 704) au sol entre les pieds ; cellules d'effet 1024 × 768, pivot au centre de l'effet (512, 384).
+- 111 poses. Cellules personnage 1088 × 768, pivot (544, 704) au sol entre les pieds ; cellules d'effet 1024 × 768, pivot au centre de l'effet (512, 384).
 - Hauteur de garde ramenée à 520 px (= unités monde du jeu).
 - Images individuelles : `assets/characters/vercingetorix/export/frames/vercingetorix_<animation>_<NN>.png` (NN = numéro de pose, à partir de 01).
-- Atlas du jeu : `atlas-0.png` 4096 × 3664, `atlas-1.png` 3784 × 1404 dans `game/Assets/Resources/Fighters/vercingetorix`.
+- Atlas du jeu : `atlas-0.png` 4032 × 3736, `atlas-1.png` 3956 × 2848 dans `game/Assets/Resources/Fighters/vercingetorix`.
 - Aperçus : `assets/characters/vercingetorix/export/previews` (planche sur fonds sombre et clair avec pivot et sol, superposition des poses).
 
 ## Traitements appliqués
@@ -57,6 +57,21 @@ Généré par `npm run assets:export -- tools/export-character/configs/vercinget
 
 - Source : `vercingetorix_special_alesia_cast_hd_v01.png` (1774 × 887, sha256 `d7e0d5daecb46cbc…`)
 - Découpage : {"type":"poses","rows":2} → 8 poses ; échelle 1.2293 ; repère `rearFoot`
+
+### fureur_crochet
+
+- Source : `vercingetorix_fureur_crochet_hd_v02.png` (1536 × 1024, sha256 `25873686de7d4ac9…`)
+- Découpage : {"type":"poses","rows":2} → 6 poses ; échelle 1.0901 ; repère `rearFoot`
+
+### fureur_massue
+
+- Source : `vercingetorix_fureur_massue_hd_v02.png` (1774 × 887, sha256 `c3c7833c73a26d85…`)
+- Découpage : {"type":"poses","rows":2} → 8 poses ; échelle 1.2530 ; repère `rearFoot`
+
+### special_bouclier_cast
+
+- Source : `vercingetorix_special_bouclier_cast_hd_v02.png` (1536 × 1024, sha256 `5ca2f5e38be9509b…`)
+- Découpage : {"type":"poses","rows":2} → 8 poses ; échelle 1.2322 ; repère `rearFoot`
 
 ### hit_high
 
@@ -154,6 +169,28 @@ Généré par `npm run assets:export -- tools/export-character/configs/vercinget
   - `special_alesia_cast_06` : pose source à (475, 479), 446 × 388 px → 545 × 473 px pleins ; décalage dans la cellule (368, 227)
   - `special_alesia_cast_07` : pose source à (931, 454), 404 × 418 px → 497 × 511 px pleins ; décalage dans la cellule (316, 191)
   - `special_alesia_cast_08` : pose source à (1375, 454), 375 × 419 px → 458 × 512 px pleins ; décalage dans la cellule (315, 190)
+  - `fureur_crochet_01` : pose source à (22, 14), 486 × 497 px → 527 × 540 px pleins ; décalage dans la cellule (298, 162)
+  - `fureur_crochet_02` : pose source à (522, 21), 496 × 491 px → 541 × 531 px pleins ; décalage dans la cellule (299, 169)
+  - `fureur_crochet_03` : pose source à (1058, 16), 471 × 497 px → 511 × 540 px pleins ; décalage dans la cellule (298, 162)
+  - `fureur_crochet_04` : pose source à (15, 530), 575 × 471 px → 624 × 510 px pleins ; décalage dans la cellule (298, 192)
+  - `fureur_crochet_05` : pose source à (543, 523), 521 × 478 px → 566 × 518 px pleins ; décalage dans la cellule (298, 184)
+  - `fureur_crochet_06` : pose source à (1070, 525), 451 × 480 px → 490 × 519 px pleins ; décalage dans la cellule (298, 182)
+  - `fureur_massue_01` : pose source à (55, 46), 371 × 416 px → 464 × 519 px pleins ; décalage dans la cellule (312, 183)
+  - `fureur_massue_02` : pose source à (497, 72), 380 × 390 px → 474 × 487 px pleins ; décalage dans la cellule (311, 215)
+  - `fureur_massue_03` : pose source à (958, 11), 362 × 451 px → 452 × 563 px pleins ; décalage dans la cellule (311, 139)
+  - `fureur_massue_04` : pose source à (1370, 94), 365 × 368 px → 454 × 459 px pleins ; décalage dans la cellule (311, 243)
+  - `fureur_massue_05` : pose source à (27, 500), 462 × 368 px → 576 × 456 px pleins ; décalage dans la cellule (311, 244)
+  - `fureur_massue_06` : pose source à (489, 535), 419 × 333 px → 522 × 413 px pleins ; décalage dans la cellule (311, 288)
+  - `fureur_massue_07` : pose source à (935, 474), 358 × 398 px → 448 × 496 px pleins ; décalage dans la cellule (312, 206)
+  - `fureur_massue_08` : pose source à (1376, 477), 359 × 393 px → 448 × 489 px pleins ; décalage dans la cellule (311, 212)
+  - `special_bouclier_cast_01` : pose source à (32, 87), 357 × 425 px → 437 × 520 px pleins ; décalage dans la cellule (324, 181)
+  - `special_bouclier_cast_02` : pose source à (431, 181), 345 × 331 px → 422 × 402 px pleins ; décalage dans la cellule (304, 296)
+  - `special_bouclier_cast_03` : pose source à (795, 63), 340 × 437 px → 418 × 534 px pleins ; décalage dans la cellule (323, 127)
+  - `special_bouclier_cast_04` : pose source à (1223, 18), 260 × 397 px → 315 × 486 px pleins ; décalage dans la cellule (376, 96)
+  - `special_bouclier_cast_05` : pose source à (24, 549), 352 × 393 px → 432 × 483 px pleins ; décalage dans la cellule (320, 131)
+  - `special_bouclier_cast_06` : pose source à (394, 655), 409 × 328 px → 502 × 399 px pleins ; décalage dans la cellule (324, 301)
+  - `special_bouclier_cast_07` : pose source à (811, 620), 345 × 374 px → 422 × 456 px pleins ; décalage dans la cellule (324, 244)
+  - `special_bouclier_cast_08` : pose source à (1182, 578), 339 × 417 px → 415 × 510 px pleins ; décalage dans la cellule (324, 191)
   - `hit_high_01` : pose source à (108, 21), 602 × 680 px → 461 × 519 px pleins ; décalage dans la cellule (311, 183)
   - `hit_high_02` : pose source à (790, 22), 642 × 679 px → 490 × 518 px pleins ; décalage dans la cellule (295, 184)
   - `hit_high_03` : pose source à (1512, 20), 605 × 681 px → 464 × 519 px pleins ; décalage dans la cellule (312, 183)

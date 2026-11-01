@@ -166,6 +166,40 @@
         { "sprite": "ko_05", "duration": 8 },
         { "sprite": "ko_06", "duration": 30 }
       ]
+    },
+    "fureur_crochet": {
+      "frames": [
+        { "sprite": "fureur_crochet_01", "duration": 2 },
+        { "sprite": "fureur_crochet_02", "duration": 3 },
+        { "sprite": "fureur_crochet_03", "duration": 3 },
+        { "sprite": "fureur_crochet_04", "duration": 4 },
+        { "sprite": "fureur_crochet_05", "duration": 5 },
+        { "sprite": "fureur_crochet_06", "duration": 8 }
+      ]
+    },
+    "fureur_massue": {
+      "frames": [
+        { "sprite": "fureur_massue_01", "duration": 3 },
+        { "sprite": "fureur_massue_02", "duration": 4 },
+        { "sprite": "fureur_massue_03", "duration": 5 },
+        { "sprite": "fureur_massue_04", "duration": 4 },
+        { "sprite": "fureur_massue_05", "duration": 5 },
+        { "sprite": "fureur_massue_06", "duration": 6 },
+        { "sprite": "fureur_massue_07", "duration": 6 },
+        { "sprite": "fureur_massue_08", "duration": 10 }
+      ]
+    },
+    "special_bouclier_cast": {
+      "frames": [
+        { "sprite": "special_bouclier_cast_01", "duration": 3 },
+        { "sprite": "special_bouclier_cast_02", "duration": 5 },
+        { "sprite": "special_bouclier_cast_03", "duration": 5 },
+        { "sprite": "special_bouclier_cast_04", "duration": 5 },
+        { "sprite": "special_bouclier_cast_05", "duration": 4 },
+        { "sprite": "special_bouclier_cast_06", "duration": 6 },
+        { "sprite": "special_bouclier_cast_07", "duration": 8 },
+        { "sprite": "special_bouclier_cast_08", "duration": 12 }
+      ]
     }
   },
   "states": {
@@ -193,7 +227,10 @@
     "crouch_punch": { "animation": "crouch_punch" },
     "crouch_kick": { "animation": "crouch_kick" },
     "jump_punch": { "animation": "jump_punch" },
-    "jump_kick": { "animation": "jump_kick" }
+    "jump_kick": { "animation": "jump_kick" },
+    "fureur_crochet": { "animation": "fureur_crochet" },
+    "fureur_massue": { "animation": "fureur_massue" },
+    "special_bouclier": { "animation": "special_bouclier_cast" }
   },
   "sounds": {}
 }

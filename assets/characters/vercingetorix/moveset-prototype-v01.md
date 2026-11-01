@@ -20,6 +20,9 @@ Les différences de vitesse, de portée et de résistance se règlent dans sa pr
 | stand_kick_light | 6 | 3 × 2 |
 | stand_kick_heavy | 8 | 4 × 2 |
 | special_alesia_cast | 8 | 4 × 2 |
+| fureur_crochet (v02) | 6 | 3 × 2 |
+| fureur_massue (v02) | 8 | 4 × 2 |
+| special_bouclier_cast (v02) | 8 | 4 × 2 |
 | crouch, block_low, hit_crouch | 3 chacune | 3 × 1 |
 | crouch_punch, crouch_kick | 6 chacune | 3 × 2 |
 | jump | 6 | 3 × 2 |
@@ -37,6 +40,24 @@ Vercingétorix baisse le centre de gravité, rugit et fonce épaule en avant sur
 - Un seul coup par charge : 120 dégâts, gros recul. Gardée, elle le laisse à portée de punition.
 - Commande : quart de cercle avant + poing, ou la touche spéciale.
 
+## Fureur arverne — `fureur_crochet` puis `fureur_massue`
+
+Enchaînement propre à Vercingétorix : **poing, poing, poing**. Le premier poing est son poing rapide ; s'il touche ou est gardé, un deuxième appui donne un crochet du bras arrière à hauteur de tête, puis un troisième un coup de massue à deux poings joints, assené de haut en bas.
+
+- Les deux suites sont `cancelOnly` : elles ne partent jamais du neutre, seulement depuis le coup précédent de la chaîne.
+- Au contact, c'est un combo complet : 50 + 60 + 140 dégâts. La massue repousse loin (180 unités) et laisse Napoléon étourdi 30 ticks.
+- Gardée, la massue est très risquée : longue fin de coup.
+- Pas de vraie projection : l'adversaire n'a pas de poses « attrapé » ni « au sol ».
+
+## Bouclier gaulois — `special_bouclier`
+
+Le nom seulement : il n'a ni bouclier ni objet. Il bondit en avant, poings joints au-dessus de la tête, et écrase l'adversaire en retombant.
+
+- Commande : quart de cercle arrière + poing (bas, bas-arrière, arrière).
+- Coup d'en haut (`high`) : il se garde debout, pas accroupi. C'est sa réponse à un adversaire qui reste en garde basse.
+- Lent à sortir (22 ticks), facile à voir venir. Pendant le saut (poses 3 à 5), il avance de 12 unités par tick et ses jambes sont en l'air : les coups bas passent dessous.
+- 110 dégâts.
+
 ## Timings à essayer dans le moteur
 
 Hypothèses de départ pour une simulation à 60 mises à jour par seconde, à ajuster en jouant.
@@ -47,3 +68,6 @@ Hypothèses de départ pour une simulation à 60 mises à jour par seconde, à a
 | Pied rapide | 3, 3, 3, 3, 5, 9 | Pose 4 active |
 | Pied puissant | 4, 5, 5, 5, 6, 5, 5, 11 | Pose 5 active |
 | Charge d'Alésia | 4, 5, 5, 6, 6, 6, 8, 12 | Poses 4 à 6 actives, avance 14 par tick |
+| Fureur, crochet | 2, 3, 3, 4, 5, 8 | Pose 4 active |
+| Fureur, massue | 3, 4, 5, 4, 5, 6, 6, 10 | Pose 5 active |
+| Bouclier gaulois | 3, 5, 5, 5, 4, 6, 8, 12 | Avance pendant les poses 3 à 5, pose 6 active |

@@ -29,11 +29,7 @@
       "commands": [
         { "button": "special" },
         {
-          "motion": [
-            2,
-            3,
-            6
-          ],
+          "motion": [2, 3, 6],
           "button": "lightPunch",
           "window": 15
         }
@@ -92,8 +88,52 @@
       }
     },
     {
+      "id": "special_bouclier",
+      "commands": [
+        {
+          "motion": [2, 1, 4],
+          "button": "lightPunch",
+          "window": 15
+        }
+      ],
+      "priority": 10,
+      "segments": [
+        { "phase": "startup", "duration": 8 },
+        {
+          "phase": "startup",
+          "duration": 14,
+          "hurtboxes": [
+            { "x": -170, "y": 120, "w": 330, "h": 460 }
+          ],
+          "advance": 12
+        },
+        {
+          "phase": "active",
+          "duration": 6,
+          "hitboxes": [
+            { "x": 130, "y": 0, "w": 160, "h": 220 }
+          ],
+          "hurtboxes": [
+            { "x": -60, "y": 260, "w": 140, "h": 140 },
+            { "x": -220, "y": 0, "w": 460, "h": 260 }
+          ]
+        },
+        { "phase": "recovery", "duration": 8 },
+        { "phase": "recovery", "duration": 12 }
+      ],
+      "hit": {
+        "damage": 110,
+        "hitstun": 24,
+        "blockstun": 16,
+        "hitstop": 13,
+        "pushback": { "hit": 110, "block": 80 },
+        "level": "high",
+        "blockable": true
+      }
+    },
+    {
       "id": "stand_punch_light",
-      "cancels": ["stand_kick_light", "stand_kick_heavy"],
+      "cancels": ["stand_kick_light", "stand_kick_heavy", "fureur_crochet"],
       "cancelsOnHit": ["special_alesia"],
       "commands": [
         { "button": "lightPunch" }
@@ -121,6 +161,80 @@
         "blockstun": 11,
         "hitstop": 7,
         "pushback": { "hit": 55, "block": 45 },
+        "level": "mid",
+        "blockable": true
+      }
+    },
+    {
+      "id": "fureur_crochet",
+      "cancels": ["fureur_massue"],
+      "cancelOnly": true,
+      "commands": [
+        { "button": "lightPunch" }
+      ],
+      "segments": [
+        { "phase": "startup", "duration": 8 },
+        {
+          "phase": "active",
+          "duration": 4,
+          "hitboxes": [
+            { "x": 250, "y": 355, "w": 130, "h": 85 }
+          ],
+          "hurtboxes": [
+            { "x": -50, "y": 440, "w": 120, "h": 85 },
+            { "x": -145, "y": 240, "w": 290, "h": 200 },
+            { "x": -200, "y": 0, "w": 400, "h": 240 },
+            { "x": 140, "y": 350, "w": 240, "h": 90 }
+          ]
+        },
+        { "phase": "recovery", "duration": 13 }
+      ],
+      "hit": {
+        "damage": 60,
+        "hitstun": 22,
+        "blockstun": 14,
+        "hitstop": 9,
+        "pushback": { "hit": 50, "block": 40 },
+        "level": "mid",
+        "blockable": true
+      }
+    },
+    {
+      "id": "fureur_massue",
+      "cancelOnly": true,
+      "commands": [
+        { "button": "lightPunch" }
+      ],
+      "segments": [
+        { "phase": "startup", "duration": 16 },
+        {
+          "phase": "active",
+          "duration": 5,
+          "hitboxes": [
+            { "x": 210, "y": 110, "w": 140, "h": 140 }
+          ],
+          "hurtboxes": [
+            { "x": -40, "y": 330, "w": 130, "h": 120 },
+            { "x": -200, "y": 0, "w": 400, "h": 330 },
+            { "x": 100, "y": 110, "w": 200, "h": 140 }
+          ]
+        },
+        {
+          "phase": "recovery",
+          "duration": 12,
+          "hurtboxes": [
+            { "x": -40, "y": 300, "w": 130, "h": 110 },
+            { "x": -200, "y": 0, "w": 420, "h": 300 }
+          ]
+        },
+        { "phase": "recovery", "duration": 10 }
+      ],
+      "hit": {
+        "damage": 140,
+        "hitstun": 30,
+        "blockstun": 18,
+        "hitstop": 16,
+        "pushback": { "hit": 180, "block": 110 },
         "level": "mid",
         "blockable": true
       }

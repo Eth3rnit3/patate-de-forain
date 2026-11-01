@@ -95,6 +95,53 @@
       }
     },
     {
+      "name": "fureur_crochet",
+      "file": "vercingetorix_fureur_crochet_hd_v02.png",
+      "layout": {
+        "type": "poses",
+        "rows": 2
+      },
+      "frames": 6,
+      "referenceFrame": 6,
+      "anchor": "rearFoot"
+    },
+    {
+      "name": "fureur_massue",
+      "file": "vercingetorix_fureur_massue_hd_v02.png",
+      "layout": {
+        "type": "poses",
+        "rows": 2
+      },
+      "frames": 8,
+      "referenceFrame": 1,
+      "anchor": "rearFoot"
+    },
+    {
+      "name": "special_bouclier_cast",
+      "file": "vercingetorix_special_bouclier_cast_hd_v02.png",
+      "layout": {
+        "type": "poses",
+        "rows": 2
+      },
+      "frames": 8,
+      "referenceFrame": 1,
+      "anchor": "rearFoot",
+      "nudge": {
+        "3": [
+          0,
+          -40
+        ],
+        "4": [
+          170,
+          -120
+        ],
+        "5": [
+          0,
+          -90
+        ]
+      }
+    },
+    {
       "name": "hit_high",
       "file": "vercingetorix_hit_high_hd_v01.png",
       "layout": {

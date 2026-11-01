@@ -29,11 +29,25 @@ Ordre de génération :
 
 Le catalogue est celui des autres combattants : garde, marche, poing, deux coups de pied, réaction, blocage, postures, coups accroupis et sautés, KO, portrait, plus le spécial. Le spécial compte une seule planche : la charge (`special_alesia_cast`). Il n'y a ni projectile ni effet dessiné. Les noms exacts, les poses et les réglages sont dans le [moveset](moveset-prototype-v01.md).
 
+### Coups signature (v02)
+
+Trois planches ajoutées le 1er novembre 2026, avec la même référence et la même garde en images de référence. Les prompts sont dans `prompts-hd-v02.json` :
+
+- `source/vercingetorix_fureur_crochet_hd_v02.png` : crochet de la Fureur arverne, 6 poses ;
+- `source/vercingetorix_fureur_massue_hd_v02.png` : coup de massue à deux poings, 8 poses ;
+- `source/vercingetorix_special_bouclier_cast_hd_v02.png` : bond et écrasement du Bouclier gaulois, 8 poses.
+
+```bash
+python3 tools/codex-image/generate.py assets/characters/vercingetorix prompts-hd-v02.json <n>
+```
+
 ## Export
 
-Configuration : `tools/export-character/configs/vercingetorix.json`. Elle donne 89 poses sur 2 pages d'atlas, dans des cellules de 1088 × 768 avec le pivot en (544, 704).
+Configuration : `tools/export-character/configs/vercingetorix.json`. Elle donne 111 poses sur 2 pages d'atlas, dans des cellules de 1088 × 768 avec le pivot en (544, 704).
 
 Deux poses sont recalées avec `nudge` : la 6ᵉ pose de la charge (+470), sans quoi la seconde foulée reculait d'un demi-corps, et la 3ᵉ pose du KO (+260), pour que la chute ne saute pas en arrière.
+
+Les poses en l'air du Bouclier gaulois sont relevées avec `nudge` (40, 120 et 90 unités pour les poses 3, 4 et 5), parce que l'export pose le pied arrière au sol. La pose 4 est aussi recentrée de 170 unités vers l'avant.
 
 ## Reprises souhaitées
 

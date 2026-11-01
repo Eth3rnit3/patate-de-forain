@@ -1,8 +1,8 @@
-# État du prototype — 31 octobre 2026
+# État du prototype — 1ᵉʳ novembre 2026
 
 ## Ce qui fonctionne en jeu
 
-Deux combattants jouables, **Saint Louis** et **Napoléon**, dans Unity 6000.4.7f1 (scène `Assets/Scenes/Combat.unity`), au clavier ou à la manette, avec le parcours complet : titre, choix du mode (versus local, solo contre l'ordinateur, en ligne), sélection des personnages et du décor, combat, résultat.
+Trois combattants jouables, **Saint Louis**, **Napoléon** et **De Gaulle**, dans Unity 6000.4.7f1 (scène `Assets/Scenes/Combat.unity`), au clavier ou à la manette, avec le parcours complet : titre, choix du mode (versus local, solo contre l'ordinateur, en ligne), sélection des personnages et du décor, combat, résultat.
 
 - **Déplacements** : marche avant et arrière, orientation automatique vers l'adversaire, collision corporelle (pousser l'adversaire en avançant), limites de l'arène, écart maximal entre combattants.
 - **Saut et accroupissement** :
@@ -15,7 +15,8 @@ Deux combattants jouables, **Saint Louis** et **Napoléon**, dans Unity 6000.4.7
   - accroupi : poing (coup moyen) et balayette au pied rapide ou puissant (coup bas) ;
   - en l'air : poing sauté et pied sauté (coups hauts), un seul par saut ;
   - Poing de Saint Louis : touche dédiée ou quart de cercle avant + poing. Il projette une fleur de lys émise au poing à l'entrée de la 5ᵉ pose, à raison d'un seul projectile à la fois, qui produit un impact doré au contact ;
-  - Salve impériale de Napoléon : mêmes commandes. Napoléon pointe l'adversaire et un boulet spectral part du doigt à l'entrée de la 5ᵉ pose, à hauteur de poitrine, un seul à la fois, avec un impact bleu au contact.
+  - Salve impériale de Napoléon : mêmes commandes. Napoléon pointe l'adversaire et un boulet spectral part du doigt à l'entrée de la 5ᵉ pose, à hauteur de poitrine, un seul à la fois, avec un impact bleu au contact ;
+  - Appel du 18 Juin de De Gaulle : mêmes commandes. De Gaulle lève les bras en V et lance son appel : une onde sonore bleu-blanc-rouge part à l'entrée de la 5ᵉ pose, à hauteur de tête et d'épaules (elle passe au-dessus de Saint Louis et de Napoléon accroupis, pas de De Gaulle accroupi, plus grand), une seule à la fois, avec un impact tricolore au contact.
 - **Réactions** :
   - dégâts, étourdissement, gel d'impact, recul (reporté sur l'attaquant si la cible est coincée), puis retour en garde ;
   - garde en tenant arrière, avec garde sur place face à une attaque ou un projectile proche. Debout, elle arrête les coups hauts et moyens ; accroupi (bas-arrière), les coups bas et moyens. Pas de garde en l'air ;
@@ -36,7 +37,7 @@ Deux combattants jouables, **Saint Louis** et **Napoléon**, dans Unity 6000.4.7
 
 ## Ce qui a été vérifié, et comment
 
-- **131 tests EditMode, tous verts** : 131/131 au dernier lancement (le test du relais, `[Explicit]`, lancé à part avec le relais local), en mode batch (`unity test --mode EditMode .`). Ils couvrent :
+- **136 tests EditMode, tous verts** : 136/136 au dernier lancement (1ᵉʳ novembre 2026) (le test du relais, `[Explicit]`, lancé à part avec le relais local), en mode batch (`unity test --mode EditMode .`). Ils couvrent :
   - **chronologie** : les phases tombent aux ticks exacts, l'appui sur un bouton déclenche le coup mais pas son maintien, quart de cercle selon l'orientation ;
   - **dégâts** : un seul impact par coup, étourdissement plus gel, recul exact, échange de coups simultanés ;
   - **garde** : tenir arrière, garde de proximité, pas de garde en pleine attaque, attaque non blocable ;
@@ -46,9 +47,10 @@ Deux combattants jouables, **Saint Louis** et **Napoléon**, dans Unity 6000.4.7
   - **indépendance des deux combattants** ;
   - **saut et accroupissement** : hauteur et durée du saut, distance d'un saut avant, pas de marche en l'air ni accroupi, coup accroupi au bouton bas tenu, coup haut qui passe au-dessus d'un adversaire accroupi, coup bas gardé seulement accroupi, coup sauté gardé debout mais pas accroupi, un coup par saut puis réception, pas de garde en l'air, sauvegarde et restauration en plein saut ;
   - **manche** : KO, temps écoulé, entrées ignorées pendant l'introduction et après le KO ;
-  - **validation des paquets** : les vrais paquets de Saint Louis et de Napoléon sont acceptés ; 15 paquets volontairement cassés sont refusés, chacun avec un message localisé ;
+  - **validation des paquets** : les vrais paquets de Saint Louis, de Napoléon et de De Gaulle sont acceptés ; 15 paquets volontairement cassés sont refusés, chacun avec un message localisé ;
   - **présentation** : la pose de frappe est affichée pendant les ticks actifs, le projectile apparaît à la 5ᵉ pose, les réactions sont étirées sur leur durée (pour les deux combattants) ;
   - **Napoléon contre Saint Louis** : la Salve impériale touche Saint Louis immobile (90 dégâts) ; Napoléon le met KO avec ses trois coups normaux, qui portent tous ;
+  - **De Gaulle contre Napoléon** : l'Appel du 18 Juin touche Napoléon debout (85 dégâts) et part à l'entrée de la 5ᵉ pose ; la pose de frappe s'affiche pendant les ticks actifs ; De Gaulle met Napoléon KO avec ses trois coups normaux ;
   - **politiques de statistiques** : modes libre et équilibré ;
   - **session** : combat miroir réel joué jusqu'au KO sans rendu, replay par le journal d'entrées, nouvelle manche, horloge à pas fixe à 144 Hz ;
   - **clavier** : correspondances des deux joueurs, vérifiées sur un clavier virtuel ;
@@ -64,6 +66,7 @@ Deux combattants jouables, **Saint Louis** et **Napoléon**, dans Unity 6000.4.7
   - fleur de lys émise puis bloquée au tick 225 (0 dégât, impact affiché) ;
   - KO au tick 1136 et fin de manche au tick 1286.
 - **Postures, en mode Play** (`AgentScripts/VerifyStances.cs`, Saint Louis contre Saint Louis puis Napoléon contre Saint Louis, boîtes de débogage affichées) : accroupi des deux côtés, poing accroupi qui touche un adversaire accroupi (35 dégâts), balayette gardée accroupi, saut vertical, pied sauté et poing sauté qui touchent la tête d'un adversaire debout, KO jusqu'à la pose allongée. Les hitboxes suivent le poing et la botte dessinés. Le KO de Saint Louis flottait au-dessus du sol : corrigé à l'export. Le ressenti du saut (hauteur, durée) n'a pas été jugé par un joueur.
+- **De Gaulle, en mode Play** (1ᵉʳ novembre 2026, `VerifyStances` puis `VerifyMatch` avec De Gaulle contre Napoléon, boîtes de débogage affichées) : pied sauté et poing sauté qui touchent (75 et 60 dégâts), balayette gardée accroupi, pied puissant dont la hitbox suit la botte dessinée, Appel du 18 Juin émis puis gardé par Napoléon avec l'impact tricolore affiché, KO ; portrait et nom dans le HUD. Le poing accroupi n'a pas porté dans ce scénario : De Gaulle, qui marche moins vite, n'était pas à portée.
 - **Export** : 97 poses découpées par combattant (56 avant les postures), 2 pages d'atlas chacun. Les deux exports ont été relus sur leurs aperçus (fond clair et sombre, superpositions) ; les sources sont intactes.
   - Napoléon : bicorne, pans de la redingote et fourreau stables d'une pose à l'autre, pieds sur la ligne de sol, pivot commun, aucun recentrage automatique (le pied d'appui reste planté pendant les coups de pied, le buste part en arrière comme dessiné). Garde ramenée à 480 unités contre 500 pour Saint Louis : il paraît plus trapu, conformément à son identité.
   - Dans la réaction de Napoléon, les poses 2 et 3 se touchent (pans de manteau, et pointe de botte dessinée devant le talon voisin). L'outil les sépare désormais par une **couture** (`layout.seams`) ; réexporter Saint Louis avec l'outil modifié redonne des fichiers identiques à l'octet près.
@@ -110,6 +113,7 @@ Le transport de l'éditeur et du PC (`ClientWebSocket`) a échangé avec le rela
   - pied rapide, pied puissant et spécial : ceux de `moveset-prototype-v01.md` ;
   - poing : aucune donnée documentée, j'ai pris 2-3-2-3-4-6 ticks, actif sur les poses 3 et 4.
 - **Napoléon** : timings de `assets/characters/napoleon/moveset-prototype-v01.md`, poing actif sur les poses 3 et 4 comme Saint Louis. Mêmes dégâts que Saint Louis ; marche plus lente (7 et 5), boulet un peu plus lent (11 par tick). Ses coups de pied ont moins d'allonge que son poing, parce qu'il recule le buste en frappant.
+- **De Gaulle** : garde à 560 unités (le plus grand), timings de `assets/characters/de-gaulle/moveset-prototype-v01.md`, un peu plus lents au démarrage (poing 6 ticks, pied rapide 9, pied puissant 18, appel 21). Mêmes dégâts que les autres, onde à 85 dégâts et 10 par tick. Marche la plus lente (6 et 4). Son allonge se voit surtout en bas et en l'air : balayette jusqu'à 430 unités, pied sauté jusqu'à 515.
 - **Valeurs provisoires** : dégâts, étourdissement, gel, recul, vitesses de marche (8 et 6), vitesse du projectile (12 par tick), boîtes de collision. Les boîtes sont mesurées sur les poses exportées, mais restent grossières (trois hurtboxes par pose).
 - **Taille à l'écran** : garde à 500 unités, écran visible de 1080 unités de haut (le standard évoquait environ 600 px, à confirmer).
 
@@ -163,4 +167,8 @@ Classés par effet sur le jeu.
 7. **Napoléon** : les mêmes besoins que Saint Louis (victoire, marche arrière, impact de blocage), plus :
    - réaction haute : écarter les poses 2 et 3. La pointe de botte de la pose 2 masque le talon de la pose 3, auquel il manque donc un petit morceau ;
    - garde : six poses presque identiques, à stabiliser comme celles de Saint Louis.
-8. **Combattant suivant** : suivre [Ajouter un combattant](ajouter-un-combattant.md). Laisser de l'espace entre les poses évite les coutures.
+8. **De Gaulle** : planches générées avec Codex CLI, non retouchées (voir [son dossier](../assets/characters/de-gaulle/README.md)) :
+   - réaction accroupie : les poses 1 et 2 sont à demi accroupies seulement ;
+   - KO : la chute est recalée à l'export (`nudge`) pour qu'il ne saute pas de 400 unités en arrière entre deux poses ;
+   - mêmes besoins que les autres (victoire, marche arrière, impact de blocage).
+9. **Combattant suivant** : suivre [Ajouter un combattant](ajouter-un-combattant.md). Laisser de l'espace entre les poses évite les coutures.

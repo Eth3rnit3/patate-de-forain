@@ -1,0 +1,9 @@
+{
+  "format": "patate-fighter",
+  "formatVersion": 1,
+  "id": "de-gaulle",
+  "name": "De Gaulle",
+  "version": "0.1.0",
+  "description": "Charles de Gaulle réinterprété en combattant arcade : très grand, longue allonge, garde haute. Pack HD de validation v0.1.",
+  "credits": ["Direction artistique et illustrations : équipe Patate de Forain"]
+}

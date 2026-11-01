@@ -1,0 +1,111 @@
+name: Vérifications et version navigateur
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: patate-de-forain-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+jobs:
+  validate:
+    name: Outils et relais
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-node@v7.1.0
+        with:
+          node-version: '22'
+      - name: Outil d'export (types)
+        run: |
+          npm ci
+          npm run typecheck
+      - name: Relais en ligne (tests)
+        run: |
+          npm ci --prefix server/relay
+          npm test --prefix server/relay
+
+  test:
+    name: Tests EditMode
+    needs: validate
+    if: github.event_name != 'pull_request' && vars.UNITY_CI_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/cache@v6.1.0
+        with:
+          path: game/Library
+          key: Tests-${{ hashFiles('game/Assets/**', 'game/Packages/**', 'game/ProjectSettings/**') }}
+          restore-keys: Tests-
+      - uses: game-ci/unity-test-runner@v4.3.2
+        id: tests
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          projectPath: game
+          testMode: editmode
+      - uses: actions/upload-artifact@v7.0.2
+        if: always()
+        with:
+          name: resultats-tests
+          path: ${{ steps.tests.outputs.artifactsPath }}
+          if-no-files-found: ignore
+          retention-days: 14
+
+  build:
+    name: Version navigateur
+    needs: test
+    if: github.event_name != 'pull_request' && vars.UNITY_CI_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/cache@v6.1.0
+        with:
+          path: game/Library
+          key: WebGL-${{ hashFiles('game/Assets/**', 'game/Packages/**', 'game/ProjectSettings/**') }}
+          restore-keys: WebGL-
+      - uses: game-ci/unity-builder@v6.0.0
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          projectPath: game
+          targetPlatform: WebGL
+          buildMethod: Patate.EditorTools.WebBuilder.Build
+          versioning: None
+      - uses: actions/upload-artifact@v7.0.2
+        with:
+          name: patate-de-forain-web
+          path: game/WebBuild
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 14
+      - uses: actions/upload-pages-artifact@v5.0.0
+        if: vars.PUBLISH_PAGES == 'true'
+        with:
+          path: game/WebBuild
+
+  deploy:
+    name: Publication GitHub Pages
+    needs: build
+    if: needs.build.result == 'success' && vars.PUBLISH_PAGES == 'true'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    steps:
+      - uses: actions/configure-pages@v6.0.0
+      - name: Publier la version compilée
+        id: deployment
+        uses: actions/deploy-pages@v5.0.1

@@ -52,7 +52,9 @@ namespace Patate.EditorTools
                 throw new BuildFailedException("Choisir Web dans Build Profiles et activer cette plateforme avant la compilation.");
             var folder = Environment.GetEnvironmentVariable(FolderVariable);
             Configure();
-            var path = Path.GetFullPath(string.IsNullOrEmpty(folder) ? "WebBuild" : folder);
+            // Relatif au projet (game/), pas au dossier courant : GameCI lance Unity depuis la racine du dépôt.
+            var project = Path.GetDirectoryName(UnityEngine.Application.dataPath);
+            var path = Path.GetFullPath(Path.Combine(project, string.IsNullOrEmpty(folder) ? "WebBuild" : folder));
             var report = BuildPipeline.BuildPlayer(new BuildPlayerOptions
             {
                 scenes = new[] { ScenePath },

@@ -68,13 +68,13 @@ RELAIS=wss://patate-relais.eth3rnit3.workers.dev npm run essai:onglets -- http:/
 
 ## Déployer sur Cloudflare (offre gratuite)
 
-**Déployé le 31 octobre 2026** : `wss://patate-relais.eth3rnit3.workers.dev` (compte Cloudflare d'eth3rnit3, offre Workers Free). C'est `OnlineSettings.DeployedRelay`. `ORIGINES` est encore vide, donc toute page peut s'en servir : à restreindre dès que le jeu aura une adresse publique (GitHub Pages ou autre), puis redéployer.
+**Déployé le 31 octobre 2026** : `wss://patate-relais.eth3rnit3.workers.dev` (compte Cloudflare d'eth3rnit3, offre Workers Free). C'est `OnlineSettings.DeployedRelay`. `ORIGINES` est restreint depuis le 1er novembre 2026 aux pages du jeu (`https://eth3rnit3.github.io`) et aux serveurs locaux d'essai (`localhost` 8000, 8765 et 8799). Les clients sans en-tête `Origin` (version PC, éditeur) passent toujours : seul un navigateur l'envoie, la liste ne sert qu'à empêcher d'autres sites d'utiliser le relais. Vérifié après redéploiement : `npm run verifier` conforme ; une connexion avec l'origine GitHub Pages ou sans origine est acceptée, avec `https://exemple.com` refusée (403) ; deux onglets ouverts sur le jeu publié jouent deux manches à travers le relais, sans désynchronisation.
 
 Pour redéployer après une modification, `npm run deploy` (Wrangler doit être connecté au compte : `npx wrangler whoami`). Pour un premier déploiement sur un autre compte, il faut un compte Cloudflare (gratuit, sans carte bancaire pour l'offre Workers Free).
 
 1. `cd server/relay && npm install`
 2. `npx wrangler login` : ouvre le navigateur pour autoriser Wrangler sur le compte.
-3. Dans `wrangler.toml`, restreindre `ORIGINES` aux pages du jeu, par exemple `"https://<utilisateur>.github.io,http://localhost:8000"`. Vide, toute page peut utiliser le relais.
+3. Dans `wrangler.toml`, restreindre `ORIGINES` aux pages du jeu, par exemple `"https://<utilisateur>.github.io,http://localhost:8000"`. Vide, toute page peut utiliser le relais ; les clients sans en-tête `Origin` (version PC, éditeur) passent dans tous les cas.
 4. `npm run deploy` : affiche l'adresse, du genre `https://patate-relais.<sous-domaine>.workers.dev`.
 5. Vérifier : `npm run verifier -- wss://patate-relais.<sous-domaine>.workers.dev`
 6. Inscrire `wss://patate-relais.<sous-domaine>.workers.dev` dans `OnlineSettings.DeployedRelay` (`game/Assets/Scripts/Unity/OnlineRelay.cs`) et reconstruire le jeu. En attendant, `?relais=wss://…` dans l'adresse de la page suffit.

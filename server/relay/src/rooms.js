@@ -76,9 +76,13 @@ export class FloodGate {
   }
 }
 
-/** Origine autorisée ? Liste vide : toutes. */
+/**
+ * Origine autorisée ? Liste vide : toutes. Sans en-tête Origin (version PC,
+ * éditeur) : accepté, seul un navigateur l'envoie, et la liste ne sert qu'à
+ * empêcher d'autres sites d'utiliser le relais.
+ */
 export function originAllowed(origin, allowed) {
-  if (!allowed || allowed.length === 0) return true;
+  if (!allowed || allowed.length === 0 || !origin) return true;
   return allowed.includes(origin);
 }
 

@@ -1,6 +1,6 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {admit, FloodGate, forwardable, MAX_MESSAGES_PER_SECOND, Refusal, roomCode} from '../src/rooms.js';
+import {admit, FloodGate, forwardable, MAX_MESSAGES_PER_SECOND, originAllowed, parseOrigins, Refusal, roomCode} from '../src/rooms.js';
 import {startRelay} from '../src/local.js';
 import {scenario} from '../src/verify.js';
 
@@ -33,6 +33,15 @@ test('les messages sont limités par seconde', () => {
   assert.equal(gate.pass(), false);
   now = 1000;
   assert.ok(gate.pass());
+});
+
+test('seules les pages du jeu passent, les clients sans origine aussi', () => {
+  const allowed = parseOrigins('https://eth3rnit3.github.io, http://localhost:8000');
+  assert.ok(originAllowed('https://eth3rnit3.github.io', allowed));
+  assert.ok(originAllowed('http://localhost:8000', allowed));
+  assert.ok(!originAllowed('https://exemple.com', allowed));
+  assert.ok(originAllowed(undefined, allowed), 'version PC et éditeur : pas d\'en-tête Origin');
+  assert.ok(originAllowed('https://exemple.com', parseOrigins('')), 'liste vide : toutes');
 });
 
 test('le relais local réunit deux joueurs et transmet leurs messages', async () => {

@@ -14,6 +14,6 @@ tag = "v1"
 new_sqlite_classes = ["Salon"]
 
 [vars]
-# Origines autorisées, séparées par des virgules (vide : toutes).
-# Ex. "https://eth3rnit3.github.io,http://localhost:8000"
-ORIGINES = ""
+# Pages autorisées, séparées par des virgules (vide : toutes). Les clients
+# sans en-tête Origin (version PC, éditeur) passent toujours.
+ORIGINES = "https://eth3rnit3.github.io,http://localhost:8000,http://localhost:8765,http://localhost:8799"

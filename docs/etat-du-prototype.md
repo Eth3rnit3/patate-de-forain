@@ -129,7 +129,7 @@ Le transport de l'éditeur et du PC (`ClientWebSocket`) a échangé avec le rela
 - **Clavier** : un seul échantillon par image d'affichage, donc un appui plus court qu'une image peut être manqué. Certains claviers ne détectent pas toutes les combinaisons de touches simultanées (ghosting). Même échantillonnage par image pour la manette.
 - **Adversaire de l'ordinateur** : il s'accroupit pour ses coups bas et sa garde basse, mais ne saute jamais et n'utilise pas les coups sautés ; il n'a donc pas de réponse à un adversaire qui ne fait que lancer des projectiles de loin (il garde sans avancer). Pas de combos.
 - **Pause** : le jeu se met en pause quand la fenêtre perd le focus.
-- **Jeu en ligne** : pas de reconnexion après une coupure ; un onglet caché met l'adversaire en attente ; relais déployé ouvert à toutes les pages (`ORIGINES` vide) ; le jeu a maintenant son adresse sur GitHub Pages, la restriction à ce domaine (et à localhost) demande un redéploiement du relais ; offre gratuite de Cloudflare, environ 250 manches par jour.
+- **Jeu en ligne** : pas de reconnexion après une coupure ; un onglet caché met l'adversaire en attente ; relais déployé réservé aux pages du jeu (GitHub Pages et localhost) depuis le 1er novembre 2026, mais un client hors navigateur peut toujours s'y connecter, puisqu'il n'envoie pas d'en-tête `Origin` ; offre gratuite de Cloudflare, environ 250 manches par jour.
 - **Pas encore faits** : import de paquets et signature (voir l'[architecture](architecture.md)).
 
 ## Besoins artistiques à nous transmettre

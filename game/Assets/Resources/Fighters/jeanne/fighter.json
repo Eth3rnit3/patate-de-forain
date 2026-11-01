@@ -1,0 +1,9 @@
+{
+  "format": "patate-fighter",
+  "formatVersion": 1,
+  "id": "jeanne",
+  "name": "Jeanne d'Arc",
+  "version": "0.1.0",
+  "description": "Jeanne d'Arc réinterprétée en combattante arcade : légère et rapide, charge à l'étendard. Pack HD de validation v0.1.",
+  "credits": ["Direction artistique et illustrations : équipe Patate de Forain"]
+}

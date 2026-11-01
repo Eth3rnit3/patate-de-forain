@@ -1,0 +1,218 @@
+{
+  "atlas": "atlas.json",
+  "portrait": "portrait.png",
+  "unitsPerPixel": 1,
+  "animations": {
+    "idle": {
+      "frames": [
+        { "sprite": "idle_01", "duration": 8 },
+        { "sprite": "idle_02", "duration": 8 },
+        { "sprite": "idle_03", "duration": 8 },
+        { "sprite": "idle_04", "duration": 8 },
+        { "sprite": "idle_05", "duration": 8 },
+        { "sprite": "idle_06", "duration": 8 }
+      ]
+    },
+    "walk_forward": {
+      "frames": [
+        { "sprite": "walk_forward_01", "duration": 5 },
+        { "sprite": "walk_forward_02", "duration": 5 },
+        { "sprite": "walk_forward_03", "duration": 5 },
+        { "sprite": "walk_forward_04", "duration": 5 },
+        { "sprite": "walk_forward_05", "duration": 5 },
+        { "sprite": "walk_forward_06", "duration": 5 },
+        { "sprite": "walk_forward_07", "duration": 5 },
+        { "sprite": "walk_forward_08", "duration": 5 }
+      ]
+    },
+    "stand_punch_light": {
+      "frames": [
+        { "sprite": "stand_punch_light_01", "duration": 2 },
+        { "sprite": "stand_punch_light_02", "duration": 3 },
+        { "sprite": "stand_punch_light_03", "duration": 2 },
+        { "sprite": "stand_punch_light_04", "duration": 3 },
+        { "sprite": "stand_punch_light_05", "duration": 4 },
+        { "sprite": "stand_punch_light_06", "duration": 7 }
+      ]
+    },
+    "stand_kick_light": {
+      "frames": [
+        { "sprite": "stand_kick_light_01", "duration": 3 },
+        { "sprite": "stand_kick_light_02", "duration": 3 },
+        { "sprite": "stand_kick_light_03", "duration": 2 },
+        { "sprite": "stand_kick_light_04", "duration": 3 },
+        { "sprite": "stand_kick_light_05", "duration": 5 },
+        { "sprite": "stand_kick_light_06", "duration": 8 }
+      ]
+    },
+    "stand_kick_heavy": {
+      "frames": [
+        { "sprite": "stand_kick_heavy_01", "duration": 4 },
+        { "sprite": "stand_kick_heavy_02", "duration": 4 },
+        { "sprite": "stand_kick_heavy_03", "duration": 5 },
+        { "sprite": "stand_kick_heavy_04", "duration": 3 },
+        { "sprite": "stand_kick_heavy_05", "duration": 5 },
+        { "sprite": "stand_kick_heavy_06", "duration": 5 },
+        { "sprite": "stand_kick_heavy_07", "duration": 5 },
+        { "sprite": "stand_kick_heavy_08", "duration": 9 }
+      ]
+    },
+    "special_panache_cast": {
+      "frames": [
+        { "sprite": "special_panache_cast_01", "duration": 4 },
+        { "sprite": "special_panache_cast_02", "duration": 5 },
+        { "sprite": "special_panache_cast_03", "duration": 5 },
+        { "sprite": "special_panache_cast_04", "duration": 5 },
+        { "sprite": "special_panache_cast_05", "duration": 3 },
+        { "sprite": "special_panache_cast_06", "duration": 4 },
+        { "sprite": "special_panache_cast_07", "duration": 10 },
+        { "sprite": "special_panache_cast_08", "duration": 11 }
+      ]
+    },
+    "hit_high": {
+      "frames": [
+        { "sprite": "hit_high_01", "duration": 4 },
+        { "sprite": "hit_high_02", "duration": 4 },
+        { "sprite": "hit_high_03", "duration": 4 }
+      ]
+    },
+    "block_high": {
+      "frames": [
+        { "sprite": "block_high_01", "duration": 4 },
+        { "sprite": "block_high_02", "duration": 4 },
+        { "sprite": "block_high_03", "duration": 4 }
+      ]
+    },
+    "panache_projectile": {
+      "frames": [
+        { "sprite": "panache_projectile_01", "duration": 3 },
+        { "sprite": "panache_projectile_02", "duration": 3 },
+        { "sprite": "panache_projectile_03", "duration": 3 },
+        { "sprite": "panache_projectile_04", "duration": 3 }
+      ]
+    },
+    "panache_impact": {
+      "frames": [
+        { "sprite": "panache_impact_01", "duration": 2 },
+        { "sprite": "panache_impact_02", "duration": 2 },
+        { "sprite": "panache_impact_03", "duration": 3 },
+        { "sprite": "panache_impact_04", "duration": 3 }
+      ]
+    },
+    "crouch": {
+      "frames": [
+        { "sprite": "crouch_02", "duration": 3 },
+        { "sprite": "crouch_03", "duration": 6 }
+      ]
+    },
+    "block_low": {
+      "frames": [
+        { "sprite": "block_low_01", "duration": 4 },
+        { "sprite": "block_low_02", "duration": 4 },
+        { "sprite": "block_low_03", "duration": 4 }
+      ]
+    },
+    "hit_crouch": {
+      "frames": [
+        { "sprite": "hit_crouch_01", "duration": 4 },
+        { "sprite": "hit_crouch_02", "duration": 4 },
+        { "sprite": "hit_crouch_03", "duration": 4 }
+      ]
+    },
+    "jump_prepare": {
+      "frames": [
+        { "sprite": "jump_01", "duration": 4 }
+      ]
+    },
+    "jump_air": {
+      "frames": [
+        { "sprite": "jump_02", "duration": 6 },
+        { "sprite": "jump_03", "duration": 8 },
+        { "sprite": "jump_04", "duration": 12 },
+        { "sprite": "jump_05", "duration": 16 }
+      ]
+    },
+    "jump_land": {
+      "frames": [
+        { "sprite": "jump_06", "duration": 4 }
+      ]
+    },
+    "crouch_punch": {
+      "frames": [
+        { "sprite": "crouch_punch_01", "duration": 2 },
+        { "sprite": "crouch_punch_02", "duration": 2 },
+        { "sprite": "crouch_punch_03", "duration": 1 },
+        { "sprite": "crouch_punch_04", "duration": 3 },
+        { "sprite": "crouch_punch_05", "duration": 4 },
+        { "sprite": "crouch_punch_06", "duration": 5 }
+      ]
+    },
+    "crouch_kick": {
+      "frames": [
+        { "sprite": "crouch_kick_01", "duration": 2 },
+        { "sprite": "crouch_kick_02", "duration": 3 },
+        { "sprite": "crouch_kick_03", "duration": 2 },
+        { "sprite": "crouch_kick_04", "duration": 4 },
+        { "sprite": "crouch_kick_05", "duration": 5 },
+        { "sprite": "crouch_kick_06", "duration": 7 }
+      ]
+    },
+    "jump_punch": {
+      "frames": [
+        { "sprite": "jump_punch_01", "duration": 2 },
+        { "sprite": "jump_punch_02", "duration": 3 },
+        { "sprite": "jump_punch_03", "duration": 8 },
+        { "sprite": "jump_punch_04", "duration": 6 }
+      ]
+    },
+    "jump_kick": {
+      "frames": [
+        { "sprite": "jump_kick_01", "duration": 3 },
+        { "sprite": "jump_kick_02", "duration": 3 },
+        { "sprite": "jump_kick_03", "duration": 8 },
+        { "sprite": "jump_kick_04", "duration": 6 }
+      ]
+    },
+    "ko": {
+      "frames": [
+        { "sprite": "ko_01", "duration": 6 },
+        { "sprite": "ko_02", "duration": 6 },
+        { "sprite": "ko_03", "duration": 6 },
+        { "sprite": "ko_04", "duration": 6 },
+        { "sprite": "ko_05", "duration": 8 },
+        { "sprite": "ko_06", "duration": 30 }
+      ]
+    }
+  },
+  "states": {
+    "idle": { "animation": "idle", "playback": "loop" },
+    "walkForward": { "animation": "walk_forward", "playback": "loop" },
+    "walkBack": { "animation": "walk_forward", "playback": "reverseLoop" },
+    "guard": { "animation": "block_high", "playback": "hold", "frame": 0 },
+    "hitstun": { "animation": "hit_high", "playback": "stretch" },
+    "blockstun": { "animation": "block_high", "playback": "stretch" },
+    "ko": { "animation": "ko", "playback": "once" },
+    "crouch": { "animation": "crouch", "playback": "once" },
+    "crouchGuard": { "animation": "block_low", "playback": "hold", "frame": 0 },
+    "crouchHitstun": { "animation": "hit_crouch", "playback": "stretch" },
+    "crouchBlockstun": { "animation": "block_low", "playback": "stretch" },
+    "preJump": { "animation": "jump_prepare", "playback": "hold", "frame": 0 },
+    "jump": { "animation": "jump_air", "playback": "once" },
+    "land": { "animation": "jump_land", "playback": "hold", "frame": 0 },
+    "airHitstun": { "animation": "hit_high", "playback": "hold", "frame": 1 }
+  },
+  "moves": {
+    "stand_punch_light": { "animation": "stand_punch_light" },
+    "stand_kick_light": { "animation": "stand_kick_light" },
+    "stand_kick_heavy": { "animation": "stand_kick_heavy" },
+    "special_panache": { "animation": "special_panache_cast" },
+    "crouch_punch": { "animation": "crouch_punch" },
+    "crouch_kick": { "animation": "crouch_kick" },
+    "jump_punch": { "animation": "jump_punch" },
+    "jump_kick": { "animation": "jump_kick" }
+  },
+  "projectiles": {
+    "panache": { "animation": "panache_projectile", "impact": "panache_impact" }
+  },
+  "sounds": {}
+}

@@ -1,0 +1,9 @@
+{
+  "format": "patate-fighter",
+  "formatVersion": 1,
+  "id": "cyrano",
+  "name": "Cyrano",
+  "version": "0.1.0",
+  "description": "Cyrano de Bergerac réinterprété en combattant arcade : escrimeur vif, rapière et panache. Pack HD de validation v0.1.",
+  "credits": ["Direction artistique et illustrations : équipe Patate de Forain"]
+}

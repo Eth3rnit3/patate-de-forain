@@ -1,0 +1,257 @@
+{
+  "//": "Export technique de Vercingétorix. Les sources ne sont jamais modifiées. Chemins relatifs à la racine du dépôt.",
+  "character": "vercingetorix",
+  "filePrefix": "vercingetorix",
+  "sourceDir": "assets/characters/vercingetorix/source",
+  "framesDir": "assets/characters/vercingetorix/export/frames",
+  "previewDir": "assets/characters/vercingetorix/export/previews",
+  "reportFile": "assets/characters/vercingetorix/export/export-report.md",
+  "packageDir": "game/Assets/Resources/Fighters/vercingetorix",
+  "cell": {
+    "width": 1024,
+    "height": 768,
+    "pivotX": 512,
+    "pivotY": 704
+  },
+  "standingHeight": 520,
+  "portrait": {
+    "file": "vercingetorix_portrait_hd_v01.png",
+    "size": 512
+  },
+  "animations": [
+    {
+      "name": "idle",
+      "file": "vercingetorix_idle_hd_v01.png",
+      "layout": {
+        "type": "poses",
+        "rows": 2
+      },
+      "frames": 6,
+      "referenceFrame": 1,
+      "anchor": "rearFoot"
+    },
+    {
+      "name": "walk_forward",
+      "file": "vercingetorix_walk_forward_hd_v01.png",
+      "layout": {
+        "type": "poses",
+        "rows": 2
+      },
+      "frames": 8,
+      "scaleLike": "idle",
+      "referenceFrame": 1,
+      "anchor": "torso"
+    },
+    {
+      "name": "stand_punch_light",
+      "file": "vercingetorix_stand_punch_light_hd_v01.png",
+      "layout": {
+        "type": "poses",
+        "rows": 2
+      },
+      "frames": 6,
+      "scaleLike": "idle",
+      "referenceFrame": 1,
+      "anchor": "rearFoot"
+    },
+    {
+      "name": "stand_kick_light",
+      "file": "vercingetorix_stand_kick_light_hd_v01.png",
+      "layout": {
+        "type": "poses",
+        "rows": 2
+      },
+      "frames": 6,
+      "scaleLike": "idle",
+      "referenceFrame": 1,
+      "anchor": "rearFoot"
+    },
+    {
+      "name": "stand_kick_heavy",
+      "file": "vercingetorix_stand_kick_heavy_hd_v01.png",
+      "layout": {
+        "type": "poses",
+        "rows": 2
+      },
+      "frames": 8,
+      "referenceFrame": 1,
+      "anchor": "rearFoot"
+    },
+    {
+      "name": "special_alesia_cast",
+      "file": "vercingetorix_special_alesia_cast_hd_v01.png",
+      "layout": {
+        "type": "poses",
+        "rows": 2
+      },
+      "frames": 8,
+      "referenceFrame": 1,
+      "anchor": "rearFoot",
+      "nudge": {
+        "6": [
+          470,
+          0
+        ]
+      }
+    },
+    {
+      "name": "hit_high",
+      "file": "vercingetorix_hit_high_hd_v01.png",
+      "layout": {
+        "type": "poses",
+        "rows": 1
+      },
+      "frames": 3,
+      "referenceFrame": 3,
+      "anchor": "rearFoot"
+    },
+    {
+      "name": "block_high",
+      "file": "vercingetorix_block_high_hd_v01.png",
+      "layout": {
+        "type": "poses",
+        "rows": 1
+      },
+      "frames": 3,
+      "referenceFrame": 3,
+      "anchor": "rearFoot"
+    },
+    {
+      "name": "crouch",
+      "file": "vercingetorix_crouch_hd_v01.png",
+      "layout": {
+        "type": "poses",
+        "rows": 1
+      },
+      "frames": 3,
+      "referenceFrame": 1,
+      "anchor": "rearFoot"
+    },
+    {
+      "name": "block_low",
+      "file": "vercingetorix_block_low_hd_v01.png",
+      "layout": {
+        "type": "poses",
+        "rows": 1
+      },
+      "frames": 3,
+      "referenceFrame": 1,
+      "matchHeight": {
+        "animation": "crouch",
+        "frame": 3
+      },
+      "anchor": "rearFoot"
+    },
+    {
+      "name": "crouch_punch",
+      "file": "vercingetorix_crouch_punch_hd_v01.png",
+      "layout": {
+        "type": "poses",
+        "rows": 2
+      },
+      "frames": 6,
+      "referenceFrame": 1,
+      "matchHeight": {
+        "animation": "crouch",
+        "frame": 3
+      },
+      "anchor": "rearFoot"
+    },
+    {
+      "name": "crouch_kick",
+      "file": "vercingetorix_crouch_kick_hd_v01.png",
+      "layout": {
+        "type": "poses",
+        "rows": 2
+      },
+      "frames": 6,
+      "referenceFrame": 1,
+      "matchHeight": {
+        "animation": "crouch",
+        "frame": 3
+      },
+      "anchor": "rearFoot"
+    },
+    {
+      "name": "hit_crouch",
+      "file": "vercingetorix_hit_crouch_hd_v01.png",
+      "layout": {
+        "type": "poses",
+        "rows": 1
+      },
+      "frames": 3,
+      "referenceFrame": 3,
+      "matchHeight": {
+        "animation": "crouch",
+        "frame": 3
+      },
+      "anchor": "rearFoot"
+    },
+    {
+      "name": "jump",
+      "file": "vercingetorix_jump_hd_v01.png",
+      "layout": {
+        "type": "poses",
+        "rows": 2
+      },
+      "frames": 6,
+      "referenceFrame": 6,
+      "matchHeight": {
+        "animation": "crouch",
+        "frame": 2
+      },
+      "anchor": "torso"
+    },
+    {
+      "name": "jump_punch",
+      "file": "vercingetorix_jump_punch_hd_v01.png",
+      "layout": {
+        "type": "poses",
+        "rows": 1
+      },
+      "frames": 4,
+      "referenceFrame": 1,
+      "matchHeight": {
+        "animation": "jump",
+        "frame": 4
+      },
+      "anchor": "torso"
+    },
+    {
+      "name": "jump_kick",
+      "file": "vercingetorix_jump_kick_hd_v01.png",
+      "layout": {
+        "type": "poses",
+        "rows": 1
+      },
+      "frames": 4,
+      "referenceFrame": 1,
+      "matchHeight": {
+        "animation": "jump",
+        "frame": 4
+      },
+      "anchor": "torso"
+    },
+    {
+      "name": "ko",
+      "file": "vercingetorix_ko_hd_v01.png",
+      "layout": {
+        "type": "poses",
+        "rows": 2
+      },
+      "frames": 6,
+      "referenceFrame": 1,
+      "matchHeight": {
+        "animation": "hit_high",
+        "frame": 2
+      },
+      "anchor": "rearFoot",
+      "nudge": {
+        "3": [
+          260,
+          0
+        ]
+      }
+    }
+  ]
+}

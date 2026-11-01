@@ -1,0 +1,9 @@
+{
+  "format": "patate-fighter",
+  "formatVersion": 1,
+  "id": "vercingetorix",
+  "name": "Vercingétorix",
+  "version": "0.1.0",
+  "description": "Vercingétorix réinterprété en combattant arcade : poids lourd, lent et puissant, charge à l'épaule. Pack HD de validation v0.1.",
+  "credits": ["Direction artistique et illustrations : équipe Patate de Forain"]
+}

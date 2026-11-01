@@ -4,7 +4,7 @@ Jeu de combat 2D aux sensations arcade, avec nos propres personnages et notre di
 
 **Jouer dans le navigateur : <https://eth3rnit3.github.io/patate-de-forain/>** (publié automatiquement depuis `main`, voir [Intégration continue](#intégration-continue-et-github-pages)).
 
-**État : prototype jouable.** Saint Louis, Napoléon et De Gaulle, quatre décors, versus local au clavier ou à la manette, solo contre l'ordinateur et combat en ligne. Voir [l'état du prototype](docs/etat-du-prototype.md) pour le détail de ce qui fonctionne, de ce qui a été vérifié et de ce qui manque.
+**État : prototype jouable.** six combattants (Saint Louis, Napoléon, De Gaulle, Vercingétorix, Jeanne d'Arc et Cyrano), quatre décors, versus local au clavier ou à la manette, solo contre l'ordinateur et combat en ligne. Voir [l'état du prototype](docs/etat-du-prototype.md) pour le détail de ce qui fonctionne, de ce qui a été vérifié et de ce qui manque.
 
 ## Lancer le jeu
 
@@ -34,7 +34,7 @@ python3 -m http.server 8765 --directory game/WebBuild
 
 puis ouvrir <http://localhost:8765> et **cliquer dans le jeu** pour lui donner le clavier. Ouvrir `index.html` directement depuis le disque ne fonctionne pas.
 
-Poids téléchargé : environ **27,5 Mo** (code 7,9 Mo, données 19,4 Mo : atlas de Saint Louis et de Napoléon avec les postures et le KO, trois décors, images de l'interface et des étincelles). Mesuré avant l'arrivée de De Gaulle, dont l'atlas n'a pas encore été pesé dans une version navigateur.
+Poids téléchargé : environ **27,5 Mo** (code 7,9 Mo, données 19,4 Mo : atlas de Saint Louis et de Napoléon avec les postures et le KO, trois décors, images de l'interface et des étincelles). Mesuré avant l'arrivée de De Gaulle, Vercingétorix, Jeanne d'Arc et Cyrano, dont les atlas n'ont pas encore été pesés dans une version navigateur.
 
 ### Intégration continue et GitHub Pages
 

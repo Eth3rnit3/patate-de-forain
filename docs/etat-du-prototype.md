@@ -2,7 +2,7 @@
 
 ## Ce qui fonctionne en jeu
 
-Trois combattants jouables, **Saint Louis**, **Napoléon** et **De Gaulle**, dans Unity 6000.4.7f1 (scène `Assets/Scenes/Combat.unity`), au clavier ou à la manette, avec le parcours complet : titre, choix du mode (versus local, solo contre l'ordinateur, en ligne), sélection des personnages et du décor, combat, résultat.
+Six combattants jouables, **Saint Louis**, **Napoléon**, **De Gaulle**, **Vercingétorix**, **Jeanne d'Arc** et **Cyrano**, dans Unity 6000.4.7f1 (scène `Assets/Scenes/Combat.unity`), au clavier ou à la manette, avec le parcours complet : titre, choix du mode (versus local, solo contre l'ordinateur, en ligne), sélection des personnages et du décor, combat, résultat.
 
 - **Déplacements** : marche avant et arrière, orientation automatique vers l'adversaire, collision corporelle (pousser l'adversaire en avançant), limites de l'arène, écart maximal entre combattants.
 - **Saut et accroupissement** :
@@ -16,7 +16,10 @@ Trois combattants jouables, **Saint Louis**, **Napoléon** et **De Gaulle**, dan
   - en l'air : poing sauté et pied sauté (coups hauts), un seul par saut ;
   - Poing de Saint Louis : touche dédiée ou quart de cercle avant + poing. Il projette une fleur de lys émise au poing à l'entrée de la 5ᵉ pose, à raison d'un seul projectile à la fois, qui produit un impact doré au contact ;
   - Salve impériale de Napoléon : mêmes commandes. Napoléon pointe l'adversaire et un boulet spectral part du doigt à l'entrée de la 5ᵉ pose, à hauteur de poitrine, un seul à la fois, avec un impact bleu au contact ;
-  - Appel du 18 Juin de De Gaulle : mêmes commandes. De Gaulle lève les bras en V et lance son appel : une onde sonore bleu-blanc-rouge part à l'entrée de la 5ᵉ pose, à hauteur de tête et d'épaules (elle passe au-dessus de Saint Louis et de Napoléon accroupis, pas de De Gaulle accroupi, plus grand), une seule à la fois, avec un impact tricolore au contact.
+  - Appel du 18 Juin de De Gaulle : mêmes commandes. De Gaulle lève les bras en V et lance son appel : une onde sonore bleu-blanc-rouge part à l'entrée de la 5ᵉ pose, à hauteur de tête et d'épaules (elle passe au-dessus de Saint Louis et de Napoléon accroupis, pas de De Gaulle accroupi, plus grand), une seule à la fois, avec un impact tricolore au contact ;
+  - Charge d'Alésia de Vercingétorix : mêmes commandes. Il fonce épaule en avant et traverse environ 250 unités pendant ses poses actives (la simulation le fait avancer, les poses sont dessinées sur place) ; un seul coup, 120 dégâts ;
+  - Étendard d'Orléans de Jeanne d'Arc : mêmes commandes. Elle s'élance étendard pointé comme une lance, environ 290 unités, et sa fente porte jusqu'à 460 unités ; un seul coup, 90 dégâts ;
+  - Le Panache de Cyrano : mêmes commandes. Un coup de taille horizontal lance une plume de lumière à l'entrée de la 5ᵉ pose, à hauteur de poitrine, une seule à la fois, avec un impact au contact.
 - **Réactions** :
   - dégâts, étourdissement, gel d'impact, recul (reporté sur l'attaquant si la cible est coincée), puis retour en garde ;
   - garde en tenant arrière, avec garde sur place face à une attaque ou un projectile proche. Debout, elle arrête les coups hauts et moyens ; accroupi (bas-arrière), les coups bas et moyens. Pas de garde en l'air ;
@@ -37,7 +40,7 @@ Trois combattants jouables, **Saint Louis**, **Napoléon** et **De Gaulle**, dan
 
 ## Ce qui a été vérifié, et comment
 
-- **136 tests EditMode, tous verts** : 136/136 au dernier lancement (1ᵉʳ novembre 2026) (le test du relais, `[Explicit]`, lancé à part avec le relais local), en mode batch (`unity test --mode EditMode .`). Ils couvrent :
+- **149 tests EditMode, tous verts** : 149/149 au dernier lancement (1ᵉʳ novembre 2026, dans l'éditeur ouvert avec `unity command test run --mode EditMode`) (le test du relais, `[Explicit]`, lancé à part avec le relais local) ; en mode batch : `unity test --mode EditMode .`. Ils couvrent :
   - **chronologie** : les phases tombent aux ticks exacts, l'appui sur un bouton déclenche le coup mais pas son maintien, quart de cercle selon l'orientation ;
   - **dégâts** : un seul impact par coup, étourdissement plus gel, recul exact, échange de coups simultanés ;
   - **garde** : tenir arrière, garde de proximité, pas de garde en pleine attaque, attaque non blocable ;
@@ -47,10 +50,11 @@ Trois combattants jouables, **Saint Louis**, **Napoléon** et **De Gaulle**, dan
   - **indépendance des deux combattants** ;
   - **saut et accroupissement** : hauteur et durée du saut, distance d'un saut avant, pas de marche en l'air ni accroupi, coup accroupi au bouton bas tenu, coup haut qui passe au-dessus d'un adversaire accroupi, coup bas gardé seulement accroupi, coup sauté gardé debout mais pas accroupi, un coup par saut puis réception, pas de garde en l'air, sauvegarde et restauration en plein saut ;
   - **manche** : KO, temps écoulé, entrées ignorées pendant l'introduction et après le KO ;
-  - **validation des paquets** : les vrais paquets de Saint Louis, de Napoléon et de De Gaulle sont acceptés ; 15 paquets volontairement cassés sont refusés, chacun avec un message localisé ;
+  - **validation des paquets** : les vrais paquets des six combattants sont acceptés ; 15 paquets volontairement cassés sont refusés, chacun avec un message localisé ;
   - **présentation** : la pose de frappe est affichée pendant les ticks actifs, le projectile apparaît à la 5ᵉ pose, les réactions sont étirées sur leur durée (pour les deux combattants) ;
   - **Napoléon contre Saint Louis** : la Salve impériale touche Saint Louis immobile (90 dégâts) ; Napoléon le met KO avec ses trois coups normaux, qui portent tous ;
   - **De Gaulle contre Napoléon** : l'Appel du 18 Juin touche Napoléon debout (85 dégâts) et part à l'entrée de la 5ᵉ pose ; la pose de frappe s'affiche pendant les ticks actifs ; De Gaulle met Napoléon KO avec ses trois coups normaux ;
+  - **Vercingétorix, Jeanne d'Arc et Cyrano contre Napoléon** : la pose de frappe s'affiche pendant les ticks actifs (charges comprises, poses 4 à 6) ; les charges partent de la distance de départ, avancent et touchent Napoléon (120 et 90 dégâts) ; le Panache part à l'entrée de la 5ᵉ pose et touche Napoléon debout (80 dégâts) ; chacun met Napoléon KO avec ses trois coups normaux ;
   - **politiques de statistiques** : modes libre et équilibré ;
   - **session** : combat miroir réel joué jusqu'au KO sans rendu, replay par le journal d'entrées, nouvelle manche, horloge à pas fixe à 144 Hz ;
   - **clavier** : correspondances des deux joueurs, vérifiées sur un clavier virtuel ;
@@ -67,6 +71,7 @@ Trois combattants jouables, **Saint Louis**, **Napoléon** et **De Gaulle**, dan
   - KO au tick 1136 et fin de manche au tick 1286.
 - **Postures, en mode Play** (`AgentScripts/VerifyStances.cs`, Saint Louis contre Saint Louis puis Napoléon contre Saint Louis, boîtes de débogage affichées) : accroupi des deux côtés, poing accroupi qui touche un adversaire accroupi (35 dégâts), balayette gardée accroupi, saut vertical, pied sauté et poing sauté qui touchent la tête d'un adversaire debout, KO jusqu'à la pose allongée. Les hitboxes suivent le poing et la botte dessinés. Le KO de Saint Louis flottait au-dessus du sol : corrigé à l'export. Le ressenti du saut (hauteur, durée) n'a pas été jugé par un joueur.
 - **De Gaulle, en mode Play** (1ᵉʳ novembre 2026, `VerifyStances` puis `VerifyMatch` avec De Gaulle contre Napoléon, boîtes de débogage affichées) : pied sauté et poing sauté qui touchent (75 et 60 dégâts), balayette gardée accroupi, pied puissant dont la hitbox suit la botte dessinée, Appel du 18 Juin émis puis gardé par Napoléon avec l'impact tricolore affiché, KO ; portrait et nom dans le HUD. Le poing accroupi n'a pas porté dans ce scénario : De Gaulle, qui marche moins vite, n'était pas à portée.
+- **Vercingétorix, Jeanne d'Arc et Cyrano, en mode Play** (1ᵉʳ novembre 2026, contre Napoléon, boîtes de débogage affichées) : la Charge d'Alésia part de la distance de départ et l'épaule touche Napoléon (120 dégâts) ; l'Étendard d'Orléans touche à la fente (90 dégâts) ; la plume du Panache sort au bout de la rapière et touche (80 dégâts) ; poing, pied rapide et pied puissant portent ; avec `VerifyStances`, poing accroupi de Jeanne et de Cyrano qui touche (35), balayette gardée accroupi par Napoléon, pieds sautés de Vercingétorix et de Jeanne qui touchent (80 et 70), KO de Napoléon. Le poing accroupi de Vercingétorix n'a pas porté (il marche moins vite et n'était pas à portée) ; le pied sauté de Cyrano, court, a manqué Napoléon sur le saut vertical. Portraits et noms dans le HUD.
 - **Export** : 97 poses découpées par combattant (56 avant les postures), 2 pages d'atlas chacun. Les deux exports ont été relus sur leurs aperçus (fond clair et sombre, superpositions) ; les sources sont intactes.
   - Napoléon : bicorne, pans de la redingote et fourreau stables d'une pose à l'autre, pieds sur la ligne de sol, pivot commun, aucun recentrage automatique (le pied d'appui reste planté pendant les coups de pied, le buste part en arrière comme dessiné). Garde ramenée à 480 unités contre 500 pour Saint Louis : il paraît plus trapu, conformément à son identité.
   - Dans la réaction de Napoléon, les poses 2 et 3 se touchent (pans de manteau, et pointe de botte dessinée devant le talon voisin). L'outil les sépare désormais par une **couture** (`layout.seams`) ; réexporter Saint Louis avec l'outil modifié redonne des fichiers identiques à l'octet près.
@@ -114,6 +119,9 @@ Le transport de l'éditeur et du PC (`ClientWebSocket`) a échangé avec le rela
   - poing : aucune donnée documentée, j'ai pris 2-3-2-3-4-6 ticks, actif sur les poses 3 et 4.
 - **Napoléon** : timings de `assets/characters/napoleon/moveset-prototype-v01.md`, poing actif sur les poses 3 et 4 comme Saint Louis. Mêmes dégâts que Saint Louis ; marche plus lente (7 et 5), boulet un peu plus lent (11 par tick). Ses coups de pied ont moins d'allonge que son poing, parce qu'il recule le buste en frappant.
 - **De Gaulle** : garde à 560 unités (le plus grand), timings de `assets/characters/de-gaulle/moveset-prototype-v01.md`, un peu plus lents au démarrage (poing 6 ticks, pied rapide 9, pied puissant 18, appel 21). Mêmes dégâts que les autres, onde à 85 dégâts et 10 par tick. Marche la plus lente (6 et 4). Son allonge se voit surtout en bas et en l'air : balayette jusqu'à 430 unités, pied sauté jusqu'à 515.
+- **Vercingétorix** : le colosse, garde à 520 unités, 1150 points de vie, marche à 5 et 4. Démarrages lents (poing 9 ticks, pied rapide 9, pied puissant 19, charge 14) et coups plus lourds (50, 70, 130). Pas de projectile ; sa charge avance de 14 par tick sur 18 ticks actifs.
+- **Jeanne d'Arc** : la plus petite (470 unités) et la plus rapide : poing 4 ticks, pied rapide 7, pied puissant 14, charge 11 ; 950 points de vie ; coups plus légers (35, 55, 100). Sa charge avance de 18 par tick sur 16 ticks actifs.
+- **Cyrano** : garde à 500 unités, 950 points de vie, marche à 8 et 6. La rapière lui donne la plus longue allonge debout (poing jusqu'à 465 unités) ; Panache en 19 ticks, plume à 12 par tick et 80 dégâts. Son pied sauté est court (260 unités).
 - **Valeurs provisoires** : dégâts, étourdissement, gel, recul, vitesses de marche (8 et 6), vitesse du projectile (12 par tick), boîtes de collision. Les boîtes sont mesurées sur les poses exportées, mais restent grossières (trois hurtboxes par pose).
 - **Taille à l'écran** : garde à 500 unités, écran visible de 1080 unités de haut (le standard évoquait environ 600 px, à confirmer).
 
@@ -171,4 +179,9 @@ Classés par effet sur le jeu.
    - réaction accroupie : les poses 1 et 2 sont à demi accroupies seulement ;
    - KO : la chute est recalée à l'export (`nudge`) pour qu'il ne saute pas de 400 unités en arrière entre deux poses ;
    - mêmes besoins que les autres (victoire, marche arrière, impact de blocage).
-9. **Combattant suivant** : suivre [Ajouter un combattant](ajouter-un-combattant.md). Laisser de l'espace entre les poses évite les coutures.
+9. **Vercingétorix, Jeanne d'Arc et Cyrano** : planches générées avec Codex CLI, non retouchées (voir les dossiers de [Vercingétorix](../assets/characters/vercingetorix/README.md), de [Jeanne](../assets/characters/jeanne/README.md) et de [Cyrano](../assets/characters/cyrano/README.md)) :
+   - charges et KO recalés à l'export (`nudge`) : les poses dessinées très en retrait faisaient reculer le personnage entre deux poses ;
+   - Cyrano : poses du pied puissant trop serrées sur la planche, séparées par des coutures ;
+   - pas encore d'IA qui sache se servir des charges autrement que comme un coup au contact ;
+   - mêmes besoins que les autres (victoire, marche arrière, impact de blocage).
+10. **Combattant suivant** : suivre [Ajouter un combattant](ajouter-un-combattant.md). Laisser de l'espace entre les poses évite les coutures.

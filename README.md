@@ -2,7 +2,9 @@
 
 Jeu de combat 2D aux sensations arcade, avec nos propres personnages et notre direction artistique. Construit avec Unity, sur le modèle d'Action Legends.
 
-**État : prototype jouable.** Écran titre, choix du mode, sélection des personnages, combat et résultat, à deux joueurs sur un clavier (Saint Louis pour l'instant). Voir [l'état du prototype](docs/etat-du-prototype.md) pour le détail de ce qui fonctionne, de ce qui a été vérifié et de ce qui manque.
+**Jouer dans le navigateur : <https://eth3rnit3.github.io/patate-de-forain/>** (publié automatiquement depuis `main`, voir [Intégration continue](#intégration-continue-et-github-pages)).
+
+**État : prototype jouable.** Saint Louis et Napoléon, quatre décors, versus local au clavier ou à la manette, solo contre l'ordinateur et combat en ligne. Voir [l'état du prototype](docs/etat-du-prototype.md) pour le détail de ce qui fonctionne, de ce qui a été vérifié et de ce qui manque.
 
 ## Lancer le jeu
 
@@ -33,6 +35,16 @@ python3 -m http.server 8765 --directory game/WebBuild
 puis ouvrir <http://localhost:8765> et **cliquer dans le jeu** pour lui donner le clavier. Ouvrir `index.html` directement depuis le disque ne fonctionne pas.
 
 Poids téléchargé : environ **27,5 Mo** (code 7,9 Mo, données 19,4 Mo : atlas de Saint Louis et de Napoléon avec les postures et le KO, trois décors, images de l'interface et des étincelles).
+
+### Intégration continue et GitHub Pages
+
+Le workflow `.github/workflows/web.yml` reprend celui d'Action Legends :
+
+1. **Outils et relais**, à chaque push et pull request, sans secret : types de l'outil d'export (`npm run typecheck`) et tests du relais en ligne (`npm test --prefix server/relay`).
+2. **Tests EditMode**, puis **Version navigateur** : GameCI (`game-ci/unity-test-runner`, `game-ci/unity-builder`) sur `main` seulement, quand la variable `UNITY_CI_ENABLED` vaut `true`. La compilation appelle `Patate.EditorTools.WebBuilder.Build` ; l'export est aussi gardé 14 jours dans les artifacts (`patate-de-forain-web`).
+3. **Publication GitHub Pages** : après une compilation réussie, quand `PUBLISH_PAGES` vaut `true`. Le dépôt est public ; Pages a GitHub Actions comme source.
+
+GameCI a besoin d'une activation Unity : secrets `UNITY_LICENSE` (contenu du fichier `.ulf`), `UNITY_EMAIL` et `UNITY_PASSWORD`, à ajouter dans les paramètres GitHub Actions du dépôt, jamais dans le code. Passer `UNITY_CI_ENABLED` à `false` suspend la compilation (par exemple le temps de renouveler la licence) sans bloquer les vérifications. Références : [activation GameCI](https://game.ci/docs/github/activation/), [Unity Builder](https://github.com/game-ci/unity-builder).
 
 La page vient du gabarit `game/Assets/WebGLTemplates/PatateDeForain/` (choisi par `WebBuilder`) : le logo et une barre de progression pendant le chargement, puis le jeu en 16:9 ajusté à la taille de la fenêtre, un bouton plein écran et le rappel des commandes. L'écran « Made with Unity » est désactivé.
 
